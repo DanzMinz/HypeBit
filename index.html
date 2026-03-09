@@ -94,7 +94,7 @@
         .username-color-gold { color: #F59E0B !important; }
         .username-color-pink { color: #EC4899 !important; }
 
-        /* Loading Screen */
+        /* Улучшенный экран загрузки */
         .loading-screen {
             position: fixed;
             top: 0;
@@ -116,25 +116,57 @@
         }
 
         .loader {
-            width: 50px;
-            height: 50px;
-            border: 3px solid #1E2A47;
+            width: 60px;
+            height: 60px;
+            border: 4px solid #1E2A47;
             border-top-color: #3B82F6;
+            border-right-color: #8B5CF6;
+            border-bottom-color: #EC4899;
             border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin-bottom: 20px;
+            animation: spin 1.2s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
+            margin-bottom: 30px;
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
         }
 
         .loading-text {
             color: white;
-            font-size: 24px;
+            font-size: 32px;
             font-weight: 700;
-            letter-spacing: 2px;
+            letter-spacing: 3px;
+            text-shadow: 0 0 15px #3B82F6, 0 0 30px #8B5CF6;
+            margin-bottom: 15px;
+            animation: glow 2s ease-in-out infinite;
+        }
+
+        .loading-progress {
+            color: #3B82F6;
+            font-size: 28px;
+            font-weight: 700;
+            margin-top: 15px;
+            animation: pulse 1.5s infinite;
             text-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
         }
 
+        .loading-status {
+            color: #9CA3AF;
+            font-size: 16px;
+            margin-top: 10px;
+            letter-spacing: 1px;
+        }
+
+        @keyframes glow {
+            0%, 100% { text-shadow: 0 0 15px #3B82F6, 0 0 30px #8B5CF6; }
+            50% { text-shadow: 0 0 25px #3B82F6, 0 0 50px #8B5CF6, 0 0 80px #EC4899; }
+        }
+
         @keyframes spin {
-            to { transform: rotate(360deg); }
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(720deg); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.1); }
         }
 
         /* Auth Container */
@@ -165,6 +197,12 @@
             max-width: 500px;
             border: 1px solid rgba(59, 130, 246, 0.2);
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         @media (min-width: 1200px) {
@@ -250,6 +288,26 @@
             cursor: pointer;
             transition: all 0.3s;
             margin-top: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .auth-btn::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.5s, height 0.5s;
+        }
+
+        .auth-btn:hover::after {
+            width: 300px;
+            height: 300px;
         }
 
         .auth-btn:hover {
@@ -322,6 +380,11 @@
             overflow: hidden;
             border: 2px solid #3B82F6;
             box-shadow: 0 0 15px rgba(59, 130, 246, 0.3);
+            transition: transform 0.3s;
+        }
+
+        .avatar:hover {
+            transform: scale(1.05);
         }
 
         .avatar img {
@@ -391,11 +454,15 @@
             height: 36px;
             border-radius: 50%;
             transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .profile-actions button:hover {
             background: rgba(59, 130, 246, 0.2);
             color: #3B82F6;
+            transform: scale(1.1);
         }
 
         .search-container {
@@ -410,6 +477,7 @@
             transform: translateY(-50%);
             color: #6B7280;
             font-size: 14px;
+            transition: color 0.3s;
         }
 
         .search-container input {
@@ -427,6 +495,10 @@
             outline: none;
             border-color: #3B82F6;
             background: rgba(30, 42, 71, 0.95);
+        }
+
+        .search-container input:focus + i {
+            color: #3B82F6;
         }
 
         .search-container input::placeholder {
@@ -462,10 +534,12 @@
             transition: all 0.3s;
             margin-bottom: 5px;
             position: relative;
+            min-height: 60px;
         }
 
         .chat-item:hover {
             background: rgba(59, 130, 246, 0.1);
+            transform: translateX(5px);
         }
 
         .chat-item.active {
@@ -473,6 +547,7 @@
             border-left: 3px solid #3B82F6;
         }
 
+        /* ИСПРАВЛЕННЫЕ ЗНАЧКИ */
         .chat-avatar {
             width: 48px;
             height: 48px;
@@ -484,7 +559,9 @@
             justify-content: center;
             font-size: 24px;
             color: white;
-            background: #1E2A47;
+            background: linear-gradient(135deg, #1E2A47, #2A3A5F);
+            flex-shrink: 0;
+            transition: all 0.3s;
         }
 
         .chat-avatar.official {
@@ -499,6 +576,15 @@
             background: linear-gradient(135deg, #EC4899, #8B5CF6);
         }
 
+        .chat-avatar i, 
+        .chat-avatar .fas, 
+        .chat-avatar .far {
+            font-size: 24px;
+            color: white;
+            display: block;
+            line-height: 1;
+        }
+
         .chat-avatar.online::after {
             content: '';
             position: absolute;
@@ -509,6 +595,14 @@
             background: #10B981;
             border-radius: 50%;
             border: 2px solid #1E2A47;
+            z-index: 2;
+        }
+
+        .chat-avatar span,
+        .chat-avatar div:not(.fas):not(.far) {
+            font-size: 20px;
+            font-weight: 600;
+            color: white;
         }
 
         .chat-info {
@@ -524,6 +618,9 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            display: flex;
+            align-items: center;
+            gap: 4px;
         }
 
         .chat-badge {
@@ -567,6 +664,7 @@
             color: #6B7280;
             font-size: 11px;
             white-space: nowrap;
+            margin-left: auto;
         }
 
         .chat-area {
@@ -607,6 +705,11 @@
             margin-left: 8px;
             color: #9CA3AF;
             cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .chat-details .chat-name i:hover {
+            color: #3B82F6;
         }
 
         .chat-status {
@@ -629,17 +732,23 @@
             height: 40px;
             border-radius: 50%;
             transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
         }
 
         .chat-actions button:hover {
             background: rgba(59, 130, 246, 0.2);
             color: #3B82F6;
+            transform: scale(1.1);
         }
 
         .call-btn {
             background: #10B981 !important;
             color: white !important;
             position: relative;
+            animation: softPulse 2s infinite;
         }
 
         .call-btn:hover {
@@ -658,13 +767,17 @@
             padding: 2px 6px;
             border-radius: 12px;
             letter-spacing: 0.5px;
-            animation: pulse 2s infinite;
+            animation: bounce 2s infinite;
         }
 
-        @keyframes pulse {
-            0% { opacity: 0.8; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.1); }
-            100% { opacity: 0.8; transform: scale(1); }
+        @keyframes softPulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+            50% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
         }
 
         .typing-indicator {
@@ -732,6 +845,7 @@
             text-align: center;
             color: #9CA3AF;
             margin: auto;
+            animation: fadeIn 0.5s ease;
         }
 
         .welcome-message i {
@@ -739,6 +853,12 @@
             color: #3B82F6;
             margin-bottom: 20px;
             opacity: 0.5;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
         }
 
         .welcome-message h3 {
@@ -754,6 +874,18 @@
             display: flex;
             margin-bottom: 8px;
             max-width: 70%;
+            animation: messageSlide 0.3s ease;
+        }
+
+        @keyframes messageSlide {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .message.outgoing {
@@ -854,10 +986,12 @@
             border-radius: 20px;
             padding: 5px;
             z-index: 10;
+            backdrop-filter: blur(5px);
         }
 
         .message:hover .message-actions {
             display: flex;
+            animation: fadeIn 0.2s ease;
         }
 
         .message-action-btn {
@@ -870,11 +1004,15 @@
             height: 24px;
             border-radius: 50%;
             transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .message-action-btn:hover {
             background: rgba(59, 130, 246, 0.2);
             color: #3B82F6;
+            transform: scale(1.1);
         }
 
         .file-message {
@@ -891,6 +1029,7 @@
 
         .file-message:hover {
             background: rgba(255, 255, 255, 0.15);
+            transform: scale(1.02);
         }
 
         .file-message i {
@@ -941,6 +1080,7 @@
         .attach-btn:hover, .emoji-btn:hover {
             background: rgba(59, 130, 246, 0.2);
             color: #3B82F6;
+            transform: scale(1.1);
         }
 
         .input-wrapper {
@@ -949,6 +1089,12 @@
             border-radius: 25px;
             padding: 5px 15px;
             border: 1px solid rgba(59, 130, 246, 0.3);
+            transition: border-color 0.3s;
+        }
+
+        .input-wrapper:focus-within {
+            border-color: #3B82F6;
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
         }
 
         .input-wrapper textarea {
@@ -982,9 +1128,10 @@
             justify-content: center;
         }
 
-        .send-btn:hover {
+        .send-btn:hover:not(:disabled) {
             background: #2563EB;
-            transform: scale(1.05);
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
         }
 
         .send-btn:disabled {
@@ -1003,7 +1150,7 @@
             backdrop-filter: blur(10px);
             border-left: 1px solid rgba(59, 130, 246, 0.2);
             transform: translateX(100%);
-            transition: transform 0.3s;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             z-index: 100;
         }
 
@@ -1029,6 +1176,12 @@
             color: #9CA3AF;
             font-size: 20px;
             cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .search-header button:hover {
+            color: #3B82F6;
+            transform: scale(1.1);
         }
 
         .search-results {
@@ -1068,6 +1221,7 @@
             font-size: 20px;
             margin-right: 15px;
             border: 2px solid #3B82F6;
+            flex-shrink: 0;
         }
 
         .search-result-info {
@@ -1086,6 +1240,12 @@
             font-size: 12px;
         }
 
+        .search-result-role {
+            font-size: 11px;
+            margin-top: 2px;
+            display: inline-block;
+        }
+
         .modal {
             position: fixed;
             top: 0;
@@ -1102,6 +1262,21 @@
 
         .modal.active {
             display: flex;
+        }
+
+        .modal.active .modal-content {
+            animation: modalPop 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        @keyframes modalPop {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
         }
 
         .modal-content {
@@ -1138,6 +1313,12 @@
             color: #9CA3AF;
             font-size: 20px;
             cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .close-modal:hover {
+            color: #3B82F6;
+            transform: scale(1.1);
         }
 
         .modal-body {
@@ -1155,6 +1336,15 @@
             color: white;
             margin-bottom: 20px;
             font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .modal-body input:focus,
+        .modal-body textarea:focus,
+        .modal-body select:focus {
+            outline: none;
+            border-color: #3B82F6;
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
         }
 
         .modal-body textarea {
@@ -1191,6 +1381,7 @@
 
         .user-item:hover {
             background: rgba(59, 130, 246, 0.1);
+            transform: translateX(5px);
         }
 
         .user-item-avatar {
@@ -1204,12 +1395,35 @@
             color: #3B82F6;
             font-weight: 700;
             font-size: 18px;
+            flex-shrink: 0;
         }
 
         .user-item-name {
             color: white;
             font-weight: 500;
             flex: 1;
+        }
+
+        .user-item-role {
+            font-size: 12px;
+            padding: 2px 8px;
+            border-radius: 12px;
+            margin-left: 8px;
+        }
+
+        .user-item-role.creator {
+            background: rgba(245, 158, 11, 0.2);
+            color: #F59E0B;
+        }
+
+        .user-item-role.admin {
+            background: rgba(59, 130, 246, 0.2);
+            color: #3B82F6;
+        }
+
+        .user-item-role.user {
+            background: rgba(107, 114, 128, 0.2);
+            color: #9CA3AF;
         }
 
         .user-check {
@@ -1225,6 +1439,7 @@
             padding: 15px;
             text-align: center;
             margin-bottom: 20px;
+            animation: pulse 2s infinite;
         }
 
         .points-amount {
@@ -1259,6 +1474,7 @@
         .shop-item:hover {
             border-color: #3B82F6;
             background: rgba(59, 130, 246, 0.1);
+            transform: translateY(-2px);
         }
 
         .shop-item.purchased {
@@ -1276,6 +1492,7 @@
             justify-content: center;
             font-size: 24px;
             color: white;
+            flex-shrink: 0;
         }
 
         .shop-item-info {
@@ -1376,6 +1593,7 @@
         .theme-option:hover {
             border-color: #3B82F6;
             background: rgba(59, 130, 246, 0.1);
+            transform: translateY(-2px);
         }
 
         .theme-option.selected {
@@ -1406,12 +1624,40 @@
             overflow: hidden;
             margin: 0 auto 15px;
             border: 3px solid #3B82F6;
+            cursor: pointer;
+            position: relative;
         }
 
         .profile-avatar-large img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            transition: transform 0.3s;
+        }
+
+        .profile-avatar-large:hover img {
+            transform: scale(1.05);
+        }
+
+        .profile-avatar-large::after {
+            content: '📷';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+        }
+
+        .profile-avatar-large:hover::after {
+            opacity: 1;
         }
 
         .profile-stats {
@@ -1427,6 +1673,12 @@
             border-radius: 12px;
             padding: 15px;
             text-align: center;
+            transition: all 0.3s;
+        }
+
+        .stat-item:hover {
+            border-color: #3B82F6;
+            transform: translateY(-2px);
         }
 
         .stat-value {
@@ -1473,6 +1725,7 @@
 
         .profile-section.active {
             display: block;
+            animation: fadeIn 0.3s ease;
         }
 
         .call-modal {
@@ -1493,6 +1746,10 @@
             display: flex;
         }
 
+        .call-modal.active .call-container {
+            animation: modalPop 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
         .call-container {
             background: rgba(30, 42, 71, 0.95);
             border-radius: 30px;
@@ -1511,6 +1768,7 @@
             margin: 0 auto 20px;
             border: 3px solid #3B82F6;
             overflow: hidden;
+            animation: pulse 2s infinite;
         }
 
         .call-avatar img {
@@ -1546,6 +1804,9 @@
             cursor: pointer;
             font-size: 24px;
             transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .call-button.accept {
@@ -1592,7 +1853,7 @@
             padding: 15px 25px;
             color: white;
             z-index: 9999;
-            animation: slideIn 0.3s ease;
+            animation: slideIn 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
         }
 
@@ -1621,10 +1882,32 @@
             display: none;
             align-items: center;
             gap: 10px;
+            animation: pulse 2s infinite;
         }
 
         .offline-indicator.active {
             display: flex;
+        }
+
+        .upload-progress {
+            position: fixed;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(30, 42, 71, 0.95);
+            padding: 12px 24px;
+            border-radius: 30px;
+            color: white;
+            border: 1px solid #3B82F6;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .upload-progress i {
+            margin-right: 10px;
+            color: #3B82F6;
         }
 
         /* Мобильная оптимизация */
@@ -1638,7 +1921,7 @@
                 width: 100%;
                 z-index: 100;
                 transform: translateX(-100%);
-                transition: transform 0.3s;
+                transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             }
             
             .sidebar.active {
@@ -1681,7 +1964,7 @@
             }
             
             .input-wrapper textarea {
-                font-size: 16px; /* Предотвращает зум на iOS */
+                font-size: 16px;
                 padding: 8px 0;
             }
             
@@ -1788,35 +2071,41 @@
             .search-sidebar {
                 width: 100%;
             }
-        }
-
-        /* Для очень маленьких экранов */
-        @media (max-width: 480px) {
-            .chat-header .chat-info {
-                gap: 8px;
+            
+            .search-result-item {
+                padding: 12px;
             }
             
-            .chat-header .chat-avatar {
-                width: 36px;
-                height: 36px;
+            .search-result-avatar {
+                width: 40px;
+                height: 40px;
+                font-size: 18px;
+                margin-right: 12px;
             }
             
-            .chat-details .chat-name {
-                font-size: 16px;
+            .shop-item {
+                flex-wrap: wrap;
             }
             
-            .chat-status {
-                font-size: 11px;
+            .shop-item-info {
+                min-width: 150px;
             }
             
-            .message {
-                max-width: 90%;
+            .profile-avatar-large {
+                width: 80px;
+                height: 80px;
             }
             
-            .profile-actions button {
-                width: 28px;
-                height: 28px;
-                font-size: 14px;
+            .profile-stats {
+                gap: 10px;
+            }
+            
+            .stat-item {
+                padding: 12px;
+            }
+            
+            .stat-value {
+                font-size: 20px;
             }
             
             .profile-tabs {
@@ -1824,17 +2113,184 @@
             }
             
             .profile-tab {
-                padding: 6px 10px;
+                padding: 8px 12px;
                 font-size: 13px;
+            }
+            
+            .typing-indicator {
+                padding: 8px 15px;
+                font-size: 12px;
+            }
+            
+            .typing-dots span {
+                width: 5px;
+                height: 5px;
+            }
+            
+            .notification {
+                top: 10px;
+                right: 10px;
+                left: 10px;
+                padding: 12px 20px;
+                font-size: 14px;
+            }
+            
+            .offline-indicator {
+                bottom: 10px;
+                left: 10px;
+                right: 10px;
+                padding: 12px 15px;
+                font-size: 13px;
+                border-radius: 25px;
+                text-align: center;
+            }
+            
+            .chat-item,
+            .user-item,
+            .search-result-item,
+            .profile-actions button,
+            .chat-actions button,
+            .attach-btn,
+            .emoji-btn,
+            .send-btn,
+            .call-button,
+            .shop-item-btn,
+            .auth-btn,
+            .profile-tab {
+                min-height: 44px;
+                min-width: 44px;
+            }
+            
+            .messages-container {
+                -webkit-overflow-scrolling: touch;
+            }
+            
+            .chats-list {
+                -webkit-overflow-scrolling: touch;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .profile-actions {
+                gap: 2px;
+            }
+            
+            .profile-actions button {
+                width: 32px;
+                height: 32px;
+                font-size: 14px;
+            }
+            
+            .avatar {
+                width: 36px;
+                height: 36px;
+            }
+            
+            .username {
+                font-size: 13px;
+            }
+            
+            .status {
+                font-size: 9px;
+            }
+            
+            .points-badge {
+                font-size: 9px;
+                padding: 2px 4px;
+            }
+            
+            .chat-avatar {
+                width: 36px;
+                height: 36px;
+                font-size: 18px;
+            }
+            
+            .chat-name {
+                font-size: 13px;
+            }
+            
+            .chat-last-message {
+                font-size: 11px;
+            }
+            
+            .chat-time {
+                font-size: 9px;
+            }
+            
+            .message {
+                max-width: 95%;
+            }
+            
+            .message-content {
+                padding: 8px 12px;
+                font-size: 14px;
+            }
+            
+            .shop-item-info {
+                min-width: 120px;
+            }
+            
+            .shop-item-title {
+                font-size: 13px;
+            }
+            
+            .shop-item-desc {
+                font-size: 10px;
+            }
+        }
+
+        button, 
+        .chat-item, 
+        .user-item,
+        .search-result-item,
+        .profile-tab,
+        .color-option,
+        .theme-option {
+            -webkit-tap-highlight-color: rgba(59, 130, 246, 0.3);
+            touch-action: manipulation;
+        }
+
+        .error-message {
+            color: #EF4444;
+            text-align: center;
+            padding: 20px;
+            background: rgba(239, 68, 68, 0.1);
+            border-radius: 10px;
+            margin: 20px;
+        }
+
+        .error-message i {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+
+        .success-check {
+            animation: checkmark 0.5s ease;
+            color: #10B981;
+        }
+
+        @keyframes checkmark {
+            0% {
+                transform: scale(0);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.2);
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
             }
         }
     </style>
 </head>
 <body class="theme-dark">
-    <!-- Loading Screen -->
+    <!-- Улучшенный экран загрузки -->
     <div id="loading-screen" class="loading-screen">
         <div class="loader"></div>
         <div class="loading-text">HYPEBIT</div>
+        <div class="loading-progress" id="loading-progress">0%</div>
+        <div class="loading-status" id="loading-status">Initializing...</div>
     </div>
 
     <!-- Auth Container -->
@@ -2223,7 +2679,7 @@
         </div>
     </div>
 <!-- КОНЕЦ ЧАСТИ 1/3 -->
-<!-- ЧАСТЬ 2/3 - FIREBASE И ЛОГИКА (ПОЛНОСТЬЮ ИСПРАВЛЕННАЯ) -->
+<!-- ЧАСТЬ 2/3 - FIREBASE И ЛОГИКА (БЕЗ РОЛЕЙ) -->
 
     <!-- Firebase Config & Crypto -->
     <script>
@@ -2358,18 +2814,28 @@
                 this.init();
             }
 
-            // ========== ИНИЦИАЛИЗАЦИЯ ==========
+            // ========== ИНИЦИАЛИЗАЦИЯ С УЛУЧШЕННОЙ ЗАГРУЗКОЙ ==========
             init() {
-                // Auth state listener
-                auth.onAuthStateChanged((user) => {
+                this.updateLoadingProgress(10, 'Connecting to Firebase...');
+                
+                auth.onAuthStateChanged(async (user) => {
                     if (user) {
+                        this.updateLoadingProgress(30, 'Loading user data...');
                         this.currentUser = user;
-                        this.showApp();
-                        this.loadUserData(user);
+                        
+                        this.updateLoadingProgress(50, 'Loading chats...');
+                        await this.loadUserData(user);
+                        
+                        this.updateLoadingProgress(70, 'Loading messages...');
                         this.loadChats();
-                        this.updateUserStatus('online');
-                        this.ensureOfficialChat();
+                        
+                        this.updateLoadingProgress(90, 'Setting up calls...');
+                        await this.updateUserStatus('online');
+                        await this.ensureOfficialChat();
                         this.listenForCalls();
+                        
+                        this.updateLoadingProgress(100, 'Welcome to HYPEBIT!');
+                        setTimeout(() => this.showApp(), 500);
                     } else {
                         this.showAuth();
                         this.cleanupListeners();
@@ -2549,6 +3015,15 @@
                         document.querySelectorAll('.modal').forEach(m => m.classList.remove('active'));
                     });
                 });
+            }
+
+            // ========== УЛУЧШЕННЫЙ ЭКРАН ЗАГРУЗКИ ==========
+            updateLoadingProgress(percent, status) {
+                const progressEl = document.getElementById('loading-progress');
+                const statusEl = document.getElementById('loading-status');
+                
+                if (progressEl) progressEl.textContent = percent + '%';
+                if (statusEl) statusEl.textContent = status;
             }
 
             toggleAuthForms(form) {
@@ -3585,7 +4060,6 @@
                     // Handle remote stream
                     this.peerConnection.ontrack = (event) => {
                         this.remoteStream = event.streams[0];
-                        // You could play remote stream here if needed
                     };
                     
                     // Create offer
@@ -4292,7 +4766,7 @@
                                     <div>${user.username.charAt(0).toUpperCase()}</div>
                                 </div>
                                 <div class="user-item-name ${user.usernameColor ? `username-color-${user.usernameColor}` : ''}">${user.username}</div>
-                                <div class="user-item-role">${this.currentChatData.admins?.includes(uid) ? '👑 Admin' : ''}</div>
+                                <div class="user-item-role" style="display: none;"></div>
                             </div>
                         `;
                     }
@@ -4373,331 +4847,77 @@
         // ========== ЗАПУСК ПРИЛОЖЕНИЯ ==========
         document.addEventListener('DOMContentLoaded', () => {
             window.app = new HypebitApp();
-            
-            setTimeout(() => {
-                document.getElementById('loading-screen').classList.add('hidden');
-            }, 1000);
         });
     </script>
 <!-- КОНЕЦ ЧАСТИ 2/3 -->
-<!-- ЧАСТЬ 3/3 - ФИНАЛЬНЫЕ УТИЛИТЫ И ОПТИМИЗАЦИЯ -->
+<!-- ЧАСТЬ 3/3 - ФИНАЛЬНЫЕ УТИЛИТЫ -->
 
-    <!-- Дополнительные стили для мобильных устройств -->
+    <!-- Дополнительные стили -->
     <style>
-        /* Улучшенная мобильная оптимизация */
-        @media (max-width: 768px) {
-            /* Увеличиваем область касания для кнопок */
-            .chat-item, 
-            .user-item,
-            .search-result-item,
-            .profile-actions button,
-            .chat-actions button,
-            .attach-btn,
-            .emoji-btn,
-            .send-btn,
-            .call-button,
-            .shop-item-btn,
-            .auth-btn,
-            .profile-tab {
-                min-height: 44px;
-                min-width: 44px;
+        /* Стили для уведомлений */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(30, 42, 71, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid #3B82F6;
+            border-radius: 12px;
+            padding: 15px 25px;
+            color: white;
+            z-index: 9999;
+            animation: slideIn 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .notification i {
+            margin-right: 10px;
+        }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
             }
-            
-            /* Улучшаем читаемость на маленьких экранах */
-            .message-content {
-                font-size: 16px;
-                line-height: 1.4;
-            }
-            
-            .message-time {
-                font-size: 11px;
-            }
-            
-            /* Предотвращаем случайное масштабирование */
-            .input-wrapper textarea {
-                font-size: 16px !important;
-            }
-            
-            /* Улучшаем прокрутку */
-            .messages-container {
-                -webkit-overflow-scrolling: touch;
-            }
-            
-            .chats-list {
-                -webkit-overflow-scrolling: touch;
-            }
-            
-            /* Адаптация модальных окон */
-            .modal-content {
-                max-height: 85vh;
-                margin: 10px;
-            }
-            
-            .modal-body {
-                padding: 15px;
-            }
-            
-            /* Улучшаем отображение файлов */
-            .file-message {
-                flex-wrap: wrap;
-            }
-            
-            .file-name {
-                word-break: break-all;
-            }
-            
-            /* Адаптация звонков */
-            .call-container {
-                padding: 20px 15px;
-            }
-            
-            .call-avatar {
-                width: 70px;
-                height: 70px;
-            }
-            
-            .call-name {
-                font-size: 18px;
-            }
-            
-            .call-status {
-                font-size: 14px;
-                margin-bottom: 20px;
-            }
-            
-            .call-button {
-                width: 50px;
-                height: 50px;
-                font-size: 20px;
-            }
-            
-            /* Адаптация поиска */
-            .search-sidebar {
-                width: 100%;
-            }
-            
-            .search-result-item {
-                padding: 12px;
-            }
-            
-            .search-result-avatar {
-                width: 40px;
-                height: 40px;
-                font-size: 18px;
-                margin-right: 12px;
-            }
-            
-            .search-result-name {
-                font-size: 15px;
-            }
-            
-            .search-result-email {
-                font-size: 12px;
-            }
-            
-            /* Улучшаем магазин */
-            .shop-item {
-                flex-wrap: wrap;
-            }
-            
-            .shop-item-icon {
-                width: 40px;
-                height: 40px;
-                font-size: 20px;
-            }
-            
-            .shop-item-info {
-                min-width: 150px;
-            }
-            
-            .shop-item-price {
-                font-size: 14px;
-            }
-            
-            .shop-item-btn {
-                padding: 8px 12px;
-                font-size: 13px;
-            }
-            
-            /* Адаптация профиля */
-            .profile-avatar-large {
-                width: 80px;
-                height: 80px;
-            }
-            
-            .profile-stats {
-                gap: 10px;
-            }
-            
-            .stat-item {
-                padding: 12px;
-            }
-            
-            .stat-value {
-                font-size: 20px;
-            }
-            
-            .stat-label {
-                font-size: 11px;
-            }
-            
-            .profile-tabs {
-                gap: 5px;
-            }
-            
-            .profile-tab {
-                padding: 8px 12px;
-                font-size: 13px;
-            }
-            
-            /* Улучшаем индикатор печатания */
-            .typing-indicator {
-                padding: 8px 15px;
-                font-size: 12px;
-            }
-            
-            .typing-dots span {
-                width: 5px;
-                height: 5px;
-            }
-            
-            /* Улучшаем уведомления */
-            .notification {
-                top: 10px;
-                right: 10px;
-                left: 10px;
-                padding: 12px 20px;
-                font-size: 14px;
-            }
-            
-            /* Улучшаем офлайн индикатор */
-            .offline-indicator {
-                bottom: 10px;
-                left: 10px;
-                right: 10px;
-                padding: 12px 15px;
-                font-size: 13px;
-                border-radius: 25px;
-                text-align: center;
+            to {
+                transform: translateX(0);
+                opacity: 1;
             }
         }
-
-        /* Для очень маленьких экранов */
-        @media (max-width: 380px) {
-            .profile-actions {
-                gap: 2px;
-            }
-            
-            .profile-actions button {
-                width: 32px;
-                height: 32px;
-                font-size: 14px;
-            }
-            
-            .avatar {
-                width: 36px;
-                height: 36px;
-            }
-            
-            .username {
-                font-size: 13px;
-            }
-            
-            .status {
-                font-size: 9px;
-            }
-            
-            .points-badge {
-                font-size: 9px;
-                padding: 2px 4px;
-            }
-            
-            .chat-avatar {
-                width: 36px;
-                height: 36px;
-                font-size: 18px;
-            }
-            
-            .chat-name {
-                font-size: 13px;
-            }
-            
-            .chat-last-message {
-                font-size: 11px;
-            }
-            
-            .chat-time {
-                font-size: 9px;
-            }
-            
-            .message {
-                max-width: 95%;
-            }
-            
-            .message-content {
-                padding: 8px 12px;
-                font-size: 14px;
-            }
-            
-            .message-sender {
-                font-size: 10px;
-            }
-            
-            .reaction {
-                padding: 2px 6px;
-                font-size: 10px;
-            }
-            
-            .shop-item-info {
-                min-width: 120px;
-            }
-            
-            .shop-item-title {
-                font-size: 13px;
-            }
-            
-            .shop-item-desc {
-                font-size: 10px;
-            }
+        
+        /* Анимация для поинтов */
+        .points-animation {
+            animation: pointsPop 0.5s ease;
+        }
+        
+        @keyframes pointsPop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); color: #F59E0B; }
+            100% { transform: scale(1); }
+        }
+        
+        /* Upload progress */
+        .upload-progress {
+            position: fixed;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(30, 42, 71, 0.95);
+            padding: 12px 24px;
+            border-radius: 30px;
+            color: white;
+            border: 1px solid #3B82F6;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            animation: fadeIn 0.3s ease;
         }
 
-        /* Touch-friendly improvements */
-        button, 
-        .chat-item, 
-        .user-item,
-        .search-result-item,
-        .profile-tab,
-        .color-option,
-        .theme-option {
-            -webkit-tap-highlight-color: rgba(59, 130, 246, 0.3);
-            touch-action: manipulation;
+        .upload-progress i {
+            margin-right: 10px;
+            color: #3B82F6;
         }
 
-        /* Loading states */
-        .loading-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(11, 17, 32, 0.8);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 999;
-            backdrop-filter: blur(5px);
-        }
-
-        .loading-spinner {
-            width: 40px;
-            height: 40px;
-            border: 3px solid #1E2A47;
-            border-top-color: #3B82F6;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        /* Error styles */
         .error-message {
             color: #EF4444;
             text-align: center;
@@ -4712,7 +4932,11 @@
             margin-bottom: 10px;
         }
 
-        /* Success animation */
+        .success-check {
+            animation: checkmark 0.5s ease;
+            color: #10B981;
+        }
+
         @keyframes checkmark {
             0% {
                 transform: scale(0);
@@ -4724,77 +4948,6 @@
             100% {
                 transform: scale(1);
                 opacity: 1;
-            }
-        }
-
-        .success-check {
-            animation: checkmark 0.5s ease;
-            color: #10B981;
-        }
-
-        /* File upload progress */
-        .upload-progress {
-            position: fixed;
-            bottom: 80px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(30, 42, 71, 0.95);
-            padding: 12px 24px;
-            border-radius: 30px;
-            color: white;
-            border: 1px solid #3B82F6;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
-            z-index: 1000;
-            backdrop-filter: blur(10px);
-        }
-
-        .upload-progress i {
-            margin-right: 10px;
-            color: #3B82F6;
-        }
-
-        /* Better modal animations */
-        .modal.active .modal-content {
-            animation: modalPop 0.3s ease;
-        }
-
-        @keyframes modalPop {
-            from {
-                transform: scale(0.8);
-                opacity: 0;
-            }
-            to {
-                transform: scale(1);
-                opacity: 1;
-            }
-        }
-
-        /* Improved message animations */
-        .message-new {
-            animation: messageSlide 0.3s ease;
-        }
-
-        @keyframes messageSlide {
-            from {
-                transform: translateY(20px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
-        /* Better scrollbar for mobile */
-        @media (max-width: 768px) {
-            .messages-container::-webkit-scrollbar,
-            .chats-list::-webkit-scrollbar {
-                width: 3px;
-            }
-            
-            .messages-container::-webkit-scrollbar-thumb,
-            .chats-list::-webkit-scrollbar-thumb {
-                background: rgba(59, 130, 246, 0.3);
             }
         }
     </style>
@@ -4840,7 +4993,7 @@
                 }
                 
                 notification.innerHTML = `
-                    <i class="fas ${icon}" style="margin-right: 10px; color: ${color}"></i>
+                    <i class="fas ${icon}" style="color: ${color}"></i>
                     ${message}
                 `;
                 
@@ -4935,12 +5088,6 @@
 
         window.addEventListener('error', (event) => {
             console.error('Global error:', event.error);
-            
-            // Don't show notification for offline errors
-            if (event.error?.message?.includes('offline') ||
-                event.error?.message?.includes('network')) {
-                return;
-            }
         });
 
         // ========== DEBOUNCED ПОИСК ПОЛЬЗОВАТЕЛЕЙ ==========
@@ -5075,13 +5222,15 @@
         };
         
         // Run tutorials if user is logged in
-        if (window.app && window.app.currentUser) {
-            showWelcomeTutorial();
-            showPointsTutorial();
-            showSearchTutorial();
-            showCallTutorial();
-            showFileTutorial();
-        }
+        setTimeout(() => {
+            if (window.app && window.app.currentUser) {
+                showWelcomeTutorial();
+                showPointsTutorial();
+                showSearchTutorial();
+                showCallTutorial();
+                showFileTutorial();
+            }
+        }, 3000);
 
         // ========== МОБИЛЬНАЯ НАВИГАЦИЯ ==========
         // Add swipe to open/close sidebar on mobile
@@ -5102,7 +5251,7 @@
                 const swipeDistance = touchEndX - touchStartX;
                 const sidebar = document.querySelector('.sidebar');
                 
-                // Swipe right to open sidebar
+                // Swipe right to open sidebar (from left edge)
                 if (swipeDistance > 100 && touchStartX < 50) {
                     sidebar?.classList.add('active');
                 }
@@ -5127,12 +5276,12 @@
             console.log('  • Search users (real-time)');
             console.log('  • Audio calls with WebRTC');
             console.log('  • File sharing (images, documents)');
-            console.log('  • Mobile optimized');
+            console.log('  • Mobile optimized with swipe gestures');
             console.log('  • Offline support');
             console.log('  • Keyboard shortcuts (Ctrl+K, Ctrl+N, Ctrl+G, Ctrl+H, Ctrl+M)');
             
             console.log('%c📊 Statistics:', 'color: #F59E0B; font-size: 14px');
-            console.log(`  • Total lines: ${document.documentElement.innerHTML.split('\n').length}`);
+            console.log(`  • Total lines: ~5000+`);
             console.log('  • Firebase connected');
             console.log('  • WebRTC ready');
             
@@ -5149,12 +5298,6 @@
             `;
             footer.innerHTML = `HYPEBIT v4.0 © ${new Date().getFullYear()}`;
             document.body.appendChild(footer);
-            
-            // Add version to loading screen
-            const loadingText = document.querySelector('.loading-text');
-            if (loadingText) {
-                loadingText.innerHTML = 'HYPEBIT<br><span style="font-size: 14px; opacity: 0.5;">v4.0</span>';
-            }
         });
 
         // ========== ПРЕДОТВРАЩАЕМ СЛУЧАЙНЫЙ ВЫХОД ==========
@@ -5174,25 +5317,6 @@
 
         // ========== ЭКСПОРТ УТИЛИТ ==========
         window.HypebitUtils = HypebitUtils;
-
-        // ========== SERVICE WORKER FOR OFFLINE SUPPORT ==========
-        if ('serviceWorker' in navigator && window.location.protocol === 'https:') {
-            navigator.serviceWorker.register('/sw.js').catch(err => {
-                console.log('Service worker registration failed:', err);
-            });
-        }
-    </script>
-
-    <!-- ========== SERVICE WORKER (ОФЛАЙН ПОДДЕРЖКА) ========== -->
-    <script>
-        // Simple offline page
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.getRegistrations().then(function(registrations) {
-                for(let registration of registrations) {
-                    registration.unregister();
-                }
-            });
-        }
     </script>
 
     <!-- ========== ИНСТРУКЦИЯ ========== -->
@@ -5238,9 +5362,9 @@
     ║  • Mountain                                                       ║
     ║                                                                   ║
     ║  ⚠️ ВАЖНО:                                                        ║
-    ║  • Для звонков нужен HTTPS                                        ║
-    ║  • Для файлов нужно включить Storage в Firebase                   ║
-    ║  • При офлайн режиме сообщения сохраняются локально               ║
+    ║  • Для звонков нужен HTTPS (GitHub Pages даёт)                     ║
+    ║  • Для файлов нужно включить Storage в Firebase                    ║
+    ║  • При офлайн режиме сообщения не отправляются                     ║
     ║                                                                   ║
     ╚═══════════════════════════════════════════════════════════════════╝
     -->
