@@ -2813,7 +2813,7 @@
                 this.init();
             }
 
-            // ========== ИНИЦИАЛИЗАЦИЯ С УЛУЧШЕННОЙ ЗАГРУЗКОЙ ==========
+            // ========== ИНИЦИАЛИЗАЦИЯ ==========
             init() {
                 this.updateLoadingProgress(10, 'Connecting to Firebase...');
                 
@@ -3493,7 +3493,7 @@
                 }
             }
 
-            // ========== ЗАГРУЗКА СООБЩЕНИЙ ==========
+            // ========== ЗАГРУЗКА СООБЩЕНИЙ (ИСПРАВЛЕНО) ==========
             loadMessages(chatId) {
                 if (this.messagesListener) {
                     this.messagesListener();
@@ -3510,11 +3510,15 @@
                     </div>
                 `;
                 
+                console.log('📂 Loading messages for chat:', chatId);
+                
                 try {
                     this.messagesListener = db.collection('chats').doc(chatId)
                         .collection('messages')
                         .orderBy('timestamp', 'asc')
                         .onSnapshot((snapshot) => {
+                            console.log('📨 Received messages:', snapshot.size);
+                            
                             if (snapshot.empty) {
                                 messagesContainer.innerHTML = `
                                     <div class="welcome-message">
@@ -3532,6 +3536,7 @@
                             snapshot.docChanges().forEach((change) => {
                                 if (change.type === 'added') {
                                     const message = change.doc.data();
+                                    console.log('📨 Adding message:', change.doc.id, message);
                                     this.displayMessage(message, change.doc.id);
                                     
                                     // Mark message as delivered if it's not ours
@@ -3572,7 +3577,7 @@
                             }, 100);
                             
                         }, (error) => {
-                            console.error('Error loading messages:', error);
+                            console.error('❌ Error loading messages:', error);
                             messagesContainer.innerHTML = `
                                 <div style="color: #EF4444; text-align: center; padding: 20px;">
                                     <i class="fas fa-exclamation-triangle" style="font-size: 48px; margin-bottom: 10px;"></i>
@@ -3582,7 +3587,7 @@
                             `;
                         });
                 } catch (error) {
-                    console.error('Error setting up messages listener:', error);
+                    console.error('❌ Error setting up messages listener:', error);
                     messagesContainer.innerHTML = `
                         <div style="color: #EF4444; text-align: center; padding: 20px;">
                             <i class="fas fa-exclamation-triangle" style="font-size: 48px; margin-bottom: 10px;"></i>
@@ -3592,7 +3597,7 @@
                 }
             }
 
-            // ========== ОТОБРАЖЕНИЕ СООБЩЕНИЙ (ИСПРАВЛЕНО ДЛЯ ОФИЦИАЛЬНОГО ЧАТА) ==========
+            // ========== ОТОБРАЖЕНИЕ СООБЩЕНИЙ (ИСПРАВЛЕНО) ==========
             displayMessage(message, messageId) {
                 const messagesContainer = document.getElementById('messages-container');
                 if (!messagesContainer) return;
@@ -3604,23 +3609,29 @@
                     return;
                 }
 
-                // --- ИСПРАВЛЕННАЯ РАСШИФРОВКА ДЛЯ ОФИЦИАЛЬНОГО ЧАТА ---
+                // --- ИСПРАВЛЕННАЯ РАСШИФРОВКА ---
                 let messageText;
+
+                console.log('🔐 Processing message:', messageId);
+                console.log('  • encrypted:', message.encrypted);
+                console.log('  • senderId:', message.senderId);
+                console.log('  • text preview:', message.text?.substring(0, 50));
 
                 if (message.encrypted) {
                     try {
-                        console.log('🔐 Decrypting message:', messageId);
                         const decrypted = hypebitCrypto.decryptMessage(
                             message.text,
                             this.currentChatId,
                             message.senderId
                         );
 
+                        console.log('  • decrypted preview:', decrypted?.substring(0, 50));
+
                         if (decrypted && decrypted !== message.text && decrypted.trim() !== '') {
                             messageText = decrypted;
-                            console.log('✅ Decrypted:', messageText.substring(0, 20));
+                            console.log('✅ Decryption successful');
                         } else {
-                            console.warn('⚠️ Empty decryption, using fallback');
+                            console.warn('⚠️ Empty decryption result');
                             messageText = '💬 New message';
                         }
                     } catch (error) {
@@ -3629,9 +3640,9 @@
                     }
                 } else {
                     messageText = message.text || '💬 Empty message';
+                    console.log('📄 Plain message:', messageText);
                 }
 
-                // Если всё равно пусто — показываем заглушку
                 if (!messageText || messageText.trim() === '') {
                     messageText = '💬 Message';
                 }
@@ -5376,3 +5387,4 @@
 </body>
 </html>
 <!-- КОНЕЦ ЧАСТИ 3/3 -->ы
+
