@@ -3386,7 +3386,7 @@
                 }
             }
 
-            // ========== 2.9 ЗАГРУЗКА СООБЩЕНИЙ (ФИНАЛЬНАЯ) ==========
+           // ========== 2.9 ЗАГРУЗКА СООБЩЕНИЙ (С ЗАЩИТОЙ) ==========
 loadMessages(chatId) {
     console.log('📂 loadMessages for:', chatId);
     
@@ -3398,7 +3398,6 @@ loadMessages(chatId) {
     const container = document.getElementById('messages-container');
     if (!container) return;
     
-    // НЕ очищаем контейнер сразу! Ждём данные
     container.innerHTML = '<div style="color:#9CA3AF; text-align:center; padding:20px;">Loading...</div>';
     
     try {
@@ -3408,13 +3407,32 @@ loadMessages(chatId) {
             .onSnapshot((snapshot) => {
                 console.log('📨 Snapshot received, size:', snapshot.size);
                 
-                // Если пришли новые данные — очищаем и перестраиваем
-                if (snapshot.size > 0) {
+                if (snapshot.empty) {
+                    container.innerHTML = '<div style="color:#9CA3AF; text-align:center; padding:20px;">No messages</div>';
+                    return;
+                }
+                
+                // Сохраняем текущие ID сообщений
+                const currentIds = new Set();
+                document.querySelectorAll('[id^="msg-"]').forEach(el => {
+                    currentIds.add(el.id);
+                });
+                
+                // Проверяем, что пришло нового
+                let hasChanges = false;
+                snapshot.docChanges().forEach(change => {
+                    if (change.type === 'added') {
+                        hasChanges = true;
+                    }
+                });
+                
+                // Если есть изменения — перестраиваем
+                if (hasChanges) {
+                    console.log('🔄 Rebuilding messages');
                     container.innerHTML = '';
                     
                     snapshot.forEach(doc => {
                         const msg = doc.data();
-                        console.log('  • Message:', doc.id, msg.text?.substring(0,20));
                         
                         let text = msg.text;
                         if (msg.encrypted) {
@@ -3441,8 +3459,9 @@ loadMessages(chatId) {
                     });
                     
                     container.scrollTop = container.scrollHeight;
+                    console.log('✅ Rebuild complete');
                 } else {
-                    container.innerHTML = '<div style="color:#9CA3AF; text-align:center; padding:20px;">No messages</div>';
+                    console.log('⏸️ No changes, keeping current messages');
                 }
             }, (error) => {
                 console.error('❌ Snapshot error:', error);
@@ -4816,6 +4835,7 @@ loadMessages(chatId) {
 </body>
 </html>
 <!-- КОНЕЦ ЧАСТИ 3/3 -->ы
+
 
 
 
