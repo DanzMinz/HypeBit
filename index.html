@@ -3386,82 +3386,71 @@
                 }
             }
 
-            // ========== ЗАГРУЗКА СООБЩЕНИЙ (УЛЬТРА-ПРОСТАЯ) ==========
+            // ========== 2.9 ЗАГРУЗКА СООБЩЕНИЙ (ФИНАЛЬНАЯ) ==========
 loadMessages(chatId) {
-    console.log('📂 loadMessages called for:', chatId);
+    console.log('📂 loadMessages for:', chatId);
     
-    // Очищаем предыдущий listener
     if (this.messagesListener) {
         this.messagesListener();
         this.messagesListener = null;
     }
     
     const container = document.getElementById('messages-container');
-    if (!container) {
-        console.error('❌ Messages container not found');
-        return;
-    }
+    if (!container) return;
     
+    // НЕ очищаем контейнер сразу! Ждём данные
     container.innerHTML = '<div style="color:#9CA3AF; text-align:center; padding:20px;">Loading...</div>';
     
     try {
         this.messagesListener = db.collection('chats').doc(chatId)
             .collection('messages')
             .orderBy('timestamp', 'asc')
-            .onSnapshot({
-                next: (snapshot) => {
-                    console.log('📨 Snapshot received, size:', snapshot.size);
-                    
-                    if (snapshot.empty) {
-                        container.innerHTML = '<div style="color:#9CA3AF; text-align:center; padding:20px;">No messages</div>';
-                        return;
-                    }
-                    
+            .onSnapshot((snapshot) => {
+                console.log('📨 Snapshot received, size:', snapshot.size);
+                
+                // Если пришли новые данные — очищаем и перестраиваем
+                if (snapshot.size > 0) {
                     container.innerHTML = '';
                     
-                    snapshot.docChanges().forEach(change => {
-                        if (change.type === 'added') {
-                            console.log('➕ Adding message:', change.doc.id);
-                            const msg = change.doc.data();
-                            
-                            let text = msg.text;
-                            if (msg.encrypted) {
-                                try {
-                                    text = hypebitCrypto.decryptMessage(msg.text, chatId, msg.senderId) || '🔐';
-                                } catch (e) {
-                                    console.error('Decrypt error:', e);
-                                    text = '🔐';
-                                }
+                    snapshot.forEach(doc => {
+                        const msg = doc.data();
+                        console.log('  • Message:', doc.id, msg.text?.substring(0,20));
+                        
+                        let text = msg.text;
+                        if (msg.encrypted) {
+                            try {
+                                text = hypebitCrypto.decryptMessage(msg.text, chatId, msg.senderId) || '💬';
+                            } catch {
+                                text = '💬';
                             }
-                            
-                            const div = document.createElement('div');
-                            div.className = `message ${msg.senderId === this.currentUser.uid ? 'outgoing' : 'incoming'}`;
-                            div.id = `msg-${change.doc.id}`;
-                            div.innerHTML = `
-                                <div class="message-content">
-                                    ${text}
-                                    <div class="message-time">
-                                        ${msg.timestamp ? this.formatTime(msg.timestamp.toDate()) : ''}
-                                    </div>
-                                </div>
-                            `;
-                            
-                            container.appendChild(div);
                         }
+                        
+                        const isOutgoing = msg.senderId === this.currentUser.uid;
+                        const div = document.createElement('div');
+                        div.className = `message ${isOutgoing ? 'outgoing' : 'incoming'}`;
+                        div.id = `msg-${doc.id}`;
+                        div.innerHTML = `
+                            <div class="message-content">
+                                ${text}
+                                <div class="message-time">
+                                    ${msg.timestamp ? this.formatTime(msg.timestamp.toDate()) : ''}
+                                </div>
+                            </div>
+                        `;
+                        container.appendChild(div);
                     });
                     
                     container.scrollTop = container.scrollHeight;
-                    console.log('✅ Messages displayed');
-                },
-                error: (error) => {
-                    console.error('❌ Snapshot error:', error);
-                    container.innerHTML = `<div style="color:#EF4444; text-align:center;">Error: ${error.message}</div>`;
+                } else {
+                    container.innerHTML = '<div style="color:#9CA3AF; text-align:center; padding:20px;">No messages</div>';
                 }
+            }, (error) => {
+                console.error('❌ Snapshot error:', error);
+                container.innerHTML = '<div style="color:#EF4444; text-align:center;">Error loading messages</div>';
             });
             
     } catch (error) {
-        console.error('❌ Fatal error in loadMessages:', error);
-        container.innerHTML = '<div style="color:#EF4444; text-align:center;">Failed to load</div>';
+        console.error('❌ Fatal error:', error);
     }
 }
             <!-- ========== 2.10 ОТОБРАЖЕНИЕ СООБЩЕНИЙ (УПРОЩЕНО) ========== -->
@@ -4827,6 +4816,7 @@ loadMessages(chatId) {
 </body>
 </html>
 <!-- КОНЕЦ ЧАСТИ 3/3 -->ы
+
 
 
 
