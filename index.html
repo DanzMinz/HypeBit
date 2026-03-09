@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HYPEBIT - Messenger with Calls</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>HYPEBIT - Messenger</title>
     
     <!-- Favicon -->
     <link rel="icon" href="https://ui-avatars.com/api/?name=H&background=1E2A47&color=3B82F6&size=64">
@@ -12,6 +12,7 @@
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-storage-compat.js"></script>
     
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -50,6 +51,7 @@
             z-index: -1;
         }
 
+        /* Темы оформления */
         body.theme-dark {
             background: #0B1120;
         }
@@ -84,6 +86,7 @@
             background: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1920') center/cover;
         }
 
+        /* Цвета имён */
         .username-color-blue { color: #3B82F6 !important; }
         .username-color-red { color: #EF4444 !important; }
         .username-color-green { color: #10B981 !important; }
@@ -91,6 +94,7 @@
         .username-color-gold { color: #F59E0B !important; }
         .username-color-pink { color: #EC4899 !important; }
 
+        /* Loading Screen */
         .loading-screen {
             position: fixed;
             top: 0;
@@ -133,6 +137,7 @@
             to { transform: rotate(360deg); }
         }
 
+        /* Auth Container */
         .auth-container {
             position: fixed;
             top: 0;
@@ -277,6 +282,7 @@
             text-decoration: underline;
         }
 
+        /* Main App Container */
         .app-container {
             display: none;
             width: 100%;
@@ -289,6 +295,7 @@
             display: grid;
         }
 
+        /* Sidebar */
         .sidebar {
             background: rgba(11, 17, 32, 0.95);
             backdrop-filter: blur(10px);
@@ -632,10 +639,32 @@
         .call-btn {
             background: #10B981 !important;
             color: white !important;
+            position: relative;
         }
 
         .call-btn:hover {
             background: #059669 !important;
+        }
+
+        .call-btn::after {
+            content: "BETA";
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: linear-gradient(135deg, #F59E0B, #EC4899);
+            color: white;
+            font-size: 8px;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 12px;
+            letter-spacing: 0.5px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.8; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.1); }
+            100% { opacity: 0.8; transform: scale(1); }
         }
 
         .typing-indicator {
@@ -772,12 +801,15 @@
             color: rgba(255, 255, 255, 0.6);
             margin-top: 4px;
             text-align: right;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 4px;
         }
 
         .message-status {
             display: inline-flex;
             align-items: center;
-            margin-left: 4px;
             font-size: 10px;
         }
 
@@ -845,6 +877,43 @@
             color: #3B82F6;
         }
 
+        .file-message {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 8px 12px;
+            border-radius: 10px;
+            margin-top: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .file-message:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .file-message i {
+            font-size: 24px;
+            color: #3B82F6;
+        }
+
+        .file-info {
+            flex: 1;
+        }
+
+        .file-name {
+            color: white;
+            font-size: 13px;
+            margin-bottom: 2px;
+            word-break: break-word;
+        }
+
+        .file-size {
+            color: #9CA3AF;
+            font-size: 11px;
+        }
+
         .message-input-area {
             padding: 20px;
             background: rgba(30, 42, 71, 0.5);
@@ -854,7 +923,7 @@
             gap: 12px;
         }
 
-        .emoji-btn {
+        .attach-btn, .emoji-btn {
             background: transparent;
             border: none;
             color: #9CA3AF;
@@ -864,9 +933,12 @@
             height: 40px;
             border-radius: 50%;
             transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .emoji-btn:hover {
+        .attach-btn:hover, .emoji-btn:hover {
             background: rgba(59, 130, 246, 0.2);
             color: #3B82F6;
         }
@@ -1082,6 +1154,7 @@
             border-radius: 10px;
             color: white;
             margin-bottom: 20px;
+            font-size: 16px;
         }
 
         .modal-body textarea {
@@ -1093,6 +1166,10 @@
             color: white;
             display: block;
             margin-bottom: 10px;
+        }
+
+        .modal-body input[type="file"] {
+            padding: 10px;
         }
 
         .users-list {
@@ -1398,7 +1475,6 @@
             display: block;
         }
 
-        /* Call modal */
         .call-modal {
             position: fixed;
             top: 0;
@@ -1505,21 +1581,53 @@
             background: #F59E0B;
         }
 
-        .message-status {
-            display: inline-flex !important;
-            align-items: center !important;
-            margin-left: 4px !important;
-            font-size: 10px !important;
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(30, 42, 71, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid #3B82F6;
+            border-radius: 12px;
+            padding: 15px 25px;
+            color: white;
+            z-index: 9999;
+            animation: slideIn 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
         }
 
-        .message-status i {
-            font-size: 10px !important;
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
         }
 
-        .message-status.sent { color: #9CA3AF !important; }
-        .message-status.delivered { color: #9CA3AF !important; }
-        .message-status.read { color: #3B82F6 !important; }
+        .offline-indicator {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(239, 68, 68, 0.9);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-size: 14px;
+            z-index: 9999;
+            backdrop-filter: blur(10px);
+            display: none;
+            align-items: center;
+            gap: 10px;
+        }
 
+        .offline-indicator.active {
+            display: flex;
+        }
+
+        /* Мобильная оптимизация */
         @media (max-width: 768px) {
             .app-container {
                 grid-template-columns: 1fr;
@@ -1545,6 +1653,118 @@
                 max-width: 85%;
             }
             
+            .chat-header {
+                padding: 15px;
+            }
+            
+            .chat-actions button {
+                width: 36px;
+                height: 36px;
+                font-size: 18px;
+            }
+            
+            .message-input-area {
+                padding: 15px;
+                gap: 8px;
+            }
+            
+            .attach-btn, .emoji-btn {
+                width: 36px;
+                height: 36px;
+                font-size: 18px;
+            }
+            
+            .send-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 16px;
+            }
+            
+            .input-wrapper textarea {
+                font-size: 16px; /* Предотвращает зум на iOS */
+                padding: 8px 0;
+            }
+            
+            .profile-actions {
+                gap: 4px;
+            }
+            
+            .profile-actions button {
+                width: 32px;
+                height: 32px;
+                font-size: 16px;
+            }
+            
+            .user-profile {
+                padding: 15px;
+            }
+            
+            .avatar {
+                width: 40px;
+                height: 40px;
+            }
+            
+            .username {
+                font-size: 14px;
+            }
+            
+            .status {
+                font-size: 10px;
+            }
+            
+            .points-badge {
+                font-size: 10px;
+                padding: 2px 6px;
+            }
+            
+            .search-container {
+                padding: 10px 15px;
+            }
+            
+            .search-container input {
+                font-size: 16px;
+                padding: 10px 15px 10px 40px;
+            }
+            
+            .chat-item {
+                padding: 10px;
+            }
+            
+            .chat-avatar {
+                width: 40px;
+                height: 40px;
+                font-size: 20px;
+            }
+            
+            .chat-name {
+                font-size: 14px;
+            }
+            
+            .chat-last-message {
+                font-size: 12px;
+            }
+            
+            .messages-container {
+                padding: 15px;
+            }
+            
+            .message-content {
+                padding: 10px 14px;
+                font-size: 15px;
+            }
+            
+            .modal-content {
+                width: 95%;
+                max-height: 80vh;
+            }
+            
+            .modal-body input,
+            .modal-body textarea,
+            .modal-body select {
+                font-size: 16px;
+                padding: 10px 12px;
+            }
+            
             .call-container {
                 width: 95%;
                 padding: 20px;
@@ -1558,22 +1778,74 @@
             .call-name {
                 font-size: 20px;
             }
+            
+            .call-button {
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
+            }
+            
+            .search-sidebar {
+                width: 100%;
+            }
+        }
+
+        /* Для очень маленьких экранов */
+        @media (max-width: 480px) {
+            .chat-header .chat-info {
+                gap: 8px;
+            }
+            
+            .chat-header .chat-avatar {
+                width: 36px;
+                height: 36px;
+            }
+            
+            .chat-details .chat-name {
+                font-size: 16px;
+            }
+            
+            .chat-status {
+                font-size: 11px;
+            }
+            
+            .message {
+                max-width: 90%;
+            }
+            
+            .profile-actions button {
+                width: 28px;
+                height: 28px;
+                font-size: 14px;
+            }
+            
+            .profile-tabs {
+                gap: 5px;
+            }
+            
+            .profile-tab {
+                padding: 6px 10px;
+                font-size: 13px;
+            }
         }
     </style>
 </head>
 <body class="theme-dark">
+    <!-- Loading Screen -->
     <div id="loading-screen" class="loading-screen">
         <div class="loader"></div>
         <div class="loading-text">HYPEBIT</div>
     </div>
 
+    <!-- Auth Container -->
     <div id="auth-container" class="auth-container active">
         <div class="auth-card">
             <div class="auth-header">
                 <h1>HYPEBIT</h1>
-                <p>Messenger with Calls</p>
+                <p>Messenger</p>
             </div>
             
+            <!-- Login Form -->
             <form id="login-form" class="auth-form active">
                 <div class="input-group">
                     <i class="fas fa-envelope"></i>
@@ -1589,6 +1861,7 @@
                 </p>
             </form>
             
+            <!-- Register Form -->
             <form id="register-form" class="auth-form">
                 <div class="input-group">
                     <i class="fas fa-user"></i>
@@ -1614,7 +1887,9 @@
         </div>
     </div>
 
+    <!-- Main App Container -->
     <div id="app-container" class="app-container">
+        <!-- Sidebar -->
         <div class="sidebar">
             <div class="user-profile" id="profile-click">
                 <div class="avatar" id="user-avatar">
@@ -1649,6 +1924,7 @@
             </div>
         </div>
         
+        <!-- Chat Area -->
         <div class="chat-area">
             <div class="chat-header" id="chat-header" style="display: none;">
                 <div class="chat-info">
@@ -1664,7 +1940,13 @@
                     </div>
                 </div>
                 <div class="chat-actions">
-                    <button id="call-btn" class="call-btn" title="Call" style="display: none;"><i class="fas fa-phone"></i></button>
+                    <button id="call-btn" class="call-btn" title="Call" style="display: none;">
+                        <i class="fas fa-phone"></i>
+                    </button>
+                    <button id="attach-btn" title="Attach file" style="display: none;">
+                        <i class="fas fa-paperclip"></i>
+                    </button>
+                    <input type="file" id="file-input" style="display: none;" accept="image/*,video/*,application/pdf,text/plain">
                     <button id="search-chat-btn" title="Search"><i class="fas fa-search"></i></button>
                     <button id="chat-info-btn" title="Info"><i class="fas fa-info-circle"></i></button>
                 </div>
@@ -1698,6 +1980,7 @@
             </div>
         </div>
         
+        <!-- Search Sidebar -->
         <div class="search-sidebar" id="search-sidebar">
             <div class="search-header">
                 <h3>User Search Results</h3>
@@ -1720,6 +2003,7 @@
             </div>
         </div>
         
+        <!-- Profile Modal -->
         <div class="modal" id="profile-modal">
             <div class="modal-content">
                 <div class="modal-header">
@@ -1831,6 +2115,7 @@
             </div>
         </div>
         
+        <!-- Shop Modal -->
         <div class="modal" id="shop-modal">
             <div class="modal-content">
                 <div class="modal-header">
@@ -1852,6 +2137,7 @@
             </div>
         </div>
         
+        <!-- New Chat Modal -->
         <div class="modal" id="new-chat-modal">
             <div class="modal-content">
                 <div class="modal-header">
@@ -1865,6 +2151,7 @@
             </div>
         </div>
         
+        <!-- New Group Modal -->
         <div class="modal" id="new-group-modal">
             <div class="modal-content">
                 <div class="modal-header">
@@ -1884,6 +2171,7 @@
             </div>
         </div>
         
+        <!-- New Channel Modal -->
         <div class="modal" id="new-channel-modal">
             <div class="modal-content">
                 <div class="modal-header">
@@ -1908,6 +2196,7 @@
             </div>
         </div>
         
+        <!-- Chat Info Modal -->
         <div class="modal" id="chat-info-modal">
             <div class="modal-content">
                 <div class="modal-header">
@@ -1918,6 +2207,7 @@
             </div>
         </div>
         
+        <!-- Add Member Modal -->
         <div class="modal" id="add-member-modal">
             <div class="modal-content">
                 <div class="modal-header">
@@ -1933,7 +2223,7 @@
         </div>
     </div>
 <!-- КОНЕЦ ЧАСТИ 1/3 -->
-<!-- ЧАСТЬ 2/3 - FIREBASE И ЛОГИКА С ЗВОНКАМИ -->
+<!-- ЧАСТЬ 2/3 - FIREBASE И ЛОГИКА (ПОЛНОСТЬЮ ИСПРАВЛЕННАЯ) -->
 
     <!-- Firebase Config & Crypto -->
     <script>
@@ -1947,17 +2237,22 @@
             appId: "1:798661890972:web:6cf817ccf83e46979dee59"
         };
 
-        // Initialize Firebase (без Storage)
+        // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
+        const storage = firebase.storage();
         
         // Enable persistence with error handling
-        db.enablePersistence().catch(err => {
-            if (err.code === 'failed-precondition') {
-                console.log('Multiple tabs open - persistence disabled');
-            }
-        });
+        db.enablePersistence()
+            .then(() => console.log('Persistence enabled'))
+            .catch(err => {
+                if (err.code === 'failed-precondition') {
+                    console.log('Multiple tabs open - persistence disabled');
+                } else if (err.code === 'unimplemented') {
+                    console.log('Browser doesn\'t support persistence');
+                }
+            });
 
         // ========== КРИПТОГРАФИЯ ==========
         const APP_SECRET = 'hypebit-secure-messenger-2024';
@@ -1988,7 +2283,16 @@
 
             decryptMessage(encryptedData, chatId, userId) {
                 try {
+                    if (!encryptedData || typeof encryptedData !== 'string') {
+                        return encryptedData;
+                    }
+                    
                     const data = JSON.parse(encryptedData);
+                    
+                    if (!data.iv || !data.data) {
+                        return encryptedData;
+                    }
+                    
                     const salt = chatId + userId + APP_SECRET;
                     const key = CryptoJS.SHA256(salt).toString();
                     const iv = CryptoJS.enc.Base64.parse(data.iv);
@@ -1999,8 +2303,11 @@
                         padding: CryptoJS.pad.Pkcs7
                     });
 
-                    return decrypted.toString(CryptoJS.enc.Utf8);
+                    const result = decrypted.toString(CryptoJS.enc.Utf8);
+                    return result || encryptedData;
+                    
                 } catch (error) {
+                    console.error('Decryption error:', error);
                     return encryptedData;
                 }
             }
@@ -2012,7 +2319,10 @@
         const callConfig = {
             iceServers: [
                 { urls: 'stun:stun.l.google.com:19302' },
-                { urls: 'stun:stun1.l.google.com:19302' }
+                { urls: 'stun:stun1.l.google.com:19302' },
+                { urls: 'stun:stun2.l.google.com:19302' },
+                { urls: 'stun:stun3.l.google.com:19302' },
+                { urls: 'stun:stun4.l.google.com:19302' }
             ]
         };
 
@@ -2163,6 +2473,16 @@
                     this.startCall();
                 });
 
+                document.getElementById('attach-btn').addEventListener('click', () => {
+                    document.getElementById('file-input').click();
+                });
+
+                document.getElementById('file-input').addEventListener('change', (e) => {
+                    if (e.target.files.length > 0) {
+                        this.uploadFile(e.target.files[0]);
+                    }
+                });
+
                 document.getElementById('search-chat-btn').addEventListener('click', () => {
                     document.getElementById('search-sidebar').classList.add('active');
                 });
@@ -2308,6 +2628,11 @@
                             status: 'offline',
                             lastSeen: firebase.firestore.FieldValue.serverTimestamp()
                         });
+                        
+                        // End any active call
+                        if (this.isCallActive) {
+                            this.endCall();
+                        }
                     }
                     
                     this.cleanupListeners();
@@ -2439,63 +2764,78 @@
                 }
             }
 
-            // ========== ЗАГРУЗКА ЧАТОВ ==========
+            // ========== ЗАГРУЗКА ЧАТОВ (ИСПРАВЛЕНО) ==========
             loadChats() {
                 const chatsList = document.getElementById('chats-list');
+                if (!chatsList) return;
                 
-                chatsList.innerHTML = '<div style="color: #9CA3AF; text-align: center; padding: 20px;"><i class="fas fa-spinner fa-spin"></i> Loading...</div>';
+                // Show loading
+                chatsList.innerHTML = '<div style="color: #9CA3AF; text-align: center; padding: 20px;"><i class="fas fa-spinner fa-spin"></i> Loading chats...</div>';
                 
-                this.chatsListener = db.collection('chats')
-                    .where('participants', 'array-contains', this.currentUser.uid)
-                    .orderBy('lastMessageTime', 'desc')
-                    .onSnapshot((snapshot) => {
-                        if (snapshot.empty) {
-                            chatsList.innerHTML = `
-                                <div style="color: #9CA3AF; text-align: center; padding: 20px;">
-                                    <i class="fas fa-comments" style="font-size: 48px; opacity: 0.5;"></i>
-                                    <p>No chats yet</p>
-                                </div>
-                            `;
-                            return;
-                        }
-
-                        const processedIds = new Set();
-                        
-                        snapshot.forEach(doc => {
-                            if (processedIds.has(doc.id)) return;
-                            processedIds.add(doc.id);
-                            
-                            const chat = doc.data();
-                            const type = chat.type || 'private';
-                            
-                            if (type === 'private') {
-                                const otherUserId = chat.participants.find(id => id !== this.currentUser.uid);
-                                this.getUserData(otherUserId).then(userData => {
-                                    this.renderSingleChat(doc.id, chat, type, userData);
-                                });
-                            } else {
-                                this.renderSingleChat(doc.id, chat, type);
+                // Check if user is authenticated
+                if (!this.currentUser) {
+                    chatsList.innerHTML = '<div style="color: #EF4444; text-align: center; padding: 20px;">Please log in first</div>';
+                    return;
+                }
+                
+                try {
+                    this.chatsListener = db.collection('chats')
+                        .where('participants', 'array-contains', this.currentUser.uid)
+                        .orderBy('lastMessageTime', 'desc')
+                        .onSnapshot((snapshot) => {
+                            if (snapshot.empty) {
+                                chatsList.innerHTML = `
+                                    <div style="color: #9CA3AF; text-align: center; padding: 20px;">
+                                        <i class="fas fa-comments" style="font-size: 48px; opacity: 0.5; margin-bottom: 10px;"></i>
+                                        <p>No chats yet</p>
+                                        <p style="font-size: 12px;">Click "New Chat" to start</p>
+                                    </div>
+                                `;
+                                return;
                             }
-                        });
 
-                        document.querySelectorAll('[id^="chat-"]').forEach(el => {
-                            const chatId = el.id.replace('chat-', '');
-                            if (!processedIds.has(chatId)) {
-                                el.remove();
-                            }
-                        });
-                    }, (error) => {
-                        console.error('Error loading chats:', error);
-                        if (error.code === 'failed-precondition') {
+                            // Clear list before updating
+                            chatsList.innerHTML = '';
+                            
+                            const processedIds = new Set();
+                            
+                            snapshot.forEach(doc => {
+                                if (processedIds.has(doc.id)) return;
+                                processedIds.add(doc.id);
+                                
+                                const chat = doc.data();
+                                const type = chat.type || 'private';
+                                
+                                if (type === 'private') {
+                                    const otherUserId = chat.participants?.find(id => id !== this.currentUser.uid);
+                                    if (otherUserId) {
+                                        this.getUserData(otherUserId).then(userData => {
+                                            this.renderSingleChat(doc.id, chat, type, userData);
+                                        });
+                                    }
+                                } else {
+                                    this.renderSingleChat(doc.id, chat, type);
+                                }
+                            });
+                        }, (error) => {
+                            console.error('Error loading chats:', error);
                             chatsList.innerHTML = `
                                 <div style="color: #EF4444; text-align: center; padding: 20px;">
                                     <i class="fas fa-exclamation-triangle" style="font-size: 48px; margin-bottom: 10px;"></i>
-                                    <p>Database indexes need to be created.</p>
-                                    <p style="font-size: 12px;">Check console for link.</p>
+                                    <p>Failed to load chats</p>
+                                    <p style="font-size: 12px;">${error.message}</p>
                                 </div>
                             `;
-                        }
-                    });
+                        });
+                } catch (error) {
+                    console.error('Error setting up chats listener:', error);
+                    chatsList.innerHTML = `
+                        <div style="color: #EF4444; text-align: center; padding: 20px;">
+                            <i class="fas fa-exclamation-triangle" style="font-size: 48px; margin-bottom: 10px;"></i>
+                            <p>Failed to load chats</p>
+                        </div>
+                    `;
+                }
             }
 
             renderSingleChat(id, chat, type, userData = null) {
@@ -2504,7 +2844,7 @@
                 let name = '';
                 let lastMessage = chat.lastMessage ? 
                     (chat.lastMessage.senderId === this.currentUser.uid ? 'You: ' : '') + 
-                    (chat.lastMessage.text || 'No messages') : 'No messages';
+                    (chat.lastMessage.text || '📎 File') : 'No messages';
                 let time = chat.lastMessageTime ? this.formatTime(chat.lastMessageTime.toDate()) : '';
                 let badge = type === 'official' ? 'official' : type;
                 let icon = '';
@@ -2523,6 +2863,11 @@
                     name = chat.name || 'Channel';
                 }
                 
+                // Truncate long messages
+                if (lastMessage.length > 40) {
+                    lastMessage = lastMessage.substring(0, 40) + '...';
+                }
+                
                 const html = `
                     <div class="chat-item" id="chat-${id}" onclick="app.selectChat('${id}', '${type}')">
                         <div class="chat-avatar ${type}">
@@ -2530,7 +2875,7 @@
                         </div>
                         <div class="chat-info">
                             <div class="chat-name">${name} <span class="chat-badge ${badge}">${badge}</span></div>
-                            <div class="chat-last-message"><span>${lastMessage.substring(0, 30)}${lastMessage.length > 30 ? '...' : ''}</span></div>
+                            <div class="chat-last-message"><span>${lastMessage}</span></div>
                         </div>
                         <div class="chat-time">${time}</div>
                     </div>
@@ -2547,7 +2892,9 @@
                 try {
                     const userDoc = await db.collection('users').doc(userId).get();
                     const userData = userDoc.data();
-                    this.allUsers.set(userId, userData);
+                    if (userData) {
+                        this.allUsers.set(userId, userData);
+                    }
                     return userData;
                 } catch (error) {
                     console.error('Error getting user data:', error);
@@ -2594,10 +2941,16 @@
                     messageArea.style.display = type === 'channel' ? 'none' : 'flex';
                 }
 
-                // Show/hide call button (only for private chats)
+                // Show/hide call button and attach button
                 const callBtn = document.getElementById('call-btn');
+                const attachBtn = document.getElementById('attach-btn');
+                
                 if (callBtn) {
                     callBtn.style.display = type === 'private' ? 'inline-flex' : 'none';
+                }
+                
+                if (attachBtn) {
+                    attachBtn.style.display = type !== 'channel' ? 'inline-flex' : 'none';
                 }
                 
                 try {
@@ -2620,7 +2973,7 @@
                         const otherUserId = this.currentChatParticipants.find(id => id !== this.currentUser.uid);
                         const userData = await this.getUserData(otherUserId);
                         
-                        if (chatNameEl) {
+                        if (chatNameEl && userData) {
                             chatNameEl.innerHTML = userData.username + `<span class="chat-badge private">private</span>`;
                         }
                         
@@ -2666,6 +3019,7 @@
                 }
             }
 
+            // ========== ЗАГРУЗКА СООБЩЕНИЙ (ИСПРАВЛЕНО) ==========
             loadMessages(chatId) {
                 if (this.messagesListener) {
                     this.messagesListener();
@@ -2674,67 +3028,287 @@
                 const messagesContainer = document.getElementById('messages-container');
                 if (!messagesContainer) return;
                 
-                messagesContainer.innerHTML = '';
+                // Show loading
+                messagesContainer.innerHTML = `
+                    <div style="color: #9CA3AF; text-align: center; padding: 20px;">
+                        <i class="fas fa-spinner fa-spin" style="font-size: 32px; margin-bottom: 10px;"></i>
+                        <p>Loading messages...</p>
+                    </div>
+                `;
                 
-                this.messagesListener = db.collection('chats').doc(chatId)
-                    .collection('messages')
-                    .orderBy('timestamp', 'asc')
-                    .onSnapshot((snapshot) => {
-                        snapshot.docChanges().forEach((change) => {
-                            if (change.type === 'added') {
-                                const message = change.doc.data();
-                                this.displayMessage(message, change.doc.id);
+                try {
+                    this.messagesListener = db.collection('chats').doc(chatId)
+                        .collection('messages')
+                        .orderBy('timestamp', 'asc')
+                        .onSnapshot((snapshot) => {
+                            if (snapshot.empty) {
+                                messagesContainer.innerHTML = `
+                                    <div class="welcome-message">
+                                        <i class="fas fa-comments"></i>
+                                        <h3>No messages yet</h3>
+                                        <p>Be the first to write something!</p>
+                                    </div>
+                                `;
+                                return;
                             }
+
+                            // Clear container before adding messages
+                            messagesContainer.innerHTML = '';
+
+                            snapshot.docChanges().forEach((change) => {
+                                if (change.type === 'added') {
+                                    const message = change.doc.data();
+                                    this.displayMessage(message, change.doc.id);
+                                    
+                                    // Mark message as delivered if it's not ours
+                                    if (message.senderId !== this.currentUser.uid && message.status !== 'delivered') {
+                                        db.collection('chats').doc(chatId)
+                                            .collection('messages').doc(change.doc.id)
+                                            .update({
+                                                status: 'delivered',
+                                                deliveredTo: firebase.firestore.FieldValue.arrayUnion(this.currentUser.uid)
+                                            });
+                                    }
+                                }
+                            });
+                            
+                            // Mark messages as read
+                            setTimeout(() => {
+                                const unreadMessages = snapshot.docs.filter(doc => {
+                                    const msg = doc.data();
+                                    return msg.senderId !== this.currentUser.uid && msg.status !== 'read';
+                                });
+                                
+                                unreadMessages.forEach(doc => {
+                                    db.collection('chats').doc(chatId)
+                                        .collection('messages').doc(doc.id)
+                                        .update({
+                                            status: 'read',
+                                            readBy: firebase.firestore.FieldValue.arrayUnion(this.currentUser.uid)
+                                        });
+                                });
+                            }, 1000);
+                            
+                            // Smooth scroll to bottom
+                            setTimeout(() => {
+                                messagesContainer.scrollTo({
+                                    top: messagesContainer.scrollHeight,
+                                    behavior: 'smooth'
+                                });
+                            }, 100);
+                            
+                        }, (error) => {
+                            console.error('Error loading messages:', error);
+                            messagesContainer.innerHTML = `
+                                <div style="color: #EF4444; text-align: center; padding: 20px;">
+                                    <i class="fas fa-exclamation-triangle" style="font-size: 48px; margin-bottom: 10px;"></i>
+                                    <p>Failed to load messages</p>
+                                    <p style="font-size: 12px;">${error.message}</p>
+                                </div>
+                            `;
                         });
-                        
-                        messagesContainer.scrollTop = messagesContainer.scrollHeight;
-                    }, (error) => {
-                        console.error('Error loading messages:', error);
-                    });
+                } catch (error) {
+                    console.error('Error setting up messages listener:', error);
+                    messagesContainer.innerHTML = `
+                        <div style="color: #EF4444; text-align: center; padding: 20px;">
+                            <i class="fas fa-exclamation-triangle" style="font-size: 48px; margin-bottom: 10px;"></i>
+                            <p>Failed to load messages</p>
+                        </div>
+                    `;
+                }
             }
 
+            // ========== ОТОБРАЖЕНИЕ СООБЩЕНИЙ (ПОЛНОСТЬЮ ИСПРАВЛЕНО) ==========
             displayMessage(message, messageId) {
                 const messagesContainer = document.getElementById('messages-container');
                 if (!messagesContainer) return;
                 
                 const isOutgoing = message.senderId === this.currentUser.uid;
                 
-                if (document.getElementById(`msg-${messageId}`)) return;
+                // Check if message already exists
+                if (document.getElementById(`msg-${messageId}`)) {
+                    return;
+                }
+
+                // --- FIXED DECRYPTION ---
+                let messageText;
+
+                if (message.encrypted) {
+                    try {
+                        const decrypted = hypebitCrypto.decryptMessage(
+                            message.text,
+                            this.currentChatId,
+                            message.senderId
+                        );
+
+                        if (decrypted && decrypted !== message.text && decrypted.trim() !== '') {
+                            messageText = decrypted;
+                            console.log('✅ Message decrypted successfully');
+                        } else {
+                            messageText = '💬 Message';
+                            console.warn('⚠️ Empty decryption result');
+                        }
+                    } catch (error) {
+                        console.error('❌ Decryption error:', error);
+                        messageText = '💬 Message';
+                    }
+                } else {
+                    messageText = message.text || '💬 Message';
+                }
                 
-              
-const isOutgoing = message.senderId === this.currentUser.uid;
+                // Sender name for groups/channels
+                let senderName = '';
+                if (this.currentChatType !== 'private' && !isOutgoing) {
+                    this.getUserData(message.senderId).then(userData => {
+                        const senderEl = document.getElementById(`msg-${messageId}-sender`);
+                        if (senderEl && userData) {
+                            senderEl.textContent = userData.username;
+                            if (userData.usernameColor) {
+                                senderEl.className = `message-sender username-color-${userData.usernameColor}`;
+                            }
+                        }
+                    });
+                    senderName = `<div class="message-sender" id="msg-${messageId}-sender">Loading...</div>`;
+                }
+                
+                // File attachment
+                let fileHtml = '';
+                if (message.fileUrl) {
+                    const isImage = message.fileType?.startsWith('image/');
+                    fileHtml = `
+                        <div class="file-message" onclick="window.open('${message.fileUrl}', '_blank')">
+                            <i class="fas ${isImage ? 'fa-image' : 'fa-file'}"></i>
+                            <div class="file-info">
+                                <div class="file-name">${message.fileName || 'File'}</div>
+                                <div class="file-size">${this.formatFileSize(message.fileSize)}</div>
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                // Reactions
+                let reactionsHtml = '';
+                if (message.reactions) {
+                    const reactionCounts = {};
+                    Object.values(message.reactions).forEach(r => {
+                        reactionCounts[r] = (reactionCounts[r] || 0) + 1;
+                    });
+                    
+                    reactionsHtml = '<div class="message-reactions">';
+                    for (let [emoji, count] of Object.entries(reactionCounts)) {
+                        const isPremium = this.isPremiumReaction(emoji);
+                        reactionsHtml += `<span class="reaction ${isPremium ? 'premium' : ''}" onclick="app.addReaction('${messageId}', '${emoji}')">${emoji} ${count}</span>`;
+                    }
+                    reactionsHtml += '</div>';
+                }
+                
+                // Message status (ticks)
+                let statusHtml = '';
+                if (isOutgoing) {
+                    if (message.status === 'read') {
+                        statusHtml = '<span class="message-status read"><i class="fas fa-check-double" style="color:#3B82F6"></i></span>';
+                    } else if (message.status === 'delivered') {
+                        statusHtml = '<span class="message-status delivered"><i class="fas fa-check-double"></i></span>';
+                    } else {
+                        statusHtml = '<span class="message-status sent"><i class="fas fa-check"></i></span>';
+                    }
+                }
+                
+                const messageHtml = `
+                    <div class="message ${isOutgoing ? 'outgoing' : 'incoming'} message-new" id="msg-${messageId}">
+                        <div class="message-content">
+                            ${senderName}
+                            ${fileHtml}
+                            ${messageText}
+                            <div class="message-time">
+                                ${message.timestamp ? this.formatTime(message.timestamp.toDate()) : ''}
+                                ${statusHtml}
+                            </div>
+                            ${reactionsHtml}
+                            <div class="message-actions">
+                                <button class="message-action-btn" onclick="app.addReaction('${messageId}', '👍')" title="Like"><i class="fas fa-thumbs-up"></i></button>
+                                <button class="message-action-btn" onclick="app.addReaction('${messageId}', '❤️')" title="Love"><i class="fas fa-heart"></i></button>
+                                <button class="message-action-btn" onclick="app.addReaction('${messageId}', '😂')" title="Haha"><i class="fas fa-laugh"></i></button>
+                                ${this.purchasedItems.has('reactions') ? `
+                                    <button class="message-action-btn" onclick="app.addReaction('${messageId}', '👑')" title="Crown"><i class="fas fa-crown"></i></button>
+                                    <button class="message-action-btn" onclick="app.addReaction('${messageId}', '🦄')" title="Unicorn"><i class="fas fa-hat-wizard"></i></button>
+                                    <button class="message-action-btn" onclick="app.addReaction('${messageId}', '🚀')" title="Rocket"><i class="fas fa-rocket"></i></button>
+                                ` : ''}
+                                ${isOutgoing ? `
+                                    <button class="message-action-btn" onclick="app.editMessage('${messageId}')" title="Edit"><i class="fas fa-edit"></i></button>
+                                    <button class="message-action-btn" onclick="app.deleteMessage('${messageId}')" title="Delete"><i class="fas fa-trash"></i></button>
+                                ` : ''}
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                messagesContainer.insertAdjacentHTML('beforeend', messageHtml);
+            }
 
-if (document.getElementById(`msg-${messageId}`) !== null) {
-    return;
-}
+            isPremiumReaction(emoji) {
+                const premium = ['👑', '🦄', '🚀', '💎', '🌈', '⚡'];
+                return premium.includes(emoji);
+            }
 
-// --- ПОЛНАЯ ИСПРАВЛЕННАЯ РАСШИФРОВКА ---
-let messageText;
+            // ========== ПОИСК ПОЛЬЗОВАТЕЛЕЙ ==========
+            async searchAllUsers(query) {
+                if (!query.trim()) {
+                    document.getElementById('search-sidebar').classList.remove('active');
+                    return;
+                }
 
-if (message.encrypted) {
-    try {
-        // Пытаемся расшифровать сообщение
-        const decrypted = hypebitCrypto.decryptMessage(
-            message.text,
-            this.currentChatId,
-            message.senderId
-        );
+                document.getElementById('search-sidebar').classList.add('active');
+                const resultsContainer = document.getElementById('search-results');
+                resultsContainer.innerHTML = '<div style="color: #9CA3AF; text-align: center; padding: 20px;"><i class="fas fa-spinner fa-spin"></i> Searching...</div>';
 
-        // Проверяем результат
-        if (decrypted && decrypted !== message.text && decrypted.trim() !== '') {
-            messageText = decrypted;
-            console.log('✅ Успешно расшифровано');
-        } else {
-            messageText = '💬 Сообщение';
-            console.warn('⚠️ Пустое сообщение');
-        }
-    } catch (error) {
-        console.error('❌ Ошибка расшифровки:', error);
-        messageText = '💬 Сообщение';
-    }
-} else {
-    messageText = message.text || '💬 Сообщение';
-}
+                try {
+                    const snapshot = await db.collection('users')
+                        .where('username', '>=', query)
+                        .where('username', '<=', query + '\uf8ff')
+                        .limit(20)
+                        .get();
+
+                    if (snapshot.empty) {
+                        resultsContainer.innerHTML = `
+                            <div style="color: #9CA3AF; text-align: center; padding: 20px;">
+                                No users found
+                            </div>
+                        `;
+                        return;
+                    }
+
+                    let html = '';
+                    snapshot.forEach(doc => {
+                        if (doc.id !== this.currentUser.uid) {
+                            const user = doc.data();
+                            const firstLetter = user.username.charAt(0).toUpperCase();
+                            
+                            html += `
+                                <div class="search-result-item" onclick="app.createPrivateChat('${doc.id}')">
+                                    <div style="display: flex; align-items: center;">
+                                        <div class="search-result-avatar">${firstLetter}</div>
+                                        <div class="search-result-info">
+                                            <div class="search-result-name">${user.username}</div>
+                                            <div class="search-result-email">${user.email}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                        }
+                    });
+
+                    resultsContainer.innerHTML = html;
+                } catch (error) {
+                    console.error('Error searching users:', error);
+                    resultsContainer.innerHTML = `
+                        <div style="color: #EF4444; text-align: center; padding: 20px;">
+                            Error searching users
+                        </div>
+                    `;
+                }
+            }
+
             // ========== ОТПРАВКА СООБЩЕНИЙ ==========
             async sendMessage() {
                 const input = document.getElementById('message-input');
@@ -2755,6 +3329,8 @@ if (message.encrypted) {
                         senderId: this.currentUser.uid,
                         timestamp: firebase.firestore.FieldValue.serverTimestamp(),
                         status: 'sent',
+                        deliveredTo: [],
+                        readBy: [],
                         reactions: {}
                     };
                     
@@ -2763,7 +3339,7 @@ if (message.encrypted) {
                     
                     await db.collection('chats').doc(this.currentChatId).update({
                         lastMessage: {
-                            text: text.substring(0, 50) + (text.length > 50 ? '...' : ''),
+                            text: text.substring(0, 30) + (text.length > 30 ? '...' : ''),
                             senderId: this.currentUser.uid,
                             timestamp: firebase.firestore.FieldValue.serverTimestamp()
                         },
@@ -2822,26 +3398,108 @@ if (message.encrypted) {
                 }, 2000);
             }
 
-            async addReaction(messageId, emoji) {
+            // ========== ЗАГРУЗКА ФАЙЛОВ ==========
+            async uploadFile(file) {
                 if (!this.currentChatId) return;
                 
-                const messageRef = db.collection('chats').doc(this.currentChatId)
-                    .collection('messages').doc(messageId);
+                // Check file size (max 10MB)
+                if (file.size > 10 * 1024 * 1024) {
+                    alert('File too large (max 10MB)');
+                    return;
+                }
                 
-                await db.runTransaction(async (transaction) => {
-                    const messageDoc = await transaction.get(messageRef);
-                    const message = messageDoc.data();
+                try {
+                    // Show uploading indicator
+                    this.showNotification('Uploading file...', 'info');
                     
-                    const reactions = message.reactions || {};
+                    const fileRef = storage.ref(`chats/${this.currentChatId}/${Date.now()}_${file.name}`);
+                    await fileRef.put(file);
+                    const fileUrl = await fileRef.getDownloadURL();
                     
-                    if (reactions[this.currentUser.uid] === emoji) {
-                        delete reactions[this.currentUser.uid];
-                    } else {
-                        reactions[this.currentUser.uid] = emoji;
-                    }
+                    const message = {
+                        fileUrl: fileUrl,
+                        fileName: file.name,
+                        fileSize: file.size,
+                        fileType: file.type,
+                        senderId: this.currentUser.uid,
+                        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                        status: 'sent',
+                        deliveredTo: [],
+                        readBy: [],
+                        reactions: {}
+                    };
                     
-                    transaction.update(messageRef, { reactions });
-                });
+                    await db.collection('chats').doc(this.currentChatId)
+                        .collection('messages').add(message);
+                    
+                    await db.collection('chats').doc(this.currentChatId).update({
+                        lastMessage: {
+                            text: '📎 ' + file.name.substring(0, 20) + (file.name.length > 20 ? '...' : ''),
+                            senderId: this.currentUser.uid,
+                            timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                        },
+                        lastMessageTime: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                    
+                    this.showNotification('File uploaded!', 'success');
+                    
+                } catch (error) {
+                    console.error('File upload error:', error);
+                    alert('Failed to upload file: ' + error.message);
+                }
+            }
+
+            formatFileSize(bytes) {
+                if (bytes < 1024) return bytes + ' B';
+                if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+                return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+            }
+
+            showNotification(message, type = 'info') {
+                // Use HypebitUtils if available
+                if (window.HypebitUtils) {
+                    window.HypebitUtils.showNotification(message, type);
+                } else {
+                    console.log(message);
+                }
+            }
+
+            // ========== РЕАКЦИИ ==========
+            async addReaction(messageId, emoji) {
+                if (!this.currentChatId) {
+                    alert('No chat selected');
+                    return;
+                }
+
+                try {
+                    const messageRef = db.collection('chats').doc(this.currentChatId)
+                        .collection('messages').doc(messageId);
+                    
+                    await db.runTransaction(async (transaction) => {
+                        const messageDoc = await transaction.get(messageRef);
+                        
+                        if (!messageDoc.exists) {
+                            throw new Error('Message not found');
+                        }
+                        
+                        const message = messageDoc.data();
+                        const reactions = message.reactions || {};
+                        
+                        if (reactions[this.currentUser.uid] === emoji) {
+                            delete reactions[this.currentUser.uid];
+                        } else {
+                            reactions[this.currentUser.uid] = emoji;
+                        }
+                        
+                        transaction.update(messageRef, { reactions });
+                    });
+                    
+                    console.log('Reaction added successfully');
+                    
+                } catch (error) {
+                    console.error('Error adding reaction:', error);
+                    alert('Failed to add reaction. Please try again.');
+                }
             }
 
             async editMessage(messageId) {
@@ -2854,21 +3512,31 @@ if (message.encrypted) {
                     this.currentUser.uid
                 );
                 
-                await db.collection('chats').doc(this.currentChatId)
-                    .collection('messages').doc(messageId)
-                    .update({
-                        text: encryptedText,
-                        edited: true,
-                        editedAt: firebase.firestore.FieldValue.serverTimestamp()
-                    });
+                try {
+                    await db.collection('chats').doc(this.currentChatId)
+                        .collection('messages').doc(messageId)
+                        .update({
+                            text: encryptedText,
+                            edited: true,
+                            editedAt: firebase.firestore.FieldValue.serverTimestamp()
+                        });
+                } catch (error) {
+                    console.error('Edit error:', error);
+                    alert('Failed to edit message');
+                }
             }
 
             async deleteMessage(messageId) {
                 if (!confirm('Delete this message?')) return;
                 
-                await db.collection('chats').doc(this.currentChatId)
-                    .collection('messages').doc(messageId)
-                    .delete();
+                try {
+                    await db.collection('chats').doc(this.currentChatId)
+                        .collection('messages').doc(messageId)
+                        .delete();
+                } catch (error) {
+                    console.error('Delete error:', error);
+                    alert('Failed to delete message');
+                }
             }
 
             // ========== ЗВОНКИ ==========
@@ -2894,8 +3562,13 @@ if (message.encrypted) {
                 const otherUserId = this.currentChatParticipants.find(id => id !== this.currentUser.uid);
                 const userData = await this.getUserData(otherUserId);
                 
+                if (!userData) {
+                    alert('User not found');
+                    return;
+                }
+                
                 try {
-                    // Get user media
+                    // Request microphone permission
                     this.localStream = await navigator.mediaDevices.getUserMedia({ 
                         audio: true, 
                         video: false 
@@ -2912,6 +3585,7 @@ if (message.encrypted) {
                     // Handle remote stream
                     this.peerConnection.ontrack = (event) => {
                         this.remoteStream = event.streams[0];
+                        // You could play remote stream here if needed
                     };
                     
                     // Create offer
@@ -2932,6 +3606,8 @@ if (message.encrypted) {
                         targetUserId: otherUserId
                     };
                     
+                    this.isCallActive = true;
+                    
                     this.showOutgoingCall(userData);
                     
                     // Listen for answer
@@ -2942,12 +3618,14 @@ if (message.encrypted) {
                         } else if (call && call.status === 'rejected') {
                             this.endCall();
                             alert('Call rejected');
+                        } else if (call && call.status === 'ended') {
+                            this.endCall();
                         }
                     });
                     
                 } catch (error) {
                     console.error('Error starting call:', error);
-                    alert('Could not start call. Make sure you have a microphone.');
+                    alert('Could not start call. Make sure you have a microphone and granted permission.');
                 }
             }
 
@@ -2976,6 +3654,8 @@ if (message.encrypted) {
 
             showIncomingCall(call, callId) {
                 this.getUserData(call.callerId).then(userData => {
+                    if (!userData) return;
+                    
                     const callModal = document.getElementById('call-modal');
                     const callAvatar = document.getElementById('call-avatar');
                     const callName = document.getElementById('call-name');
@@ -3024,6 +3704,8 @@ if (message.encrypted) {
                     const callDoc = await db.collection('calls').doc(callId).get();
                     const call = callDoc.data();
                     
+                    if (!call) return;
+                    
                     // Set remote description
                     await this.peerConnection.setRemoteDescription(new RTCSessionDescription(call.offer));
                     
@@ -3042,6 +3724,8 @@ if (message.encrypted) {
                         targetUserId: call.callerId
                     };
                     
+                    this.isCallActive = true;
+                    
                     // Update UI
                     const callModal = document.getElementById('call-modal');
                     const callButtons = document.getElementById('call-buttons');
@@ -3053,9 +3737,6 @@ if (message.encrypted) {
                         <button class="call-button mute" onclick="app.toggleMute()">
                             <i class="fas fa-microphone"></i>
                         </button>
-                        <button class="call-button mute" onclick="app.toggleVideo()">
-                            <i class="fas fa-video"></i>
-                        </button>
                     `;
                     
                 } catch (error) {
@@ -3065,28 +3746,36 @@ if (message.encrypted) {
             }
 
             async handleAnswer(answer) {
-                await this.peerConnection.setRemoteDescription(new RTCSessionDescription(answer));
-                
-                const callModal = document.getElementById('call-modal');
-                const callButtons = document.getElementById('call-buttons');
-                
-                callButtons.innerHTML = `
-                    <button class="call-button reject" onclick="app.endCall()">
-                        <i class="fas fa-phone-slash"></i>
-                    </button>
-                    <button class="call-button mute" onclick="app.toggleMute()">
-                        <i class="fas fa-microphone"></i>
-                    </button>
-                    <button class="call-button mute" onclick="app.toggleVideo()">
-                        <i class="fas fa-video"></i>
-                    </button>
-                `;
+                try {
+                    await this.peerConnection.setRemoteDescription(new RTCSessionDescription(answer));
+                    
+                    const callModal = document.getElementById('call-modal');
+                    const callButtons = document.getElementById('call-buttons');
+                    
+                    callButtons.innerHTML = `
+                        <button class="call-button reject" onclick="app.endCall()">
+                            <i class="fas fa-phone-slash"></i>
+                        </button>
+                        <button class="call-button mute" onclick="app.toggleMute()">
+                            <i class="fas fa-microphone"></i>
+                        </button>
+                    `;
+                    
+                    document.getElementById('call-status').textContent = 'Connected';
+                    
+                } catch (error) {
+                    console.error('Error handling answer:', error);
+                }
             }
 
             async rejectCall(callId) {
-                await db.collection('calls').doc(callId).update({
-                    status: 'rejected'
-                });
+                try {
+                    await db.collection('calls').doc(callId).update({
+                        status: 'rejected'
+                    });
+                } catch (error) {
+                    console.error('Error rejecting call:', error);
+                }
                 document.getElementById('call-modal').classList.remove('active');
             }
 
@@ -3102,13 +3791,18 @@ if (message.encrypted) {
                 }
                 
                 if (this.currentCall) {
-                    await db.collection('calls').doc(this.currentCall.id).update({
-                        status: 'ended'
-                    });
+                    try {
+                        await db.collection('calls').doc(this.currentCall.id).update({
+                            status: 'ended'
+                        });
+                    } catch (error) {
+                        console.error('Error updating call status:', error);
+                    }
                     this.currentCall = null;
                 }
                 
                 this.isCallActive = false;
+                this.isMuted = false;
                 document.getElementById('call-modal').classList.remove('active');
             }
 
@@ -3128,11 +3822,6 @@ if (message.encrypted) {
                         }
                     }
                 }
-            }
-
-            toggleVideo() {
-                // To be implemented for video calls
-                alert('Video calls coming soon!');
             }
 
             // ========== ПРОФИЛЬ ==========
@@ -3556,6 +4245,8 @@ if (message.encrypted) {
                     const otherUserId = this.currentChatParticipants.find(id => id !== this.currentUser.uid);
                     const user = await this.getUserData(otherUserId);
                     
+                    if (!user) return;
+                    
                     title.textContent = 'User Info';
                     body.innerHTML = `
                         <div style="text-align: center; margin-bottom: 20px;">
@@ -3594,6 +4285,7 @@ if (message.encrypted) {
                     let membersHtml = '';
                     for (const uid of this.currentChatData.members || []) {
                         const user = await this.getUserData(uid);
+                        if (!user) continue;
                         membersHtml += `
                             <div class="user-item" style="margin-bottom: 5px;">
                                 <div class="user-item-avatar">
@@ -3649,13 +4341,18 @@ if (message.encrypted) {
             async joinChannel() {
                 if (!this.currentChatId || this.currentChatType !== 'channel') return;
                 
-                await db.collection('chats').doc(this.currentChatId).update({
-                    subscribers: firebase.firestore.FieldValue.arrayUnion(this.currentUser.uid),
-                    participants: firebase.firestore.FieldValue.arrayUnion(this.currentUser.uid)
-                });
-                
-                document.getElementById('chat-info-modal').classList.remove('active');
-                alert('You joined the channel!');
+                try {
+                    await db.collection('chats').doc(this.currentChatId).update({
+                        subscribers: firebase.firestore.FieldValue.arrayUnion(this.currentUser.uid),
+                        participants: firebase.firestore.FieldValue.arrayUnion(this.currentUser.uid)
+                    });
+                    
+                    document.getElementById('chat-info-modal').classList.remove('active');
+                    alert('You joined the channel!');
+                } catch (error) {
+                    console.error('Error joining channel:', error);
+                    alert('Failed to join channel');
+                }
             }
 
             getErrorMessage(errorCode) {
@@ -3683,216 +4380,385 @@ if (message.encrypted) {
         });
     </script>
 <!-- КОНЕЦ ЧАСТИ 2/3 -->
-<!-- ЧАСТЬ 3/3 - ФИНАЛЬНЫЕ СТИЛИ И УТИЛИТЫ С ЗВОНКАМИ -->
+<!-- ЧАСТЬ 3/3 - ФИНАЛЬНЫЕ УТИЛИТЫ И ОПТИМИЗАЦИЯ -->
 
-    <!-- Дополнительные стили -->
+    <!-- Дополнительные стили для мобильных устройств -->
     <style>
-        /* Стили для уведомлений */
-        .notification {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: rgba(30, 42, 71, 0.95);
-            backdrop-filter: blur(10px);
-            border: 1px solid #3B82F6;
-            border-radius: 12px;
-            padding: 15px 25px;
-            color: white;
-            z-index: 9999;
-            animation: slideIn 0.3s ease;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-        }
-        
-        @keyframes slideIn {
-            from {
-                transform: translateX(100%);
-                opacity: 0;
+        /* Улучшенная мобильная оптимизация */
+        @media (max-width: 768px) {
+            /* Увеличиваем область касания для кнопок */
+            .chat-item, 
+            .user-item,
+            .search-result-item,
+            .profile-actions button,
+            .chat-actions button,
+            .attach-btn,
+            .emoji-btn,
+            .send-btn,
+            .call-button,
+            .shop-item-btn,
+            .auth-btn,
+            .profile-tab {
+                min-height: 44px;
+                min-width: 44px;
             }
-            to {
-                transform: translateX(0);
-                opacity: 1;
+            
+            /* Улучшаем читаемость на маленьких экранах */
+            .message-content {
+                font-size: 16px;
+                line-height: 1.4;
+            }
+            
+            .message-time {
+                font-size: 11px;
+            }
+            
+            /* Предотвращаем случайное масштабирование */
+            .input-wrapper textarea {
+                font-size: 16px !important;
+            }
+            
+            /* Улучшаем прокрутку */
+            .messages-container {
+                -webkit-overflow-scrolling: touch;
+            }
+            
+            .chats-list {
+                -webkit-overflow-scrolling: touch;
+            }
+            
+            /* Адаптация модальных окон */
+            .modal-content {
+                max-height: 85vh;
+                margin: 10px;
+            }
+            
+            .modal-body {
+                padding: 15px;
+            }
+            
+            /* Улучшаем отображение файлов */
+            .file-message {
+                flex-wrap: wrap;
+            }
+            
+            .file-name {
+                word-break: break-all;
+            }
+            
+            /* Адаптация звонков */
+            .call-container {
+                padding: 20px 15px;
+            }
+            
+            .call-avatar {
+                width: 70px;
+                height: 70px;
+            }
+            
+            .call-name {
+                font-size: 18px;
+            }
+            
+            .call-status {
+                font-size: 14px;
+                margin-bottom: 20px;
+            }
+            
+            .call-button {
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
+            }
+            
+            /* Адаптация поиска */
+            .search-sidebar {
+                width: 100%;
+            }
+            
+            .search-result-item {
+                padding: 12px;
+            }
+            
+            .search-result-avatar {
+                width: 40px;
+                height: 40px;
+                font-size: 18px;
+                margin-right: 12px;
+            }
+            
+            .search-result-name {
+                font-size: 15px;
+            }
+            
+            .search-result-email {
+                font-size: 12px;
+            }
+            
+            /* Улучшаем магазин */
+            .shop-item {
+                flex-wrap: wrap;
+            }
+            
+            .shop-item-icon {
+                width: 40px;
+                height: 40px;
+                font-size: 20px;
+            }
+            
+            .shop-item-info {
+                min-width: 150px;
+            }
+            
+            .shop-item-price {
+                font-size: 14px;
+            }
+            
+            .shop-item-btn {
+                padding: 8px 12px;
+                font-size: 13px;
+            }
+            
+            /* Адаптация профиля */
+            .profile-avatar-large {
+                width: 80px;
+                height: 80px;
+            }
+            
+            .profile-stats {
+                gap: 10px;
+            }
+            
+            .stat-item {
+                padding: 12px;
+            }
+            
+            .stat-value {
+                font-size: 20px;
+            }
+            
+            .stat-label {
+                font-size: 11px;
+            }
+            
+            .profile-tabs {
+                gap: 5px;
+            }
+            
+            .profile-tab {
+                padding: 8px 12px;
+                font-size: 13px;
+            }
+            
+            /* Улучшаем индикатор печатания */
+            .typing-indicator {
+                padding: 8px 15px;
+                font-size: 12px;
+            }
+            
+            .typing-dots span {
+                width: 5px;
+                height: 5px;
+            }
+            
+            /* Улучшаем уведомления */
+            .notification {
+                top: 10px;
+                right: 10px;
+                left: 10px;
+                padding: 12px 20px;
+                font-size: 14px;
+            }
+            
+            /* Улучшаем офлайн индикатор */
+            .offline-indicator {
+                bottom: 10px;
+                left: 10px;
+                right: 10px;
+                padding: 12px 15px;
+                font-size: 13px;
+                border-radius: 25px;
+                text-align: center;
             }
         }
-        
-        /* Анимация для поинтов */
-        .points-animation {
-            animation: pointsPop 0.5s ease;
-        }
-        
-        @keyframes pointsPop {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.2); color: #F59E0B; }
-            100% { transform: scale(1); }
-        }
-        
-        /* Анимация для новых сообщений */
-        .message-new {
-            animation: messageAppear 0.3s ease;
-        }
-        
-        @keyframes messageAppear {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
+
+        /* Для очень маленьких экранов */
+        @media (max-width: 380px) {
+            .profile-actions {
+                gap: 2px;
             }
-            to {
-                opacity: 1;
-                transform: translateY(0);
+            
+            .profile-actions button {
+                width: 32px;
+                height: 32px;
+                font-size: 14px;
+            }
+            
+            .avatar {
+                width: 36px;
+                height: 36px;
+            }
+            
+            .username {
+                font-size: 13px;
+            }
+            
+            .status {
+                font-size: 9px;
+            }
+            
+            .points-badge {
+                font-size: 9px;
+                padding: 2px 4px;
+            }
+            
+            .chat-avatar {
+                width: 36px;
+                height: 36px;
+                font-size: 18px;
+            }
+            
+            .chat-name {
+                font-size: 13px;
+            }
+            
+            .chat-last-message {
+                font-size: 11px;
+            }
+            
+            .chat-time {
+                font-size: 9px;
+            }
+            
+            .message {
+                max-width: 95%;
+            }
+            
+            .message-content {
+                padding: 8px 12px;
+                font-size: 14px;
+            }
+            
+            .message-sender {
+                font-size: 10px;
+            }
+            
+            .reaction {
+                padding: 2px 6px;
+                font-size: 10px;
+            }
+            
+            .shop-item-info {
+                min-width: 120px;
+            }
+            
+            .shop-item-title {
+                font-size: 13px;
+            }
+            
+            .shop-item-desc {
+                font-size: 10px;
             }
         }
-        
-        /* Офлайн индикатор */
-        .offline-indicator {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            background: rgba(239, 68, 68, 0.9);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 30px;
-            font-size: 14px;
-            z-index: 9999;
-            backdrop-filter: blur(10px);
-            display: none;
-            align-items: center;
-            gap: 10px;
+
+        /* Touch-friendly improvements */
+        button, 
+        .chat-item, 
+        .user-item,
+        .search-result-item,
+        .profile-tab,
+        .color-option,
+        .theme-option {
+            -webkit-tap-highlight-color: rgba(59, 130, 246, 0.3);
+            touch-action: manipulation;
         }
-        
-        .offline-indicator.active {
+
+        /* Loading states */
+        .loading-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(11, 17, 32, 0.8);
             display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+            backdrop-filter: blur(5px);
         }
-        
-        /* Улучшенные иконки для аватарок */
-        .user-item-avatar {
+
+        .loading-spinner {
             width: 40px;
             height: 40px;
+            border: 3px solid #1E2A47;
+            border-top-color: #3B82F6;
             border-radius: 50%;
-            background: linear-gradient(135deg, #1E2A47, #2A3A5F);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #3B82F6;
-            font-weight: 700;
-            font-size: 18px;
+            animation: spin 1s linear infinite;
         }
-        
-        .chat-avatar {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            color: white;
-            background: linear-gradient(135deg, #1E2A47, #2A3A5F);
-        }
-        
-        .chat-avatar.official {
-            background: linear-gradient(135deg, #3B82F6, #8B5CF6);
-        }
-        
-        .chat-avatar.group {
-            background: linear-gradient(135deg, #3B82F6, #8B5CF6);
-        }
-        
-        .chat-avatar.channel {
-            background: linear-gradient(135deg, #EC4899, #8B5CF6);
-        }
-        
-        /* Стили для поиска пользователей */
-        .search-result-item {
-            display: flex;
-            align-items: center;
-            padding: 12px;
+
+        /* Error styles */
+        .error-message {
+            color: #EF4444;
+            text-align: center;
+            padding: 20px;
+            background: rgba(239, 68, 68, 0.1);
             border-radius: 10px;
-            margin-bottom: 8px;
-            cursor: pointer;
-            transition: all 0.3s;
-            border: 1px solid rgba(59, 130, 246, 0.2);
-            background: rgba(11, 17, 32, 0.6);
+            margin: 20px;
         }
-        
-        .search-result-item:hover {
-            background: rgba(59, 130, 246, 0.15);
-            border-color: #3B82F6;
-            transform: translateX(5px);
+
+        .error-message i {
+            font-size: 48px;
+            margin-bottom: 10px;
         }
-        
-        .search-result-avatar {
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #1E2A47, #2A3A5F);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #3B82F6;
-            font-weight: 700;
-            font-size: 20px;
-            margin-right: 15px;
-            border: 2px solid #3B82F6;
-        }
-        
-        .search-result-info {
-            flex: 1;
-        }
-        
-        .search-result-name {
-            color: white;
-            font-weight: 600;
-            font-size: 16px;
-            margin-bottom: 4px;
-        }
-        
-        .search-result-email {
-            color: #9CA3AF;
-            font-size: 12px;
-        }
-        
-        .search-result-status {
-            display: inline-block;
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            margin-left: 8px;
-        }
-        
-        .search-result-status.online {
-            background: #10B981;
-            box-shadow: 0 0 10px #10B981;
-        }
-        
-        .search-result-status.offline {
-            background: #6B7280;
-        }
-        
-        /* Стили для звонков */
-        .call-btn {
-            background: #10B981 !important;
-            color: white !important;
-            animation: pulse 2s infinite;
-        }
-        
-        .call-btn:hover {
-            background: #059669 !important;
-            transform: scale(1.1) !important;
-        }
-        
-        @keyframes pulse {
+
+        /* Success animation */
+        @keyframes checkmark {
             0% {
-                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+                transform: scale(0);
+                opacity: 0;
             }
-            70% {
-                box-shadow: 0 0 0 10px rgba(16, 185, 129, 0);
+            50% {
+                transform: scale(1.2);
             }
             100% {
-                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+                transform: scale(1);
+                opacity: 1;
             }
         }
-        
-        .call-modal .call-container {
-            animation: callPop 0.3s ease;
+
+        .success-check {
+            animation: checkmark 0.5s ease;
+            color: #10B981;
         }
-        
-        @keyframes callPop {
+
+        /* File upload progress */
+        .upload-progress {
+            position: fixed;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(30, 42, 71, 0.95);
+            padding: 12px 24px;
+            border-radius: 30px;
+            color: white;
+            border: 1px solid #3B82F6;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .upload-progress i {
+            margin-right: 10px;
+            color: #3B82F6;
+        }
+
+        /* Better modal animations */
+        .modal.active .modal-content {
+            animation: modalPop 0.3s ease;
+        }
+
+        @keyframes modalPop {
             from {
                 transform: scale(0.8);
                 opacity: 0;
@@ -3902,55 +4768,33 @@ if (message.encrypted) {
                 opacity: 1;
             }
         }
-        
-        /* Адаптивность для модалок */
+
+        /* Improved message animations */
+        .message-new {
+            animation: messageSlide 0.3s ease;
+        }
+
+        @keyframes messageSlide {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* Better scrollbar for mobile */
         @media (max-width: 768px) {
-            .modal-content {
-                width: 95%;
-                max-height: 80vh;
+            .messages-container::-webkit-scrollbar,
+            .chats-list::-webkit-scrollbar {
+                width: 3px;
             }
             
-            .shop-items {
-                grid-template-columns: 1fr;
-            }
-            
-            .color-options {
-                grid-template-columns: repeat(3, 1fr);
-            }
-            
-            .theme-options {
-                grid-template-columns: 1fr;
-            }
-            
-            .search-result-item {
-                padding: 10px;
-            }
-            
-            .search-result-avatar {
-                width: 35px;
-                height: 35px;
-                font-size: 16px;
-                margin-right: 10px;
-            }
-            
-            .call-container {
-                width: 95%;
-                padding: 20px;
-            }
-            
-            .call-avatar {
-                width: 80px;
-                height: 80px;
-            }
-            
-            .call-name {
-                font-size: 20px;
-            }
-            
-            .call-button {
-                width: 50px;
-                height: 50px;
-                font-size: 20px;
+            .messages-container::-webkit-scrollbar-thumb,
+            .chats-list::-webkit-scrollbar-thumb {
+                background: rgba(59, 130, 246, 0.3);
             }
         }
     </style>
@@ -3961,7 +4805,7 @@ if (message.encrypted) {
         <span>You're offline. Messages will send when connection returns.</span>
     </div>
     
-    <!-- Дополнительные утилиты -->
+    <!-- Утилиты -->
     <script>
         // ========== УТИЛИТЫ ==========
         class HypebitUtils {
@@ -3970,13 +4814,33 @@ if (message.encrypted) {
                 notification.className = 'notification';
                 
                 let icon = 'fa-info-circle';
-                if (type === 'success') icon = 'fa-check-circle';
-                if (type === 'error') icon = 'fa-exclamation-circle';
-                if (type === 'points') icon = 'fa-star';
-                if (type === 'call') icon = 'fa-phone';
+                let color = '#3B82F6';
+                
+                switch(type) {
+                    case 'success':
+                        icon = 'fa-check-circle';
+                        color = '#10B981';
+                        break;
+                    case 'error':
+                        icon = 'fa-exclamation-circle';
+                        color = '#EF4444';
+                        break;
+                    case 'points':
+                        icon = 'fa-star';
+                        color = '#F59E0B';
+                        break;
+                    case 'call':
+                        icon = 'fa-phone';
+                        color = '#10B981';
+                        break;
+                    case 'upload':
+                        icon = 'fa-upload';
+                        color = '#3B82F6';
+                        break;
+                }
                 
                 notification.innerHTML = `
-                    <i class="fas ${icon}" style="margin-right: 10px; color: ${type === 'points' ? '#F59E0B' : type === 'call' ? '#10B981' : '#3B82F6'}"></i>
+                    <i class="fas ${icon}" style="margin-right: 10px; color: ${color}"></i>
                     ${message}
                 `;
                 
@@ -3991,7 +4855,8 @@ if (message.encrypted) {
             static formatFileSize(bytes) {
                 if (bytes < 1024) return bytes + ' B';
                 if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
-                return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+                if (bytes < 1024 * 1024 * 1024) return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+                return (bytes / (1024 * 1024 * 1024)).toFixed(1) + ' GB';
             }
             
             static getTimeAgo(timestamp) {
@@ -4004,7 +4869,8 @@ if (message.encrypted) {
                 if (minutes < 1) return 'Just now';
                 if (minutes < 60) return `${minutes}m ago`;
                 if (hours < 24) return `${hours}h ago`;
-                return `${days}d ago`;
+                if (days < 7) return `${days}d ago`;
+                return timestamp.toLocaleDateString();
             }
             
             static debounce(func, wait) {
@@ -4018,12 +4884,36 @@ if (message.encrypted) {
                     timeout = setTimeout(later, wait);
                 };
             }
+
+            static throttle(func, limit) {
+                let inThrottle;
+                return function(...args) {
+                    if (!inThrottle) {
+                        func.apply(this, args);
+                        inThrottle = true;
+                        setTimeout(() => inThrottle = false, limit);
+                    }
+                };
+            }
+
+            static isMobile() {
+                return window.innerWidth <= 768;
+            }
+
+            static isOnline() {
+                return navigator.onLine;
+            }
         }
 
         // ========== МОНИТОРИНГ СОЕДИНЕНИЯ ==========
         window.addEventListener('online', () => {
             document.getElementById('offline-indicator').classList.remove('active');
             HypebitUtils.showNotification('Connection restored!', 'success');
+            
+            // Refresh data when connection returns
+            if (window.app && window.app.currentUser) {
+                window.app.loadChats();
+            }
         });
         
         window.addEventListener('offline', () => {
@@ -4033,10 +4923,24 @@ if (message.encrypted) {
         // ========== ОБРАБОТКА ОШИБОК ==========
         window.addEventListener('unhandledrejection', (event) => {
             console.error('Unhandled error:', event.reason);
-            if (event.reason?.message?.includes('offline')) {
+            
+            // Don't show notification for offline errors
+            if (event.reason?.message?.includes('offline') || 
+                event.reason?.message?.includes('network')) {
                 return;
             }
+            
             HypebitUtils.showNotification('Something went wrong. Please try again.', 'error');
+        });
+
+        window.addEventListener('error', (event) => {
+            console.error('Global error:', event.error);
+            
+            // Don't show notification for offline errors
+            if (event.error?.message?.includes('offline') ||
+                event.error?.message?.includes('network')) {
+                return;
+            }
         });
 
         // ========== DEBOUNCED ПОИСК ПОЛЬЗОВАТЕЛЕЙ ==========
@@ -4046,36 +4950,49 @@ if (message.encrypted) {
             }
         }, 300);
 
-        // Заменяем обработчик поиска
+        // Setup search input
         const searchInput = document.getElementById('user-search-input');
         if (searchInput) {
             searchInput.addEventListener('input', (e) => {
                 debouncedUserSearch(e.target.value);
             });
+            
+            // Clear search on Escape
+            searchInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    searchInput.value = '';
+                    document.getElementById('search-sidebar')?.classList.remove('active');
+                }
+            });
         }
 
         // ========== КЛАВИАТУРНЫЕ СОКРАЩЕНИЯ ==========
         document.addEventListener('keydown', (e) => {
-            // Ctrl+K для фокуса на поиске пользователей
+            // Don't trigger shortcuts when typing in input
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+                return;
+            }
+            
+            // Ctrl+K for search focus
             if (e.ctrlKey && e.key === 'k') {
                 e.preventDefault();
                 document.getElementById('user-search-input')?.focus();
             }
             
-            // Escape для закрытия модалок и поиска
+            // Escape to close modals and search
             if (e.key === 'Escape') {
                 document.querySelectorAll('.modal.active').forEach(modal => {
                     modal.classList.remove('active');
                 });
                 document.getElementById('search-sidebar')?.classList.remove('active');
                 
-                // Закрываем звонок если он активен
+                // End active call
                 if (window.app && window.app.isCallActive) {
                     window.app.endCall();
                 }
             }
             
-            // Ctrl+N для нового чата
+            // Ctrl+N for new chat
             if (e.ctrlKey && e.key === 'n') {
                 e.preventDefault();
                 if (window.app) {
@@ -4083,7 +5000,7 @@ if (message.encrypted) {
                 }
             }
             
-            // Ctrl+G для новой группы
+            // Ctrl+G for new group
             if (e.ctrlKey && e.key === 'g') {
                 e.preventDefault();
                 if (window.app) {
@@ -4091,7 +5008,7 @@ if (message.encrypted) {
                 }
             }
             
-            // Ctrl+H для нового канала
+            // Ctrl+H for new channel
             if (e.ctrlKey && e.key === 'h') {
                 e.preventDefault();
                 if (window.app) {
@@ -4099,7 +5016,7 @@ if (message.encrypted) {
                 }
             }
             
-            // Ctrl+M для отключения микрофона во время звонка
+            // Ctrl+M to toggle mute during call
             if (e.ctrlKey && e.key === 'm' && window.app && window.app.isCallActive) {
                 e.preventDefault();
                 window.app.toggleMute();
@@ -4147,32 +5064,79 @@ if (message.encrypted) {
             }, 15000);
         };
         
-        // Запускаем туториалы если пользователь залогинен
+        const showFileTutorial = () => {
+            const hasSeenFile = localStorage.getItem('hypebit_file_tutorial');
+            if (hasSeenFile) return;
+            
+            setTimeout(() => {
+                HypebitUtils.showNotification('📎 You can share images and files up to 10MB!', 'upload');
+                localStorage.setItem('hypebit_file_tutorial', 'true');
+            }, 20000);
+        };
+        
+        // Run tutorials if user is logged in
         if (window.app && window.app.currentUser) {
             showWelcomeTutorial();
             showPointsTutorial();
             showSearchTutorial();
             showCallTutorial();
+            showFileTutorial();
+        }
+
+        // ========== МОБИЛЬНАЯ НАВИГАЦИЯ ==========
+        // Add swipe to open/close sidebar on mobile
+        if (HypebitUtils.isMobile()) {
+            let touchStartX = 0;
+            let touchEndX = 0;
+            
+            document.addEventListener('touchstart', (e) => {
+                touchStartX = e.changedTouches[0].screenX;
+            }, { passive: true });
+            
+            document.addEventListener('touchend', (e) => {
+                touchEndX = e.changedTouches[0].screenX;
+                handleSwipe();
+            }, { passive: true });
+            
+            function handleSwipe() {
+                const swipeDistance = touchEndX - touchStartX;
+                const sidebar = document.querySelector('.sidebar');
+                
+                // Swipe right to open sidebar
+                if (swipeDistance > 100 && touchStartX < 50) {
+                    sidebar?.classList.add('active');
+                }
+                
+                // Swipe left to close sidebar
+                if (swipeDistance < -100 && touchEndX < 50) {
+                    sidebar?.classList.remove('active');
+                }
+            }
         }
 
         // ========== ФИНАЛЬНАЯ ИНИЦИАЛИЗАЦИЯ ==========
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('HYPEBIT Messenger v3.0 loaded');
-            console.log('✨ Features:');
-            console.log('  • Private chats');
+            console.log('%c🚀 HYPEBIT Messenger v4.0', 'color: #3B82F6; font-size: 20px; font-weight: bold');
+            console.log('%c✨ Features:', 'color: #10B981; font-size: 14px');
+            console.log('  • Private chats with encryption');
             console.log('  • Groups & Channels');
             console.log('  • Official chat for all users');
             console.log('  • Profile customization');
             console.log('  • Points system (1 point / 120 messages)');
             console.log('  • Shop with colors, reactions, themes');
             console.log('  • Search users (real-time)');
-            console.log('  • Click on user to start chat');
-            console.log('  • Audio calls! (new)');
-            console.log('  • Mute microphone during calls');
+            console.log('  • Audio calls with WebRTC');
+            console.log('  • File sharing (images, documents)');
+            console.log('  • Mobile optimized');
             console.log('  • Offline support');
             console.log('  • Keyboard shortcuts (Ctrl+K, Ctrl+N, Ctrl+G, Ctrl+H, Ctrl+M)');
             
-            // Добавляем футер
+            console.log('%c📊 Statistics:', 'color: #F59E0B; font-size: 14px');
+            console.log(`  • Total lines: ${document.documentElement.innerHTML.split('\n').length}`);
+            console.log('  • Firebase connected');
+            console.log('  • WebRTC ready');
+            
+            // Add footer with version
             const footer = document.createElement('div');
             footer.style.cssText = `
                 position: fixed;
@@ -4181,9 +5145,16 @@ if (message.encrypted) {
                 color: rgba(255,255,255,0.2);
                 font-size: 11px;
                 z-index: 999;
+                pointer-events: none;
             `;
-            footer.innerHTML = `HYPEBIT © ${new Date().getFullYear()}`;
+            footer.innerHTML = `HYPEBIT v4.0 © ${new Date().getFullYear()}`;
             document.body.appendChild(footer);
+            
+            // Add version to loading screen
+            const loadingText = document.querySelector('.loading-text');
+            if (loadingText) {
+                loadingText.innerHTML = 'HYPEBIT<br><span style="font-size: 14px; opacity: 0.5;">v4.0</span>';
+            }
         });
 
         // ========== ПРЕДОТВРАЩАЕМ СЛУЧАЙНЫЙ ВЫХОД ==========
@@ -4194,7 +5165,7 @@ if (message.encrypted) {
                 e.returnValue = 'You have unsaved message. Are you sure you want to leave?';
             }
             
-            // Предупреждение при активном звонке
+            // Warning for active call
             if (window.app && window.app.isCallActive) {
                 e.preventDefault();
                 e.returnValue = 'You are in a call. Are you sure you want to leave?';
@@ -4203,27 +5174,73 @@ if (message.encrypted) {
 
         // ========== ЭКСПОРТ УТИЛИТ ==========
         window.HypebitUtils = HypebitUtils;
+
+        // ========== SERVICE WORKER FOR OFFLINE SUPPORT ==========
+        if ('serviceWorker' in navigator && window.location.protocol === 'https:') {
+            navigator.serviceWorker.register('/sw.js').catch(err => {
+                console.log('Service worker registration failed:', err);
+            });
+        }
     </script>
 
-    <!-- ========== ИНСТРУКЦИЯ ПО ЗВОНКАМ ========== -->
+    <!-- ========== SERVICE WORKER (ОФЛАЙН ПОДДЕРЖКА) ========== -->
+    <script>
+        // Simple offline page
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.getRegistrations().then(function(registrations) {
+                for(let registration of registrations) {
+                    registration.unregister();
+                }
+            });
+        }
+    </script>
+
+    <!-- ========== ИНСТРУКЦИЯ ========== -->
     <!--
     ╔═══════════════════════════════════════════════════════════════════╗
-    ║                      ИНСТРУКЦИЯ ПО ЗВОНКАМ                        ║
+    ║                    HYPEBIT v4.0 - ИНСТРУКЦИЯ                      ║
     ╠═══════════════════════════════════════════════════════════════════╣
     ║                                                                   ║
-    ║  1. Открой личный чат с любым пользователем                       ║
-    ║  2. Нажми зелёную кнопку 📞 в правом верхнем углу                 ║
-    ║  3. Браузер попросит разрешение на микрофон — разреши             ║
-    ║  4. У собеседника появится окно с входящим звонком                ║
-    ║  5. Он может:                                                     ║
-    ║     - ✅ Принять звонок                                            ║
-    ║     - ❌ Отклонить звонок                                          ║
-    ║  6. Во время разговора можно:                                     ║
-    ║     - 🔇 Отключить микрофон (кнопка или Ctrl+M)                    ║
-    ║     - 📞 Завершить звонок                                          ║
+    ║  📱 МОБИЛЬНАЯ ВЕРСИЯ:                                            ║
+    ║  • Свайп вправо от левого края → открыть меню                     ║
+    ║  • Свайп влево → закрыть меню                                     ║
+    ║  • Увеличенные кнопки для удобства                                ║
     ║                                                                   ║
-    ║  ⚠️ ВАЖНО: Для звонков нужен HTTPS (GitHub Pages даёт)            ║
-    ║  ⚠️ Работает только в личных чатах (не в группах/каналах)         ║
+    ║  📞 ЗВОНКИ:                                                       ║
+    ║  1. Открой личный чат                                             ║
+    ║  2. Нажми зелёную кнопку с телефоном                              ║
+    ║  3. Разреши доступ к микрофону                                    ║
+    ║  4. Во время звонка можно отключить микрофон (Ctrl+M)             ║
+    ║                                                                   ║
+    ║  📎 ФАЙЛЫ:                                                        ║
+    ║  • Максимальный размер: 10MB                                      ║
+    ║  • Поддерживаются: изображения, PDF, TXT                          ║
+    ║  • Нажми на скрепку чтобы прикрепить                               ║
+    ║                                                                   ║
+    ║  ⌨️ ГОРЯЧИЕ КЛАВИШИ:                                              ║
+    ║  • Ctrl+K → поиск пользователей                                   ║
+    ║  • Ctrl+N → новый чат                                             ║
+    ║  • Ctrl+G → новая группа                                          ║
+    ║  • Ctrl+H → новый канал                                           ║
+    ║  • Ctrl+M → отключить микрофон (во время звонка)                  ║
+    ║  • Escape → закрыть модалки/поиск                                 ║
+    ║                                                                   ║
+    ║  ⭐ ПОИНТЫ:                                                        ║
+    ║  • 1 поинт = 120 сообщений                                        ║
+    ║  • Трать поинты в магазине                                        ║
+    ║  • Доступно: цвет имени, премиум-реакции, темы                    ║
+    ║                                                                   ║
+    ║  🎨 ТЕМЫ:                                                         ║
+    ║  • Dark (по умолчанию)                                            ║
+    ║  • Forest                                                         ║
+    ║  • Space                                                          ║
+    ║  • Light                                                          ║
+    ║  • Mountain                                                       ║
+    ║                                                                   ║
+    ║  ⚠️ ВАЖНО:                                                        ║
+    ║  • Для звонков нужен HTTPS                                        ║
+    ║  • Для файлов нужно включить Storage в Firebase                   ║
+    ║  • При офлайн режиме сообщения сохраняются локально               ║
     ║                                                                   ║
     ╚═══════════════════════════════════════════════════════════════════╝
     -->
