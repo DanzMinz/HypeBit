@@ -2701,98 +2701,40 @@
                 
                 if (document.getElementById(`msg-${messageId}`)) return;
                 
-                let messageText = message.text;
-                
-                // ===== ИСПРАВЛЕННАЯ РАСШИФРОВКА =====
-// ===== ПОЛНАЯ ИСПРАВЛЕННАЯ РАСШИФРОВКА =====
-let messageText = message.text;
+              
+const isOutgoing = message.senderId === this.currentUser.uid;
+
+if (document.getElementById(`msg-${messageId}`) !== null) {
+    return;
+}
+
+// --- ПОЛНАЯ ИСПРАВЛЕННАЯ РАСШИФРОВКА ---
+let messageText;
 
 if (message.encrypted) {
     try {
         // Пытаемся расшифровать сообщение
         const decrypted = hypebitCrypto.decryptMessage(
-            message.text, 
-            this.currentChatId, 
-            message.senderId  // ВАЖНО: используем ID отправителя!
+            message.text,
+            this.currentChatId,
+            message.senderId
         );
-        
-        // Проверяем результат расшифровки
+
+        // Проверяем результат
         if (decrypted && decrypted !== message.text && decrypted.trim() !== '') {
-            messageText = decrypted;  // Всё хорошо, показываем текст
-            console.log('✅ Message decrypted successfully');
+            messageText = decrypted;
+            console.log('✅ Успешно расшифровано');
         } else {
-            // Если расшифровка не удалась, показываем заглушку
             messageText = '💬 Сообщение';
-            console.warn('⚠️ Empty decryption result for message:', messageId);
+            console.warn('⚠️ Пустое сообщение');
         }
     } catch (error) {
-        // При ошибке тоже показываем заглушку
-        console.error('❌ Decryption error:', error);
+        console.error('❌ Ошибка расшифровки:', error);
         messageText = '💬 Сообщение';
     }
 } else {
-    // Если сообщение не зашифровано
     messageText = message.text || '💬 Сообщение';
 }
-
-            // ========== НОВЫЙ ПОИСК ПОЛЬЗОВАТЕЛЕЙ ==========
-            async searchAllUsers(query) {
-                if (!query.trim()) {
-                    document.getElementById('search-sidebar').classList.remove('active');
-                    return;
-                }
-
-                document.getElementById('search-sidebar').classList.add('active');
-                const resultsContainer = document.getElementById('search-results');
-                resultsContainer.innerHTML = '<div style="color: #9CA3AF; text-align: center; padding: 20px;"><i class="fas fa-spinner fa-spin"></i> Searching...</div>';
-
-                try {
-                    const snapshot = await db.collection('users')
-                        .where('username', '>=', query)
-                        .where('username', '<=', query + '\uf8ff')
-                        .limit(20)
-                        .get();
-
-                    if (snapshot.empty) {
-                        resultsContainer.innerHTML = `
-                            <div style="color: #9CA3AF; text-align: center; padding: 20px;">
-                                No users found
-                            </div>
-                        `;
-                        return;
-                    }
-
-                    let html = '';
-                    snapshot.forEach(doc => {
-                        if (doc.id !== this.currentUser.uid) {
-                            const user = doc.data();
-                            const firstLetter = user.username.charAt(0).toUpperCase();
-                            
-                            html += `
-                                <div class="search-result-item" onclick="app.createPrivateChat('${doc.id}')">
-                                    <div style="display: flex; align-items: center;">
-                                        <div class="search-result-avatar">${firstLetter}</div>
-                                        <div class="search-result-info">
-                                            <div class="search-result-name">${user.username}</div>
-                                            <div class="search-result-email">${user.email}</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            `;
-                        }
-                    });
-
-                    resultsContainer.innerHTML = html;
-                } catch (error) {
-                    console.error('Error searching users:', error);
-                    resultsContainer.innerHTML = `
-                        <div style="color: #EF4444; text-align: center; padding: 20px;">
-                            Error searching users
-                        </div>
-                    `;
-                }
-            }
-
             // ========== ОТПРАВКА СООБЩЕНИЙ ==========
             async sendMessage() {
                 const input = document.getElementById('message-input');
