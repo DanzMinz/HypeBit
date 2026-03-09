@@ -3472,42 +3472,57 @@ loadMessages(chatId) {
         console.error('❌ Fatal error:', error);
     }
 }
-            <!-- ========== 2.10 ОТОБРАЖЕНИЕ СООБЩЕНИЙ (УПРОЩЕНО) ========== -->
-            displayMessage(message, messageId) {
-                const container = document.getElementById('messages-container');
-                if (!container || document.getElementById(`msg-${messageId}`)) return;
-                
-                const isOutgoing = message.senderId === this.currentUser.uid;
-                
-                let text = message.text;
-                if (message.encrypted) {
-                    try {
-                        text = hypebitCrypto.decryptMessage(message.text, this.currentChatId, message.senderId) || '💬';
-                    } catch {
-                        text = '💬';
-                    }
+           // ========== 2.10 ОТОБРАЖЕНИЕ СООБЩЕНИЙ (С НИКАМИ) ==========
+displayMessage(message, messageId) {
+    const container = document.getElementById('messages-container');
+    if (!container || document.getElementById(`msg-${messageId}`)) return;
+    
+    const isOutgoing = message.senderId === this.currentUser.uid;
+    
+    // Расшифровка
+    let text = message.text;
+    if (message.encrypted) {
+        try {
+            text = hypebitCrypto.decryptMessage(message.text, this.currentChatId, message.senderId) || '💬';
+        } catch {
+            text = '💬';
+        }
+    }
+    
+    // Создаём сообщение
+    const div = document.createElement('div');
+    div.className = `message ${isOutgoing ? 'outgoing' : 'incoming'}`;
+    div.id = `msg-${messageId}`;
+    
+    // Добавляем ник для групп и каналов
+    let senderHtml = '';
+    if (!isOutgoing && this.currentChatType !== 'private') {
+        // Асинхронно подгружаем имя пользователя
+        this.getUserData(message.senderId).then(userData => {
+            const senderSpan = document.getElementById(`sender-${messageId}`);
+            if (senderSpan && userData) {
+                senderSpan.textContent = userData.username;
+                if (userData.usernameColor) {
+                    senderSpan.style.color = this.getColorCode(userData.usernameColor);
                 }
-                
-                const div = document.createElement('div');
-                div.className = `message ${isOutgoing ? 'outgoing' : 'incoming'}`;
-                div.id = `msg-${messageId}`;
-                div.innerHTML = `
-                    <div class="message-content">
-                        ${text}
-                        <div class="message-time">
-                            ${message.timestamp ? this.formatTime(message.timestamp.toDate()) : ''}
-                        </div>
-                    </div>
-                `;
-                
-                container.appendChild(div);
             }
-
-            isPremiumReaction(emoji) {
-                const premium = ['👑', '🦄', '🚀', '💎', '🌈', '⚡'];
-                return premium.includes(emoji);
-            }
-
+        });
+        senderHtml = `<div class="message-sender" id="sender-${messageId}">Loading...</div>`;
+    }
+    
+    div.innerHTML = `
+        <div class="message-content">
+            ${senderHtml}
+            <div class="message-text">${text}</div>
+            <div class="message-time">
+                ${message.timestamp ? this.formatTime(message.timestamp.toDate()) : ''}
+            </div>
+        </div>
+    `;
+    
+    container.appendChild(div);
+    container.scrollTop = container.scrollHeight;
+}
             <!-- ========== 2.11 ПОИСК ПОЛЬЗОВАТЕЛЕЙ ========== -->
             async searchAllUsers(query) {
                 if (!query.trim()) {
@@ -4835,6 +4850,7 @@ loadMessages(chatId) {
 </body>
 </html>
 <!-- КОНЕЦ ЧАСТИ 3/3 -->ы
+
 
 
 
