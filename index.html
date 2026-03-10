@@ -8,12 +8,6 @@
     <!-- Favicon -->
     <link rel="icon" href="https://ui-avatars.com/api/?name=H&background=1E2A47&color=3B82F6&size=64">
     
-    <!-- PWA Support -->
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#3B82F6">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    
     <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
@@ -100,7 +94,7 @@
         .username-color-gold { color: #F59E0B !important; }
         .username-color-pink { color: #EC4899 !important; }
 
-        /* Улучшенный экран загрузки */
+        /* Экран загрузки */
         .loading-screen {
             position: fixed;
             top: 0;
@@ -644,9 +638,8 @@
             color: #3B82F6;
         }
 
-        .call-btn {
-            background: #10B981 !important;
-            color: white !important;
+        .attach-btn {
+            display: none;
         }
 
         .messages-container {
@@ -730,7 +723,12 @@
             font-weight: 600;
             margin-bottom: 3px;
             color: #3B82F6;
+            display: block;
             cursor: pointer;
+        }
+
+        .message-sender:hover {
+            opacity: 0.8;
         }
 
         .message-text {
@@ -755,7 +753,7 @@
             gap: 10px;
         }
 
-        .emoji-btn, .attach-btn {
+        .emoji-btn {
             background: transparent;
             border: none;
             color: #9CA3AF;
@@ -771,7 +769,7 @@
             flex-shrink: 0;
         }
 
-        .emoji-btn:hover, .attach-btn:hover {
+        .emoji-btn:hover {
             background: rgba(59, 130, 246, 0.2);
             color: #3B82F6;
         }
@@ -1025,115 +1023,6 @@
             font-weight: 500;
             font-size: 14px;
             flex: 1;
-        }
-
-        /* Call Modal */
-        .call-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.9);
-            backdrop-filter: blur(10px);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 3000;
-        }
-
-        .call-modal.active {
-            display: flex;
-        }
-
-        .call-container {
-            background: rgba(30, 42, 71, 0.95);
-            border-radius: 30px;
-            padding: 25px;
-            width: 90%;
-            max-width: 350px;
-            text-align: center;
-            border: 1px solid #3B82F6;
-            box-shadow: 0 0 30px rgba(59, 130, 246, 0.3);
-        }
-
-        .call-avatar {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            margin: 0 auto 15px;
-            border: 3px solid #3B82F6;
-            overflow: hidden;
-        }
-
-        .call-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .call-name {
-            color: white;
-            font-size: 20px;
-            font-weight: 700;
-            margin-bottom: 8px;
-        }
-
-        .call-status {
-            color: #9CA3AF;
-            font-size: 14px;
-            margin-bottom: 20px;
-        }
-
-        .call-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-        }
-
-        .call-button {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            border: none;
-            cursor: pointer;
-            font-size: 20px;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .call-button.accept {
-            background: #10B981;
-            color: white;
-        }
-
-        .call-button.accept:hover {
-            background: #059669;
-            transform: scale(1.1);
-        }
-
-        .call-button.reject {
-            background: #EF4444;
-            color: white;
-        }
-
-        .call-button.reject:hover {
-            background: #DC2626;
-        }
-
-        .call-button.mute {
-            background: #4B5563;
-            color: white;
-        }
-
-        .call-button.mute:hover {
-            background: #6B7280;
-        }
-
-        .call-button.mute.active {
-            background: #F59E0B;
         }
 
         /* Profile */
@@ -1436,7 +1325,6 @@
 
         /* ========== МОБИЛЬНАЯ ОПТИМИЗАЦИЯ ========== */
         @media (max-width: 768px) {
-            /* Ускорение анимаций */
             * {
                 transition-duration: 0.15s !important;
             }
@@ -1507,7 +1395,7 @@
                 gap: 8px;
             }
             
-            .emoji-btn, .attach-btn {
+            .emoji-btn {
                 width: 36px;
                 height: 36px;
                 font-size: 18px;
@@ -1587,15 +1475,12 @@
                 padding: 12px;
             }
             
-            /* Крупные кнопки для касания */
             .chat-item,
             .user-item,
             .profile-actions button,
             .chat-actions button,
             .emoji-btn,
-            .attach-btn,
             .send-btn,
-            .call-button,
             .shop-item-btn,
             .auth-btn,
             .profile-tab {
@@ -1603,12 +1488,6 @@
                 min-width: 44px;
             }
             
-            /* Убираем лишние тени */
-            .message-actions {
-                display: none !important;
-            }
-            
-            /* Быстрая прокрутка */
             .messages-container {
                 -webkit-overflow-scrolling: touch;
             }
@@ -1617,7 +1496,6 @@
                 -webkit-overflow-scrolling: touch;
             }
             
-            /* Модалки */
             .modal-content {
                 width: 95%;
                 max-height: 80vh;
@@ -1634,7 +1512,6 @@
                 padding: 10px;
             }
             
-            /* Профиль */
             .profile-avatar-large {
                 width: 70px;
                 height: 70px;
@@ -1661,7 +1538,6 @@
                 font-size: 12px;
             }
             
-            /* Магазин */
             .shop-item {
                 padding: 10px;
                 gap: 10px;
@@ -1686,7 +1562,6 @@
                 font-size: 11px;
             }
             
-            /* Поиск */
             .search-sidebar {
                 width: 100%;
             }
@@ -1709,30 +1584,8 @@
             .search-result-email {
                 font-size: 11px;
             }
-            
-            /* Звонки */
-            .call-container {
-                width: 95%;
-                padding: 20px;
-            }
-            
-            .call-avatar {
-                width: 70px;
-                height: 70px;
-            }
-            
-            .call-name {
-                font-size: 18px;
-            }
-            
-            .call-button {
-                width: 45px;
-                height: 45px;
-                font-size: 18px;
-            }
         }
 
-        /* Для очень маленьких экранов */
         @media (max-width: 480px) {
             .chat-header .chat-info {
                 gap: 8px;
@@ -1780,8 +1633,385 @@
         }
     </style>
 </head>
+<body class="theme-dark">
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="loading-screen">
+        <div class="loader"></div>
+        <div class="loading-text">HYPEBIT</div>
+    </div>
+
+    <!-- Auth Container -->
+    <div id="auth-container" class="auth-container active">
+        <div class="auth-card">
+            <div class="auth-header">
+                <h1>HYPEBIT</h1>
+                <p>Messenger</p>
+            </div>
+            
+            <!-- Login Form -->
+            <form id="login-form" class="auth-form active">
+                <div class="input-group">
+                    <i class="fas fa-envelope"></i>
+                    <input type="email" id="login-email" placeholder="Email" required>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="login-password" placeholder="Password" required>
+                </div>
+                <button type="submit" class="auth-btn">Sign In</button>
+                <p class="auth-switch">
+                    Don't have an account? <a href="#" id="show-register">Sign Up</a>
+                </p>
+            </form>
+            
+            <!-- Register Form -->
+            <form id="register-form" class="auth-form">
+                <div class="input-group">
+                    <i class="fas fa-user"></i>
+                    <input type="text" id="register-username" placeholder="Username" required>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-envelope"></i>
+                    <input type="email" id="register-email" placeholder="Email" required>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="register-password" placeholder="Password" required>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="register-confirm" placeholder="Confirm Password" required>
+                </div>
+                <button type="submit" class="auth-btn">Create Account</button>
+                <p class="auth-switch">
+                    Already have an account? <a href="#" id="show-login">Sign In</a>
+                </p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main App Container -->
+    <div id="app-container" class="app-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="user-profile" id="profile-click">
+                <div class="avatar" id="user-avatar">
+                    <img src="https://ui-avatars.com/api/?name=H&background=1E2A47&color=3B82F6&size=48" alt="avatar">
+                </div>
+                <div class="user-info">
+                    <div class="username" id="username">Loading...</div>
+                    <div class="status" id="user-status">Online</div>
+                    <div class="points-badge" id="points-badge">
+                        <i class="fas fa-star"></i> <span id="points-count">0</span>
+                    </div>
+                </div>
+                <div class="profile-actions">
+                    <button id="profile-btn" title="Profile"><i class="fas fa-user"></i></button>
+                    <button id="shop-btn" title="Shop"><i class="fas fa-shopping-cart"></i></button>
+                    <button id="new-chat-btn" title="New Chat"><i class="fas fa-edit"></i></button>
+                    <button id="new-group-btn" title="New Group"><i class="fas fa-users"></i></button>
+                    <button id="new-channel-btn" title="New Channel"><i class="fas fa-bullhorn"></i></button>
+                    <button id="logout-btn" title="Logout"><i class="fas fa-sign-out-alt"></i></button>
+                </div>
+            </div>
+            
+            <div class="search-container">
+                <i class="fas fa-search"></i>
+                <input type="text" id="user-search-input" placeholder="Search users...">
+            </div>
+            
+            <div class="chats-list" id="chats-list">
+                <div style="color: #9CA3AF; text-align: center; padding: 20px;">
+                    <i class="fas fa-spinner fa-spin"></i> Loading...
+                </div>
+            </div>
+        </div>
+        
+        <!-- Chat Area -->
+        <div class="chat-area">
+            <div class="chat-header" id="chat-header" style="display: none;">
+                <div class="chat-info">
+                    <div class="chat-avatar" id="chat-avatar">
+                        <div class="chat-avatar official">⭐</div>
+                    </div>
+                    <div class="chat-details">
+                        <div class="chat-name" id="current-chat-name">
+                            Select a chat
+                            <i class="fas fa-chevron-down" id="chat-info-icon"></i>
+                        </div>
+                        <div class="chat-status" id="chat-status"></div>
+                    </div>
+                </div>
+                <div class="chat-actions">
+                    <button id="attach-btn" title="Attach file" style="display: none;">
+                        <i class="fas fa-paperclip"></i>
+                    </button>
+                    <input type="file" id="file-input" style="display: none;" accept="image/*,video/*,application/pdf,text/plain">
+                    <button id="search-chat-btn" title="Search"><i class="fas fa-search"></i></button>
+                    <button id="chat-info-btn" title="Info"><i class="fas fa-info-circle"></i></button>
+                </div>
+            </div>
+            
+            <div class="typing-indicator" id="typing-indicator">
+                <span>Typing</span>
+                <div class="typing-dots">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+            
+            <div class="messages-container" id="messages-container">
+                <div class="welcome-message">
+                    <i class="fas fa-comments"></i>
+                    <h3>Welcome to HYPEBIT</h3>
+                    <p>Select a chat to start messaging</p>
+                </div>
+            </div>
+            
+            <div class="message-input-area" id="message-input-area" style="display: none;">
+                <button class="emoji-btn" id="emoji-btn" title="Emoji"><i class="fas fa-smile"></i></button>
+                
+                <div class="input-wrapper">
+                    <textarea id="message-input" placeholder="Write a message..." rows="1"></textarea>
+                </div>
+                
+                <button class="send-btn" id="send-btn" title="Send" disabled><i class="fas fa-paper-plane"></i></button>
+            </div>
+        </div>
+        
+        <!-- Search Sidebar -->
+        <div class="search-sidebar" id="search-sidebar">
+            <div class="search-header">
+                <h3>User Search Results</h3>
+                <button id="close-search"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="search-results" id="search-results"></div>
+        </div>
+        
+        <!-- Profile Modal -->
+        <div class="modal" id="profile-modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>My Profile</h3>
+                    <button class="close-modal"><i class="fas fa-times"></i></button>
+                </div>
+                <div class="modal-body">
+                    <div class="profile-tabs">
+                        <div class="profile-tab active" data-tab="main">Main</div>
+                        <div class="profile-tab" data-tab="appearance">Appearance</div>
+                        <div class="profile-tab" data-tab="stats">Statistics</div>
+                    </div>
+                    
+                    <div class="profile-section active" id="profile-main">
+                        <div class="profile-header">
+                            <div class="profile-avatar-large" id="profile-avatar-large">
+                                <img src="https://ui-avatars.com/api/?name=H&background=1E2A47&color=3B82F6&size=100" alt="avatar">
+                            </div>
+                        </div>
+                        
+                        <label>Username</label>
+                        <input type="text" id="profile-username" placeholder="Username">
+                        
+                        <label>Bio</label>
+                        <textarea id="profile-bio" placeholder="Tell something about yourself..." rows="3"></textarea>
+                        
+                        <label>Status</label>
+                        <select id="profile-status">
+                            <option value="online">Online</option>
+                            <option value="away">Away</option>
+                            <option value="busy">Busy</option>
+                            <option value="offline">Offline</option>
+                        </select>
+                        
+                        <button class="auth-btn" id="save-profile">Save Changes</button>
+                    </div>
+                    
+                    <div class="profile-section" id="profile-appearance">
+                        <h4 style="color: white; margin-bottom: 15px;">Username Color</h4>
+                        <div class="color-options" id="color-options">
+                            <div class="color-option color-blue" data-color="blue"></div>
+                            <div class="color-option color-red" data-color="red"></div>
+                            <div class="color-option color-green" data-color="green"></div>
+                            <div class="color-option color-purple" data-color="purple"></div>
+                            <div class="color-option color-gold" data-color="gold"></div>
+                            <div class="color-option color-pink" data-color="pink"></div>
+                        </div>
+                        
+                        <h4 style="color: white; margin: 20px 0 15px;">Theme</h4>
+                        <div class="theme-options" id="theme-options">
+                            <div class="theme-option" data-theme="dark">
+                                <i class="fas fa-moon"></i>
+                                <span>Dark</span>
+                            </div>
+                            <div class="theme-option" data-theme="forest">
+                                <i class="fas fa-tree"></i>
+                                <span>Forest</span>
+                            </div>
+                            <div class="theme-option" data-theme="space">
+                                <i class="fas fa-rocket"></i>
+                                <span>Space</span>
+                            </div>
+                            <div class="theme-option" data-theme="light">
+                                <i class="fas fa-sun"></i>
+                                <span>Light</span>
+                            </div>
+                            <div class="theme-option" data-theme="mountain">
+                                <i class="fas fa-mountain"></i>
+                                <span>Mountain</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="profile-section" id="profile-stats">
+                        <div class="profile-stats">
+                            <div class="stat-item">
+                                <div class="stat-value" id="stat-messages">0</div>
+                                <div class="stat-label">Messages</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value" id="stat-points">0</div>
+                                <div class="stat-label">Points</div>
+                            </div>
+                        </div>
+                        
+                        <div class="profile-stats">
+                            <div class="stat-item">
+                                <div class="stat-value" id="stat-chats">0</div>
+                                <div class="stat-label">Chats</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value" id="stat-groups">0</div>
+                                <div class="stat-label">Groups</div>
+                            </div>
+                        </div>
+                        
+                        <div class="profile-stats">
+                            <div class="stat-item">
+                                <div class="stat-value" id="stat-files">0</div>
+                                <div class="stat-label">Files</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value" id="stat-joined">-</div>
+                                <div class="stat-label">Joined</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Shop Modal -->
+        <div class="modal" id="shop-modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Points Shop</h3>
+                    <button class="close-modal"><i class="fas fa-times"></i></button>
+                </div>
+                <div class="modal-body">
+                    <div class="points-display">
+                        <div class="points-amount" id="shop-points">0</div>
+                        <div class="points-label">Available Points</div>
+                    </div>
+                    
+                    <div class="shop-items" id="shop-items"></div>
+                    
+                    <p style="color: #9CA3AF; font-size: 12px; text-align: center; margin-top: 20px;">
+                        <i class="fas fa-info-circle"></i> 1 point = 120 messages
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- New Chat Modal -->
+        <div class="modal" id="new-chat-modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>New Message</h3>
+                    <button class="close-modal"><i class="fas fa-times"></i></button>
+                </div>
+                <div class="modal-body">
+                    <input type="text" id="user-search" placeholder="Search users...">
+                    <div class="users-list" id="users-list"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- New Group Modal -->
+        <div class="modal" id="new-group-modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Create Group</h3>
+                    <button class="close-modal"><i class="fas fa-times"></i></button>
+                </div>
+                <div class="modal-body">
+                    <input type="text" id="group-name" placeholder="Group name" required>
+                    <textarea id="group-description" placeholder="Group description (optional)" rows="3"></textarea>
+                    
+                    <h4 style="color: white; margin-bottom: 10px;">Add Members</h4>
+                    <input type="text" id="group-user-search" placeholder="Search users...">
+                    <div class="users-list" id="group-users-list"></div>
+                    
+                    <button class="auth-btn" id="create-group-btn">Create Group</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- New Channel Modal -->
+        <div class="modal" id="new-channel-modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Create Channel</h3>
+                    <button class="close-modal"><i class="fas fa-times"></i></button>
+                </div>
+                <div class="modal-body">
+                    <input type="text" id="channel-name" placeholder="Channel name" required>
+                    <textarea id="channel-description" placeholder="Channel description" rows="3"></textarea>
+                    
+                    <h4 style="color: white; margin-bottom: 10px;">Channel Settings</h4>
+                    <label>
+                        <input type="checkbox" id="channel-private"> Private channel
+                    </label>
+                    
+                    <label style="margin-top: 10px;">
+                        <input type="checkbox" id="channel-restricted"> Only admins can post
+                    </label>
+                    
+                    <button class="auth-btn" id="create-channel-btn" style="margin-top: 20px;">Create Channel</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Chat Info Modal -->
+        <div class="modal" id="chat-info-modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 id="info-title">Chat Info</h3>
+                    <button class="close-modal"><i class="fas fa-times"></i></button>
+                </div>
+                <div class="modal-body" id="chat-info-body"></div>
+            </div>
+        </div>
+        
+        <!-- Add Member Modal -->
+        <div class="modal" id="add-member-modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Add Members</h3>
+                    <button class="close-modal"><i class="fas fa-times"></i></button>
+                </div>
+                <div class="modal-body">
+                    <input type="text" id="add-member-search" placeholder="Search users...">
+                    <div class="users-list" id="add-member-list"></div>
+                    <button class="auth-btn" id="add-member-btn">Add Selected</button>
+                </div>
+            </div>
+        </div>
+    </div>
 <!-- КОНЕЦ ЧАСТИ 1/3 -->
 <!-- ЧАСТЬ 2/3 - FIREBASE И ЛОГИКА -->
+
+   <!-- ЧАСТЬ 2/3 - FIREBASE И ЛОГИКА (БЕЗ ЗВОНКОВ) -->
 
     <!-- ========== 2.1 FIREBASE CONFIG & CRYPTO ========== -->
     <script>
@@ -1869,18 +2099,7 @@
 
         const hypebitCrypto = new HypebitCrypto();
 
-        <!-- ========== 2.2 WEBRTC (ЗВОНКИ) ========== -->
-        const callConfig = {
-            iceServers: [
-                { urls: 'stun:stun.l.google.com:19302' },
-                { urls: 'stun:stun1.l.google.com:19302' },
-                { urls: 'stun:stun2.l.google.com:19302' },
-                { urls: 'stun:stun3.l.google.com:19302' },
-                { urls: 'stun:stun4.l.google.com:19302' }
-            ]
-        };
-
-        <!-- ========== 2.3 ОСНОВНОЙ КЛАСС ========== -->
+        <!-- ========== 2.2 ОСНОВНОЙ КЛАСС ========== -->
         class HypebitApp {
             constructor() {
                 this.currentUser = null;
@@ -1899,20 +2118,10 @@
                 this.userMessages = 0;
                 this.userData = null;
                 
-                // Call related
-                this.peerConnection = null;
-                this.localStream = null;
-                this.remoteStream = null;
-                this.currentCall = null;
-                this.callListener = null;
-                this.isCallActive = false;
-                this.isMuted = false;
-                this.isVideoEnabled = false;
-                
                 this.init();
             }
 
-            <!-- ========== 2.4 ИНИЦИАЛИЗАЦИЯ ========== -->
+            <!-- ========== 2.3 ИНИЦИАЛИЗАЦИЯ ========== -->
             init() {
                 this.updateLoadingProgress(10, 'Connecting...');
                 
@@ -1930,7 +2139,6 @@
                         this.updateLoadingProgress(90, 'Setting up...');
                         await this.updateUserStatus('online');
                         await this.ensureOfficialChat();
-                        this.listenForCalls();
                         
                         this.updateLoadingProgress(100, 'Welcome!');
                         setTimeout(() => this.showApp(), 500);
@@ -1940,7 +2148,6 @@
                     }
                 });
 
-                // Event listeners (сокращено для читаемости)
                 this.setupEventListeners();
             }
 
@@ -2028,10 +2235,7 @@
                     }
                 });
 
-                // Call & File
-                document.getElementById('call-btn')?.addEventListener('click', () => {
-                    this.startCall();
-                });
+                // File
                 document.getElementById('attach-btn')?.addEventListener('click', () => {
                     document.getElementById('file-input')?.click();
                 });
@@ -2127,7 +2331,7 @@
                 }
             }
 
-            <!-- ========== 2.5 АВТОРИЗАЦИЯ ========== -->
+            <!-- ========== 2.4 АВТОРИЗАЦИЯ ========== -->
             async register() {
                 const username = document.getElementById('register-username').value;
                 const email = document.getElementById('register-email').value;
@@ -2189,7 +2393,6 @@
                             status: 'offline',
                             lastSeen: firebase.firestore.FieldValue.serverTimestamp()
                         });
-                        if (this.isCallActive) this.endCall();
                     }
                     this.cleanupListeners();
                     await auth.signOut();
@@ -2209,8 +2412,7 @@
             cleanupListeners() {
                 if (this.chatsListener) this.chatsListener();
                 if (this.messagesListener) this.messagesListener();
-                if (this.callListener) this.callListener();
-                this.chatsListener = this.messagesListener = this.callListener = null;
+                this.chatsListener = this.messagesListener = null;
             }
 
             showApp() {
@@ -2225,7 +2427,7 @@
                 document.getElementById('loading-screen').classList.add('hidden');
             }
 
-            <!-- ========== 2.6 ЗАГРУЗКА ДАННЫХ ========== -->
+            <!-- ========== 2.5 ЗАГРУЗКА ДАННЫХ ========== -->
             async loadUserData(user) {
                 try {
                     const userDoc = await db.collection('users').doc(user.uid).get();
@@ -2307,7 +2509,7 @@
                 }
             }
 
-            <!-- ========== 2.7 ЗАГРУЗКА ЧАТОВ ========== -->
+            <!-- ========== 2.6 ЗАГРУЗКА ЧАТОВ ========== -->
             loadChats() {
                 const chatsList = document.getElementById('chats-list');
                 if (!chatsList) return;
@@ -2430,7 +2632,7 @@
                 return date.toLocaleDateString([], { day: '2-digit', month: '2-digit' });
             }
 
-            <!-- ========== 2.8 ВЫБОР ЧАТА ========== -->
+            <!-- ========== 2.7 ВЫБОР ЧАТА ========== -->
             async selectChat(chatId, type) {
                 console.log('Selecting chat:', chatId, type);
                 this.currentChatId = chatId;
@@ -2442,9 +2644,7 @@
                 document.getElementById('chat-header')?.style ? (document.getElementById('chat-header').style.display = 'flex') : null;
                 document.getElementById('message-input-area')?.style ? (document.getElementById('message-input-area').style.display = type === 'channel' ? 'none' : 'flex') : null;
 
-                const callBtn = document.getElementById('call-btn');
                 const attachBtn = document.getElementById('attach-btn');
-                if (callBtn) callBtn.style.display = type === 'private' ? 'inline-flex' : 'none';
                 if (attachBtn) attachBtn.style.display = type !== 'channel' ? 'inline-flex' : 'none';
                 
                 try {
@@ -2488,145 +2688,102 @@
                     alert('Error loading chat: ' + error.message);
                 }
             }
-        // ========== 2.9 ЗАГРУЗКА СООБЩЕНИЙ (СУПЕР-БЫСТРАЯ) ==========
-loadMessages(chatId) {
-    console.log('📂 loadMessages for:', chatId);
-    
-    // Отписываемся от предыдущего чата
-    if (this.messagesListener) {
-        this.messagesListener();
-        this.messagesListener = null;
-    }
-    
-    const container = document.getElementById('messages-container');
-    if (!container) return;
-    
-    // Показываем загрузку ТОЛЬКО если контейнер пуст
-    if (container.children.length === 0) {
-        container.innerHTML = '<div class="loading-spinner"></div>';
-    }
-    
-    // Загружаем сообщения
-    this.messagesListener = db.collection('chats').doc(chatId)
-        .collection('messages')
-        .orderBy('timestamp', 'asc')
-        .onSnapshot((snapshot) => {
-            if (snapshot.empty) {
-                container.innerHTML = '<div class="empty-chat">No messages yet</div>';
-                return;
-            }
 
-            // Очищаем контейнер только при первой загрузке
-            if (container.children.length === 1 && container.children[0].className === 'loading-spinner') {
-                container.innerHTML = '';
-            }
-
-            snapshot.docChanges().forEach(change => {
-                if (change.type === 'added') {
-                    // Не добавляем дубликаты
-                    if (document.getElementById(`msg-${change.doc.id}`)) return;
-                    
-                    const msg = change.doc.data();
-                    
-                    // Быстрая расшифровка
-                    let text = msg.text;
-                    if (msg.encrypted) {
-                        try {
-                            text = hypebitCrypto.decryptMessage(msg.text, chatId, msg.senderId) || '💬';
-                        } catch {
-                            text = '💬';
+            <!-- ========== 2.8 ЗАГРУЗКА СООБЩЕНИЙ (ОПТИМИЗИРОВАННАЯ) ========== -->
+            loadMessages(chatId) {
+                console.log('📂 loadMessages for:', chatId);
+                
+                if (this.messagesListener) {
+                    this.messagesListener();
+                    this.messagesListener = null;
+                }
+                
+                const container = document.getElementById('messages-container');
+                if (!container) return;
+                
+                if (container.children.length === 0 || (container.children.length === 1 && container.children[0].className === 'loading-spinner')) {
+                    container.innerHTML = '<div class="loading-spinner"></div>';
+                }
+                
+                this.messagesListener = db.collection('chats').doc(chatId)
+                    .collection('messages')
+                    .orderBy('timestamp', 'asc')
+                    .onSnapshot((snapshot) => {
+                        if (snapshot.empty) {
+                            container.innerHTML = '<div class="empty-chat">No messages yet</div>';
+                            return;
                         }
-                    }
-                    
-                    // Создаём элемент (используем DocumentFragment для скорости)
-                    const isOutgoing = msg.senderId === this.currentUser.uid;
-                    const div = document.createElement('div');
-                    div.className = `message ${isOutgoing ? 'outgoing' : 'incoming'}`;
-                    div.id = `msg-${change.doc.id}`;
-                    
-                    // Добавляем ник для групп
-                    let senderHtml = '';
-                    if (!isOutgoing && this.currentChatType !== 'private') {
-                        this.getUserData(msg.senderId).then(userData => {
-                            const senderSpan = document.getElementById(`sender-${change.doc.id}`);
-                            if (senderSpan && userData) {
-                                senderSpan.textContent = userData.username;
+
+                        if (container.children.length === 1 && container.children[0].className === 'loading-spinner') {
+                            container.innerHTML = '';
+                        }
+
+                        snapshot.docChanges().forEach(change => {
+                            if (change.type === 'added') {
+                                if (document.getElementById(`msg-${change.doc.id}`)) return;
+                                
+                                const msg = change.doc.data();
+                                
+                                let text = msg.text;
+                                if (msg.encrypted) {
+                                    try {
+                                        text = hypebitCrypto.decryptMessage(msg.text, chatId, msg.senderId) || '💬';
+                                    } catch {
+                                        text = '💬';
+                                    }
+                                }
+                                
+                                const isOutgoing = msg.senderId === this.currentUser.uid;
+                                const div = document.createElement('div');
+                                div.className = `message ${isOutgoing ? 'outgoing' : 'incoming'}`;
+                                div.id = `msg-${change.doc.id}`;
+                                
+                                let senderHtml = '';
+                                if (!isOutgoing && this.currentChatType !== 'private') {
+                                    this.getUserData(msg.senderId).then(userData => {
+                                        const senderSpan = document.getElementById(`sender-${change.doc.id}`);
+                                        if (senderSpan && userData) {
+                                            senderSpan.textContent = userData.username;
+                                            if (userData.usernameColor) {
+                                                senderSpan.style.color = this.getColorCode(userData.usernameColor);
+                                            }
+                                        }
+                                    });
+                                    senderHtml = `<span class="message-sender" id="sender-${change.doc.id}">...</span>`;
+                                }
+                                
+                                div.innerHTML = `
+                                    ${senderHtml}
+                                    <div class="message-text">${text}</div>
+                                    <div class="message-time">
+                                        ${msg.timestamp ? this.formatTime(msg.timestamp.toDate()) : ''}
+                                    </div>
+                                `;
+                                
+                                container.appendChild(div);
                             }
                         });
-                        senderHtml = `<span class="message-sender" id="sender-${change.doc.id}">...</span>`;
-                    }
-                    
-                    div.innerHTML = `
-                        ${senderHtml}
-                        <div class="message-text">${text}</div>
-                        <div class="message-time">
-                            ${msg.timestamp ? this.formatTime(msg.timestamp.toDate()) : ''}
-                        </div>
-                    `;
-                    
-                    container.appendChild(div);
-                }
-            });
-            
-            // Плавная прокрутка
-            container.scrollTo({
-                top: container.scrollHeight,
-                behavior: 'smooth'
-            });
-        });
-}
-           // ========== 2.10 ОТОБРАЖЕНИЕ СООБЩЕНИЙ (С НИКАМИ) ==========
-displayMessage(message, messageId) {
-    const container = document.getElementById('messages-container');
-    if (!container || document.getElementById(`msg-${messageId}`)) return;
-    
-    const isOutgoing = message.senderId === this.currentUser.uid;
-    
-    // Расшифровка сообщения
-    let text = message.text;
-    if (message.encrypted) {
-        try {
-            text = hypebitCrypto.decryptMessage(message.text, this.currentChatId, message.senderId) || '💬';
-        } catch {
-            text = '💬';
-        }
-    }
-    
-    // Создаём элемент сообщения
-    const div = document.createElement('div');
-    div.className = `message ${isOutgoing ? 'outgoing' : 'incoming'}`;
-    div.id = `msg-${messageId}`;
-    
-    // ===== ПОКАЗ НИКОВ ДЛЯ ГРУПП И КАНАЛОВ =====
-    let senderHtml = '';
-    if (!isOutgoing && this.currentChatType !== 'private') {
-        // Асинхронно подгружаем имя отправителя
-        this.getUserData(message.senderId).then(userData => {
-            const senderSpan = document.getElementById(`sender-${messageId}`);
-            if (senderSpan && userData) {
-                senderSpan.textContent = userData.username;
-                // Добавляем цвет ника, если куплен
-                if (userData.usernameColor) {
-                    senderSpan.style.color = this.getColorCode(userData.usernameColor);
-                }
+                        
+                        container.scrollTo({
+                            top: container.scrollHeight,
+                            behavior: 'smooth'
+                        });
+                    });
             }
-        });
-        senderHtml = `<span class="message-sender" id="sender-${messageId}">...</span>`;
-    }
-    
-    // Собираем HTML
-    div.innerHTML = `
-        ${senderHtml}
-        <div class="message-text">${text}</div>
-        <div class="message-time">
-            ${message.timestamp ? this.formatTime(message.timestamp.toDate()) : ''}
-        </div>
-    `;
-    
-    container.appendChild(div);
-    container.scrollTop = container.scrollHeight;
-}
-            <!-- ========== 2.11 ПОИСК ПОЛЬЗОВАТЕЛЕЙ ========== -->
+
+            getColorCode(color) {
+                const colors = {
+                    blue: '#3B82F6',
+                    red: '#EF4444',
+                    green: '#10B981',
+                    purple: '#8B5CF6',
+                    gold: '#F59E0B',
+                    pink: '#EC4899'
+                };
+                return colors[color] || 'white';
+            }
+
+            <!-- ========== 2.9 ПОИСК ПОЛЬЗОВАТЕЛЕЙ ========== -->
             async searchAllUsers(query) {
                 if (!query.trim()) {
                     document.getElementById('search-sidebar')?.classList.remove('active');
@@ -2677,7 +2834,7 @@ displayMessage(message, messageId) {
                 }
             }
 
-            <!-- ========== 2.12 ОТПРАВКА СООБЩЕНИЙ (УПРОЩЕНО) ========== -->
+            <!-- ========== 2.10 ОТПРАВКА СООБЩЕНИЙ ========== -->
             async sendMessage() {
                 const input = document.getElementById('message-input');
                 const text = input.value.trim();
@@ -2699,8 +2856,33 @@ displayMessage(message, messageId) {
                         lastMessageTime: firebase.firestore.FieldValue.serverTimestamp()
                     });
                     
+                    const newCount = (this.userMessages || 0) + 1;
+                    const oldPoints = this.userPoints || 0;
+                    const newPoints = Math.floor(newCount / 120);
+                    
+                    if (newPoints > oldPoints) {
+                        this.userPoints = newPoints;
+                        document.getElementById('points-count').textContent = newPoints;
+                        document.getElementById('shop-points').textContent = newPoints;
+                        
+                        await db.collection('users').doc(this.currentUser.uid).update({
+                            messagesCount: newCount,
+                            points: newPoints
+                        });
+                    } else {
+                        await db.collection('users').doc(this.currentUser.uid).update({
+                            messagesCount: newCount
+                        });
+                    }
+                    
+                    this.userMessages = newCount;
+                    
                     input.value = '';
                     document.getElementById('send-btn').disabled = true;
+                    
+                    await db.collection('chats').doc(this.currentChatId).update({
+                        'typing': firebase.firestore.FieldValue.arrayRemove(this.currentUser.uid)
+                    });
                     
                 } catch (error) {
                     console.error('Send error:', error);
@@ -2723,7 +2905,7 @@ displayMessage(message, messageId) {
                 }, 2000);
             }
 
-            <!-- ========== 2.13 ЗАГРУЗКА ФАЙЛОВ ========== -->
+            <!-- ========== 2.11 ЗАГРУЗКА ФАЙЛОВ ========== -->
             async uploadFile(file) {
                 if (!this.currentChatId) return;
                 if (file.size > 10 * 1024 * 1024) {
@@ -2775,7 +2957,7 @@ displayMessage(message, messageId) {
                 }
             }
 
-            <!-- ========== 2.14 РЕАКЦИИ ========== -->
+            <!-- ========== 2.12 РЕАКЦИИ ========== -->
             async addReaction(messageId, emoji) {
                 if (!this.currentChatId) return;
 
@@ -2819,248 +3001,7 @@ displayMessage(message, messageId) {
                     .collection('messages').doc(messageId).delete();
             }
 
-            // ========== 2.15 ЗВОНКИ (ПОЛНОСТЬЮ) ==========
-
-// Конфигурация WebRTC
-const callConfig = {
-    iceServers: [
-        { urls: 'stun:stun.l.google.com:19302' },
-        { urls: 'stun:stun1.l.google.com:19302' },
-        { urls: 'stun:stun2.l.google.com:19302' },
-        { urls: 'stun:stun3.l.google.com:19302' },
-        { urls: 'stun:stun4.l.google.com:19302' }
-    ]
-};
-
-// Слушаем входящие звонки
-listenForCalls() {
-    if (!this.currentUser) return;
-    
-    this.callListener = db.collection('calls')
-        .where('targetUserId', '==', this.currentUser.uid)
-        .where('status', '==', 'ringing')
-        .onSnapshot((snapshot) => {
-            snapshot.docChanges().forEach((change) => {
-                if (change.type === 'added') {
-                    const call = change.doc.data();
-                    this.showIncomingCall(call, change.doc.id);
-                }
-            });
-        });
-}
-
-// Начать звонок
-async startCall() {
-    if (this.currentChatType !== 'private' || !this.currentChatId) return;
-    
-    const otherUserId = this.currentChatParticipants.find(id => id !== this.currentUser.uid);
-    const userData = await this.getUserData(otherUserId);
-    if (!userData) return;
-    
-    try {
-        this.localStream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
-        
-        this.peerConnection = new RTCPeerConnection(callConfig);
-        this.localStream.getTracks().forEach(track => {
-            this.peerConnection.addTrack(track, this.localStream);
-        });
-        
-        const offer = await this.peerConnection.createOffer();
-        await this.peerConnection.setLocalDescription(offer);
-        
-        const callRef = await db.collection('calls').add({
-            callerId: this.currentUser.uid,
-            targetUserId: otherUserId,
-            offer: offer,
-            status: 'ringing',
-            timestamp: firebase.firestore.FieldValue.serverTimestamp()
-        });
-        
-        this.currentCall = { id: callRef.id, targetUserId: otherUserId };
-        this.isCallActive = true;
-        
-        this.showOutgoingCall(userData);
-        
-        db.collection('calls').doc(callRef.id).onSnapshot((doc) => {
-            const call = doc.data();
-            if (call?.status === 'answered' && call.answer) {
-                this.handleAnswer(call.answer);
-            } else if (call?.status === 'rejected') {
-                this.endCall();
-                alert('Call rejected');
-            }
-        });
-        
-    } catch (error) {
-        console.error('Error starting call:', error);
-        alert('Could not start call');
-    }
-}
-
-// Показать исходящий звонок
-showOutgoingCall(userData) {
-    const callModal = document.getElementById('call-modal');
-    if (!callModal) return;
-    
-    document.getElementById('call-avatar').innerHTML = `<img src="${userData.avatar || `https://ui-avatars.com/api/?name=${userData.username.charAt(0)}&background=1E2A47&color=3B82F6&size=100`}" alt="caller">`;
-    document.getElementById('call-name').textContent = userData.username;
-    document.getElementById('call-status').textContent = 'Calling...';
-    
-    const buttonsContainer = document.getElementById('call-buttons');
-    buttonsContainer.innerHTML = '';
-    
-    const endBtn = document.createElement('button');
-    endBtn.className = 'call-button reject';
-    endBtn.innerHTML = '<i class="fas fa-phone-slash"></i>';
-    endBtn.onclick = () => this.endCall();
-    
-    const muteBtn = document.createElement('button');
-    muteBtn.className = 'call-button mute';
-    muteBtn.innerHTML = '<i class="fas fa-microphone"></i>';
-    muteBtn.onclick = () => this.toggleMute();
-    
-    buttonsContainer.appendChild(endBtn);
-    buttonsContainer.appendChild(muteBtn);
-    
-    callModal.classList.add('active');
-}
-
-// Показать входящий звонок (ИСПРАВЛЕНО)
-showIncomingCall(call, callId) {
-    console.log('📞 Incoming call:', callId);
-    
-    this.getUserData(call.callerId).then(userData => {
-        if (!userData) return;
-        
-        const callModal = document.getElementById('call-modal');
-        if (!callModal) return;
-        
-        document.getElementById('call-avatar').innerHTML = `<img src="${userData.avatar || `https://ui-avatars.com/api/?name=${userData.username.charAt(0)}&background=1E2A47&color=3B82F6&size=100`}" alt="caller">`;
-        document.getElementById('call-name').textContent = userData.username;
-        document.getElementById('call-status').textContent = 'Incoming call...';
-        
-        const buttonsContainer = document.getElementById('call-buttons');
-        buttonsContainer.innerHTML = '';
-        
-        const acceptBtn = document.createElement('button');
-        acceptBtn.className = 'call-button accept';
-        acceptBtn.innerHTML = '<i class="fas fa-phone"></i>';
-        acceptBtn.onclick = () => this.acceptCall(callId);
-        
-        const rejectBtn = document.createElement('button');
-        rejectBtn.className = 'call-button reject';
-        rejectBtn.innerHTML = '<i class="fas fa-phone-slash"></i>';
-        rejectBtn.onclick = () => this.rejectCall(callId);
-        
-        buttonsContainer.appendChild(acceptBtn);
-        buttonsContainer.appendChild(rejectBtn);
-        
-        callModal.classList.add('active');
-    });
-}
-
-// Принять звонок (ТВОЙ БЛОК)
-async acceptCall(callId) {
-    console.log('📞 Accepting call:', callId);
-    
-    try {
-        this.localStream = await navigator.mediaDevices.getUserMedia({ 
-            audio: true, 
-            video: false 
-        });
-        
-        this.peerConnection = new RTCPeerConnection(callConfig);
-        this.localStream.getTracks().forEach(track => {
-            this.peerConnection.addTrack(track, this.localStream);
-        });
-        
-        const callDoc = await db.collection('calls').doc(callId).get();
-        const call = callDoc.data();
-        if (!call) return;
-        
-        await this.peerConnection.setRemoteDescription(new RTCSessionDescription(call.offer));
-        
-        const answer = await this.peerConnection.createAnswer();
-        await this.peerConnection.setLocalDescription(answer);
-        
-        await db.collection('calls').doc(callId).update({
-            answer: answer,
-            status: 'answered'
-        });
-        
-        this.currentCall = { id: callId, targetUserId: call.callerId };
-        this.isCallActive = true;
-        
-        document.getElementById('call-status').textContent = 'Connected';
-        
-        const buttonsContainer = document.getElementById('call-buttons');
-        buttonsContainer.innerHTML = '';
-        
-        const endBtn = document.createElement('button');
-        endBtn.className = 'call-button reject';
-        endBtn.innerHTML = '<i class="fas fa-phone-slash"></i>';
-        endBtn.onclick = () => this.endCall();
-        
-        const muteBtn = document.createElement('button');
-        muteBtn.className = 'call-button mute';
-        muteBtn.innerHTML = '<i class="fas fa-microphone"></i>';
-        muteBtn.onclick = () => this.toggleMute();
-        
-        buttonsContainer.appendChild(endBtn);
-        buttonsContainer.appendChild(muteBtn);
-        
-    } catch (error) {
-        console.error('❌ Error accepting call:', error);
-        alert('Could not accept call');
-    }
-}
-
-// Обработать ответ
-async handleAnswer(answer) {
-    await this.peerConnection.setRemoteDescription(new RTCSessionDescription(answer));
-    document.getElementById('call-status').textContent = 'Connected';
-}
-
-// Отклонить звонок
-async rejectCall(callId) {
-    await db.collection('calls').doc(callId).update({ status: 'rejected' });
-    document.getElementById('call-modal')?.classList.remove('active');
-}
-
-// Завершить звонок
-async endCall() {
-    if (this.peerConnection) this.peerConnection.close();
-    if (this.localStream) this.localStream.getTracks().forEach(track => track.stop());
-    
-    if (this.currentCall) {
-        await db.collection('calls').doc(this.currentCall.id).update({ status: 'ended' });
-    }
-    
-    this.peerConnection = null;
-    this.localStream = null;
-    this.currentCall = null;
-    this.isCallActive = false;
-    document.getElementById('call-modal')?.classList.remove('active');
-}
-
-// Отключить микрофон
-toggleMute() {
-    if (!this.localStream) return;
-    const audioTrack = this.localStream.getAudioTracks()[0];
-    if (audioTrack) {
-        audioTrack.enabled = !audioTrack.enabled;
-        this.isMuted = !audioTrack.enabled;
-        
-        const muteBtn = document.querySelector('.call-button.mute');
-        if (muteBtn) {
-            muteBtn.classList.toggle('active', this.isMuted);
-            muteBtn.innerHTML = this.isMuted ? 
-                '<i class="fas fa-microphone-slash"></i>' : 
-                '<i class="fas fa-microphone"></i>';
-        }
-    }
-}
-            <!-- ========== 2.16 ПРОФИЛЬ ========== -->
+            <!-- ========== 2.13 ПРОФИЛЬ ========== -->
             async openProfile() {
                 if (!this.userData) await this.loadUserData(this.currentUser);
                 
@@ -3152,7 +3093,7 @@ toggleMute() {
                 });
             }
 
-            <!-- ========== 2.17 МАГАЗИН ========== -->
+            <!-- ========== 2.14 МАГАЗИН ========== -->
             async openShop() {
                 document.getElementById('shop-points').textContent = this.userPoints;
                 
@@ -3227,7 +3168,7 @@ toggleMute() {
                 }
             }
 
-            <!-- ========== 2.18 СОЗДАНИЕ ЧАТОВ ========== -->
+            <!-- ========== 2.15 СОЗДАНИЕ ЧАТОВ ========== -->
             openModal(modalId) {
                 document.querySelectorAll('.modal').forEach(m => m.classList.remove('active'));
                 document.getElementById(modalId)?.classList.add('active');
@@ -3399,7 +3340,7 @@ toggleMute() {
                 }
             }
 
-            <!-- ========== 2.19 ИНФОРМАЦИЯ О ЧАТЕ ========== -->
+            <!-- ========== 2.16 ИНФОРМАЦИЯ О ЧАТЕ ========== -->
             async showChatInfo() {
                 if (!this.currentChatData) return;
                 
@@ -3477,11 +3418,6 @@ toggleMute() {
                 modal.classList.add('active');
             }
 
-            getColorCode(color) {
-                const colors = { blue: '#3B82F6', red: '#EF4444', green: '#10B981', purple: '#8B5CF6', gold: '#F59E0B', pink: '#EC4899' };
-                return colors[color] || 'white';
-            }
-
             async joinChannel() {
                 if (!this.currentChatId || this.currentChatType !== 'channel') return;
                 await db.collection('chats').doc(this.currentChatId).update({
@@ -3511,7 +3447,6 @@ toggleMute() {
             window.app = new HypebitApp();
         });
     </script>
-<!-- КОНЕЦ ЧАСТИ 2/3 -->
 <!-- КОНЕЦ ЧАСТИ 2/3 -->
 <!-- ЧАСТЬ 3/3 - ФИНАЛЬНЫЕ УТИЛИТЫ -->
 
@@ -4033,11 +3968,4 @@ toggleMute() {
     -->
 </body>
 </html>
-<!-- КОНЕЦ ЧАСТИ 3/3 -->ы
-
-
-
-
-
-
-
+<!-- КОНЕЦ ЧАСТИ 2/3 --!>
