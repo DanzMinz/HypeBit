@@ -1882,7 +1882,7 @@
                 this.init();
             }
 
-            <!-- ========== 2.3 ИНИЦИАЛИЗАЦИЯ ========== -->
+            <!-- ========== 2.3 ИНИЦИАЛИЗАЦИЯ ========== --!>
             init() {
                 console.log('🔥 HYPEBIT initializing...');
                 
@@ -2178,88 +2178,78 @@
                 console.log('🟡 Showing auth');
             }
 
-            <!-- ========== 2.5 ЗАГРУЗКА ДАННЫХ ========== -->
-            async loadUserData(user) {
-                try {
-                    const userDoc = await db.collection('users').doc(user.uid).get();
-                    this.userData = userDoc.data();
-                    
-                    if (!this.userData) {
-                        await db.collection('users').doc(user.uid).set({
-                            username: user.displayName || 'User',
-                            email: user.email,
-                            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                            status: 'online',
-                            avatar: `https://ui-avatars.com/api/?name=${(user.displayName || 'U').charAt(0)}&background=1E2A47&color=3B82F6&size=200`,
-                            lastSeen: firebase.firestore.FieldValue.serverTimestamp(),
-                            bio: '',
-                            points: 0,
-                            messagesCount: 0,
-                            purchasedItems: [],
-                            usernameColor: '',
-                            theme: 'dark'
-                        });
-                        this.userData = {
-                            username: user.displayName || 'User',
-                            avatar: `https://ui-avatars.com/api/?name=${(user.displayName || 'U').charAt(0)}&background=1E2A47&color=3B82F6&size=200`,
-                            points: 0,
-                            messagesCount: 0,
-                            purchasedItems: [],
-                            usernameColor: '',
-                            theme: 'dark'
-                        };
-                    }
-                    
-                    this.userPoints = this.userData.points || 0;
-                    this.userMessages = this.userData.messagesCount || 0;
-                    
-                    if (this.userData.purchasedItems) {
-                        this.userData.purchasedItems.forEach(item => this.purchasedItems.add(item));
-                    }
-                    
-                    if (this.userData.theme) {
-                        document.body.className = `theme-${this.userData.theme}`;
-                    }
-                    
-                    if (this.userData.usernameColor) {
-                        document.getElementById('username').className = `username username-color-${this.userData.usernameColor}`;
-                    }
-                    
-                    document.getElementById('username').textContent = this.userData.username || user.displayName;
-                    document.getElementById('points-count').textContent = this.userPoints;
-                    
-                    document.getElementById('user-avatar').innerHTML = `
-                        <img src="${this.userData.avatar || `https://ui-avatars.com/api/?name=${(this.userData.username || 'U').charAt(0)}&background=1E2A47&color=3B82F6&size=48`}" alt="avatar">
-                    `;
-                    
-                } catch (error) {
-                    console.error('Error loading user data:', error);
-                }
+            <!-- ========== 2.5 ЗАГРУЗКА ДАННЫХ (ИСПРАВЛЕНО) ========== -->
+async loadUserData(user) {
+    try {
+        const userDoc = await db.collection('users').doc(user.uid).get();
+        this.userData = userDoc.data();
+        
+        if (!this.userData) {
+            await db.collection('users').doc(user.uid).set({
+                username: user.displayName || 'User',
+                email: user.email,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                status: 'online',
+                avatar: `https://ui-avatars.com/api/?name=${(user.displayName || 'U').charAt(0)}&background=1E2A47&color=3B82F6&size=200`,
+                lastSeen: firebase.firestore.FieldValue.serverTimestamp(),
+                bio: '',
+                points: 0,
+                messagesCount: 0,
+                purchasedItems: [],
+                usernameColor: '',
+                theme: 'dark'
+            });
+            this.userData = {
+                username: user.displayName || 'User',
+                avatar: `https://ui-avatars.com/api/?name=${(user.displayName || 'U').charAt(0)}&background=1E2A47&color=3B82F6&size=200`,
+                points: 0,
+                messagesCount: 0,
+                purchasedItems: [],
+                usernameColor: '',
+                theme: 'dark'
+            };
+        }
+        
+        this.userPoints = this.userData.points || 0;
+        this.userMessages = this.userData.messagesCount || 0;
+        
+        if (this.userData.purchasedItems) {
+            this.userData.purchasedItems.forEach(item => this.purchasedItems.add(item));
+        }
+        
+        if (this.userData.theme) {
+            document.body.className = `theme-${this.userData.theme}`;
+        }
+        
+        // ===== ВАЖНО: проверяем существование элементов перед обновлением =====
+        const usernameEl = document.getElementById('username');
+        if (usernameEl) {
+            usernameEl.textContent = this.userData.username || user.displayName;
+            if (this.userData.usernameColor) {
+                usernameEl.className = `username username-color-${this.userData.usernameColor}`;
             }
-
-            async ensureOfficialChat() {
-                try {
-                    const officialChat = await db.collection('chats').doc('official_chat').get();
-                    
-                    if (!officialChat.exists) {
-                        await db.collection('chats').doc('official_chat').set({
-                            name: 'HYPEBIT Official',
-                            type: 'official',
-                            participants: [this.currentUser.uid],
-                            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                            lastMessageTime: firebase.firestore.FieldValue.serverTimestamp(),
-                            description: 'Official chat for all HYPEBIT users'
-                        });
-                    } else {
-                        await db.collection('chats').doc('official_chat').update({
-                            participants: firebase.firestore.FieldValue.arrayUnion(this.currentUser.uid)
-                        });
-                    }
-                } catch (error) {
-                    console.error('Error ensuring official chat:', error);
-                }
-            }
-
+        } else {
+            console.warn('⚠️ Username element not found');
+        }
+        
+        const pointsEl = document.getElementById('points-count');
+        if (pointsEl) {
+            pointsEl.textContent = this.userPoints;
+        }
+        
+        const userAvatarEl = document.getElementById('user-avatar');
+        if (userAvatarEl) {
+            userAvatarEl.innerHTML = `
+                <img src="${this.userData.avatar || `https://ui-avatars.com/api/?name=${(this.userData.username || 'U').charAt(0)}&background=1E2A47&color=3B82F6&size=48`}" alt="avatar">
+            `;
+        }
+        
+        console.log('✅ User data loaded successfully');
+        
+    } catch (error) {
+        console.error('❌ Error loading user data:', error);
+    }
+}
             <!-- ========== 2.6 ЗАГРУЗКА ЧАТОВ (С ИСПРАВЛЕННЫМИ АВАТАРКАМИ) ========== -->
             loadChats() {
                 const chatsList = document.getElementById('chats-list');
@@ -3839,5 +3829,6 @@
 </body>
 </html>
 <!-- КОНЕЦ ЧАСТИ 2/3 --!>
+
 
 
