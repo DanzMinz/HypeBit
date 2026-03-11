@@ -1,3 +1,14 @@
+<!-- ===================================================================== -->
+<!-- ====================  ██████╗ █████╗ ███████╗████████╗ ██████╗ ==================== -->
+<!-- ====================  ██╔══██╗██╔══██╗██╔════╝╚══██╔══╝██╔════╝ ==================== -->
+<!-- ====================  ██████╔╝███████║███████╗   ██║   ██║      ==================== -->
+<!-- ====================  ██╔══██╗██╔══██║╚════██║   ██║   ██║      ==================== -->
+<!-- ====================  ██║  ██║██║  ██║███████║   ██║   ╚██████╗ ==================== -->
+<!-- ====================  ╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝   ╚═╝    ╚═════╝ ==================== -->
+<!-- ==============================  ЧАСТЬ 1/3  ============================== -->
+<!-- ======================  (HTML + CSS + ИНТЕРФЕЙС)  ====================== -->
+<!-- ===================================================================== -->
+<!-- ========== 1.1 HEAD И МЕТА-ТЕГИ ========== -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,7 +18,8 @@
     
     <!-- Favicon -->
     <link rel="icon" href="https://ui-avatars.com/api/?name=H&background=1E2A47&color=3B82F6&size=64">
-    
+
+<!-- ========== 1.2 ПОДКЛЮЧЕНИЕ ШРИФТОВ И БИБЛИОТЕК ========== -->
     <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
@@ -22,7 +34,8 @@
     
     <!-- Crypto.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
-    
+
+<!-- ========== 1.3 ОСНОВНЫЕ СТИЛИ ========== -->
     <style>
         * {
             margin: 0;
@@ -94,7 +107,7 @@
         .username-color-gold { color: #F59E0B !important; }
         .username-color-pink { color: #EC4899 !important; }
 
-        /* Экран загрузки */
+<!-- ========== 1.4 ЭКРАН ЗАГРУЗКИ ========== -->
         .loading-screen {
             position: fixed;
             top: 0;
@@ -137,7 +150,7 @@
             to { transform: rotate(360deg); }
         }
 
-        /* Auth Container */
+<!-- ========== 1.5 АВТОРИЗАЦИЯ ========== -->
         .auth-container {
             position: fixed;
             top: 0;
@@ -271,11 +284,7 @@
             cursor: pointer;
         }
 
-        .auth-switch a:hover {
-            text-decoration: underline;
-        }
-
-        /* Main App Container */
+<!-- ========== 1.6 ОСНОВНОЙ ИНТЕРФЕЙС ========== -->
         .app-container {
             display: none;
             width: 100%;
@@ -288,7 +297,7 @@
             display: grid;
         }
 
-        /* Sidebar */
+<!-- ========== 1.7 САЙДБАР ========== -->
         .sidebar {
             background: rgba(11, 17, 32, 0.95);
             backdrop-filter: blur(10px);
@@ -429,6 +438,7 @@
             background: rgba(30, 42, 71, 0.95);
         }
 
+<!-- ========== 1.8 СПИСОК ЧАТОВ ========== -->
         .chats-list {
             flex: 1;
             overflow-y: auto;
@@ -567,6 +577,7 @@
             margin-left: auto;
         }
 
+<!-- ========== 1.9 ОБЛАСТЬ ЧАТА ========== -->
         .chat-area {
             display: flex;
             flex-direction: column;
@@ -642,6 +653,7 @@
             display: none;
         }
 
+<!-- ========== 1.10 СООБЩЕНИЯ ========== -->
         .messages-container {
             flex: 1;
             overflow-y: auto;
@@ -679,12 +691,6 @@
             opacity: 0.5;
         }
 
-        .welcome-message h3 {
-            color: white;
-            margin-bottom: 8px;
-        }
-
-        /* ========== КРАСИВЫЕ СООБЩЕНИЯ ========== */
         .message {
             display: flex;
             margin-bottom: 8px;
@@ -708,14 +714,12 @@
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
         }
 
-        /* Исходящие сообщения (синие) */
         .message.outgoing .message-content {
             background: #3B82F6;
             color: white;
             border-bottom-right-radius: 4px;
         }
 
-        /* Входящие сообщения (тёмные) */
         .message.incoming .message-content {
             background: rgba(30, 42, 71, 0.9);
             color: white;
@@ -724,7 +728,6 @@
             border: 1px solid rgba(59, 130, 246, 0.3);
         }
 
-        /* Ник отправителя */
         .message-sender {
             font-size: 11px;
             font-weight: 600;
@@ -734,7 +737,6 @@
             letter-spacing: 0.3px;
         }
 
-        /* Текст сообщения */
         .message-text {
             font-size: 14px;
             line-height: 1.5;
@@ -742,7 +744,6 @@
             white-space: pre-wrap;
         }
 
-        /* Время сообщения */
         .message-time {
             font-size: 9px;
             color: rgba(255, 255, 255, 0.5);
@@ -754,7 +755,6 @@
             gap: 4px;
         }
 
-        /* Статусы прочитано */
         .message-status {
             display: inline-flex;
             align-items: center;
@@ -765,7 +765,6 @@
         .message-status.delivered { color: rgba(255, 255, 255, 0.5); }
         .message-status.read { color: #3B82F6; }
 
-        /* Реакции */
         .message-reactions {
             display: flex;
             gap: 4px;
@@ -794,7 +793,6 @@
             border: none;
         }
 
-        /* Анимация появления */
         @keyframes fadeIn {
             from {
                 opacity: 0;
@@ -806,7 +804,6 @@
             }
         }
 
-        /* Файловые сообщения */
         .file-message {
             display: flex;
             align-items: center;
@@ -845,6 +842,7 @@
             font-size: 11px;
         }
 
+<!-- ========== 1.11 ВВОД СООБЩЕНИЙ ========== -->
         .message-input-area {
             padding: 12px 15px;
             background: rgba(30, 42, 71, 0.5);
@@ -921,6 +919,7 @@
             cursor: not-allowed;
         }
 
+<!-- ========== 1.12 ПОИСКОВАЯ ПАНЕЛЬ ========== -->
         .search-sidebar {
             position: fixed;
             right: 0;
@@ -1012,7 +1011,7 @@
             font-size: 11px;
         }
 
-        /* Модальные окна */
+<!-- ========== 1.13 МОДАЛЬНЫЕ ОКНА (ОБЩИЕ СТИЛИ) ========== -->
         .modal {
             position: fixed;
             top: 0;
@@ -1085,6 +1084,26 @@
             font-size: 14px;
         }
 
+        .modal-body textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .modal-body label {
+            color: white;
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            cursor: pointer;
+        }
+
+        .modal-body input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            margin-right: 8px;
+            cursor: pointer;
+        }
+
         .users-list {
             max-height: 250px;
             overflow-y: auto;
@@ -1126,29 +1145,13 @@
             flex: 1;
         }
 
-        .user-item-role {
-            font-size: 11px;
-            padding: 2px 8px;
-            border-radius: 10px;
-        }
-
-        .user-item-role.creator {
-            background: rgba(245, 158, 11, 0.2);
-            color: #F59E0B;
-        }
-
-        .user-item-role.admin {
-            background: rgba(59, 130, 246, 0.2);
-            color: #3B82F6;
-        }
-
         .user-check {
             width: 18px;
             height: 18px;
             cursor: pointer;
         }
 
-        /* Profile */
+<!-- ========== 1.14 ПРОФИЛЬ ========== -->
         .profile-avatar-large {
             width: 80px;
             height: 80px;
@@ -1220,7 +1223,7 @@
             display: block;
         }
 
-        /* Shop */
+<!-- ========== 1.15 МАГАЗИН ========== -->
         .points-display {
             background: rgba(245, 158, 11, 0.1);
             border: 1px solid #F59E0B;
@@ -1320,7 +1323,7 @@
             cursor: not-allowed;
         }
 
-        /* Color options */
+<!-- ========== 1.16 ЦВЕТА И ТЕМЫ ========== -->
         .color-options {
             display: grid;
             grid-template-columns: repeat(6, 1fr);
@@ -1349,7 +1352,6 @@
         .color-gold { background: #F59E0B; }
         .color-pink { background: #EC4899; }
 
-        /* Theme options */
         .theme-options {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -1382,7 +1384,7 @@
             font-size: 12px;
         }
 
-        /* Loading spinner */
+<!-- ========== 1.17 УТИЛИТЫ ========== -->
         .loading-spinner {
             width: 30px;
             height: 30px;
@@ -1400,7 +1402,6 @@
             font-size: 14px;
         }
 
-        /* Уведомления */
         .notification {
             position: fixed;
             top: 15px;
@@ -1419,10 +1420,9 @@
 
         @keyframes slideIn {
             from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(0%); opacity: 1; }
         }
 
-        /* Офлайн индикатор */
         .offline-indicator {
             position: fixed;
             bottom: 15px;
@@ -1446,7 +1446,7 @@
             display: flex;
         }
 
-        /* ========== МОБИЛЬНАЯ ОПТИМИЗАЦИЯ ========== */
+<!-- ========== 1.18 МОБИЛЬНАЯ АДАПТАЦИЯ ========== -->
         @media (max-width: 768px) {
             * {
                 transition-duration: 0.15s !important;
@@ -1729,9 +1729,9 @@
             }
             
             .profile-actions button {
-                width: 32px;
-                height: 32px;
-                font-size: 14px;
+                width: 30px;
+                height: 30px;
+                font-size: 13px;
             }
             
             .message {
@@ -1756,385 +1756,16 @@
         }
     </style>
 </head>
-<body class="theme-dark">
-    <!-- Loading Screen -->
-    <div id="loading-screen" class="loading-screen">
-        <div class="loader"></div>
-        <div class="loading-text">HYPEBIT</div>
-    </div>
-
-    <!-- Auth Container -->
-    <div id="auth-container" class="auth-container active">
-        <div class="auth-card">
-            <div class="auth-header">
-                <h1>HYPEBIT</h1>
-                <p>Messenger</p>
-            </div>
-            
-            <!-- Login Form -->
-            <form id="login-form" class="auth-form active">
-                <div class="input-group">
-                    <i class="fas fa-envelope"></i>
-                    <input type="email" id="login-email" placeholder="Email" required>
-                </div>
-                <div class="input-group">
-                    <i class="fas fa-lock"></i>
-                    <input type="password" id="login-password" placeholder="Password" required>
-                </div>
-                <button type="submit" class="auth-btn">Sign In</button>
-                <p class="auth-switch">
-                    Don't have an account? <a href="#" id="show-register">Sign Up</a>
-                </p>
-            </form>
-            
-            <!-- Register Form -->
-            <form id="register-form" class="auth-form">
-                <div class="input-group">
-                    <i class="fas fa-user"></i>
-                    <input type="text" id="register-username" placeholder="Username" required>
-                </div>
-                <div class="input-group">
-                    <i class="fas fa-envelope"></i>
-                    <input type="email" id="register-email" placeholder="Email" required>
-                </div>
-                <div class="input-group">
-                    <i class="fas fa-lock"></i>
-                    <input type="password" id="register-password" placeholder="Password" required>
-                </div>
-                <div class="input-group">
-                    <i class="fas fa-lock"></i>
-                    <input type="password" id="register-confirm" placeholder="Confirm Password" required>
-                </div>
-                <button type="submit" class="auth-btn">Create Account</button>
-                <p class="auth-switch">
-                    Already have an account? <a href="#" id="show-login">Sign In</a>
-                </p>
-            </form>
-        </div>
-    </div>
-
-    <!-- Main App Container -->
-    <div id="app-container" class="app-container">
-        <!-- Sidebar -->
-        <div class="sidebar">
-            <div class="user-profile" id="profile-click">
-                <div class="avatar" id="user-avatar">
-                    <img src="https://ui-avatars.com/api/?name=H&background=1E2A47&color=3B82F6&size=48" alt="avatar">
-                </div>
-                <div class="user-info">
-                    <div class="username" id="username">Loading...</div>
-                    <div class="status" id="user-status">Online</div>
-                    <div class="points-badge" id="points-badge">
-                        <i class="fas fa-star"></i> <span id="points-count">0</span>
-                    </div>
-                </div>
-                <div class="profile-actions">
-                    <button id="profile-btn" title="Profile"><i class="fas fa-user"></i></button>
-                    <button id="shop-btn" title="Shop"><i class="fas fa-shopping-cart"></i></button>
-                    <button id="new-chat-btn" title="New Chat"><i class="fas fa-edit"></i></button>
-                    <button id="new-group-btn" title="New Group"><i class="fas fa-users"></i></button>
-                    <button id="new-channel-btn" title="New Channel"><i class="fas fa-bullhorn"></i></button>
-                    <button id="logout-btn" title="Logout"><i class="fas fa-sign-out-alt"></i></button>
-                </div>
-            </div>
-            
-            <div class="search-container">
-                <i class="fas fa-search"></i>
-                <input type="text" id="user-search-input" placeholder="Search users...">
-            </div>
-            
-            <div class="chats-list" id="chats-list">
-                <div style="color: #9CA3AF; text-align: center; padding: 20px;">
-                    <i class="fas fa-spinner fa-spin"></i> Loading...
-                </div>
-            </div>
-        </div>
-        
-        <!-- Chat Area -->
-        <div class="chat-area">
-            <div class="chat-header" id="chat-header" style="display: none;">
-                <div class="chat-info">
-                    <div class="chat-avatar" id="chat-avatar">
-                        <div class="chat-avatar official">⭐</div>
-                    </div>
-                    <div class="chat-details">
-                        <div class="chat-name" id="current-chat-name">
-                            Select a chat
-                            <i class="fas fa-chevron-down" id="chat-info-icon"></i>
-                        </div>
-                        <div class="chat-status" id="chat-status"></div>
-                    </div>
-                </div>
-                <div class="chat-actions">
-                    <button id="attach-btn" title="Attach file" style="display: none;">
-                        <i class="fas fa-paperclip"></i>
-                    </button>
-                    <input type="file" id="file-input" style="display: none;" accept="image/*,video/*,application/pdf,text/plain">
-                    <button id="search-chat-btn" title="Search"><i class="fas fa-search"></i></button>
-                    <button id="chat-info-btn" title="Info"><i class="fas fa-info-circle"></i></button>
-                </div>
-            </div>
-            
-            <div class="typing-indicator" id="typing-indicator">
-                <span>Typing</span>
-                <div class="typing-dots">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </div>
-            </div>
-            
-            <div class="messages-container" id="messages-container">
-                <div class="welcome-message">
-                    <i class="fas fa-comments"></i>
-                    <h3>Welcome to HYPEBIT</h3>
-                    <p>Select a chat to start messaging</p>
-                </div>
-            </div>
-            
-            <div class="message-input-area" id="message-input-area" style="display: none;">
-                <button class="emoji-btn" id="emoji-btn" title="Emoji"><i class="fas fa-smile"></i></button>
-                
-                <div class="input-wrapper">
-                    <textarea id="message-input" placeholder="Write a message..." rows="1"></textarea>
-                </div>
-                
-                <button class="send-btn" id="send-btn" title="Send" disabled><i class="fas fa-paper-plane"></i></button>
-            </div>
-        </div>
-        
-        <!-- Search Sidebar -->
-        <div class="search-sidebar" id="search-sidebar">
-            <div class="search-header">
-                <h3>User Search Results</h3>
-                <button id="close-search"><i class="fas fa-times"></i></button>
-            </div>
-            <div class="search-results" id="search-results"></div>
-        </div>
-        
-        <!-- Profile Modal -->
-        <div class="modal" id="profile-modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3>My Profile</h3>
-                    <button class="close-modal"><i class="fas fa-times"></i></button>
-                </div>
-                <div class="modal-body">
-                    <div class="profile-tabs">
-                        <div class="profile-tab active" data-tab="main">Main</div>
-                        <div class="profile-tab" data-tab="appearance">Appearance</div>
-                        <div class="profile-tab" data-tab="stats">Statistics</div>
-                    </div>
-                    
-                    <div class="profile-section active" id="profile-main">
-                        <div class="profile-header">
-                            <div class="profile-avatar-large" id="profile-avatar-large">
-                                <img src="https://ui-avatars.com/api/?name=H&background=1E2A47&color=3B82F6&size=100" alt="avatar">
-                            </div>
-                        </div>
-                        
-                        <label>Username</label>
-                        <input type="text" id="profile-username" placeholder="Username">
-                        
-                        <label>Bio</label>
-                        <textarea id="profile-bio" placeholder="Tell something about yourself..." rows="3"></textarea>
-                        
-                        <label>Status</label>
-                        <select id="profile-status">
-                            <option value="online">Online</option>
-                            <option value="away">Away</option>
-                            <option value="busy">Busy</option>
-                            <option value="offline">Offline</option>
-                        </select>
-                        
-                        <button class="auth-btn" id="save-profile">Save Changes</button>
-                    </div>
-                    
-                    <div class="profile-section" id="profile-appearance">
-                        <h4 style="color: white; margin-bottom: 15px;">Username Color</h4>
-                        <div class="color-options" id="color-options">
-                            <div class="color-option color-blue" data-color="blue"></div>
-                            <div class="color-option color-red" data-color="red"></div>
-                            <div class="color-option color-green" data-color="green"></div>
-                            <div class="color-option color-purple" data-color="purple"></div>
-                            <div class="color-option color-gold" data-color="gold"></div>
-                            <div class="color-option color-pink" data-color="pink"></div>
-                        </div>
-                        
-                        <h4 style="color: white; margin: 20px 0 15px;">Theme</h4>
-                        <div class="theme-options" id="theme-options">
-                            <div class="theme-option" data-theme="dark">
-                                <i class="fas fa-moon"></i>
-                                <span>Dark</span>
-                            </div>
-                            <div class="theme-option" data-theme="forest">
-                                <i class="fas fa-tree"></i>
-                                <span>Forest</span>
-                            </div>
-                            <div class="theme-option" data-theme="space">
-                                <i class="fas fa-rocket"></i>
-                                <span>Space</span>
-                            </div>
-                            <div class="theme-option" data-theme="light">
-                                <i class="fas fa-sun"></i>
-                                <span>Light</span>
-                            </div>
-                            <div class="theme-option" data-theme="mountain">
-                                <i class="fas fa-mountain"></i>
-                                <span>Mountain</span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="profile-section" id="profile-stats">
-                        <div class="profile-stats">
-                            <div class="stat-item">
-                                <div class="stat-value" id="stat-messages">0</div>
-                                <div class="stat-label">Messages</div>
-                            </div>
-                            <div class="stat-item">
-                                <div class="stat-value" id="stat-points">0</div>
-                                <div class="stat-label">Points</div>
-                            </div>
-                        </div>
-                        
-                        <div class="profile-stats">
-                            <div class="stat-item">
-                                <div class="stat-value" id="stat-chats">0</div>
-                                <div class="stat-label">Chats</div>
-                            </div>
-                            <div class="stat-item">
-                                <div class="stat-value" id="stat-groups">0</div>
-                                <div class="stat-label">Groups</div>
-                            </div>
-                        </div>
-                        
-                        <div class="profile-stats">
-                            <div class="stat-item">
-                                <div class="stat-value" id="stat-files">0</div>
-                                <div class="stat-label">Files</div>
-                            </div>
-                            <div class="stat-item">
-                                <div class="stat-value" id="stat-joined">-</div>
-                                <div class="stat-label">Joined</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Shop Modal -->
-        <div class="modal" id="shop-modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3>Points Shop</h3>
-                    <button class="close-modal"><i class="fas fa-times"></i></button>
-                </div>
-                <div class="modal-body">
-                    <div class="points-display">
-                        <div class="points-amount" id="shop-points">0</div>
-                        <div class="points-label">Available Points</div>
-                    </div>
-                    
-                    <div class="shop-items" id="shop-items"></div>
-                    
-                    <p style="color: #9CA3AF; font-size: 12px; text-align: center; margin-top: 20px;">
-                        <i class="fas fa-info-circle"></i> 1 point = 120 messages
-                    </p>
-                </div>
-            </div>
-        </div>
-        
-        <!-- New Chat Modal -->
-        <div class="modal" id="new-chat-modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3>New Message</h3>
-                    <button class="close-modal"><i class="fas fa-times"></i></button>
-                </div>
-                <div class="modal-body">
-                    <input type="text" id="user-search" placeholder="Search users...">
-                    <div class="users-list" id="users-list"></div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- New Group Modal -->
-        <div class="modal" id="new-group-modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3>Create Group</h3>
-                    <button class="close-modal"><i class="fas fa-times"></i></button>
-                </div>
-                <div class="modal-body">
-                    <input type="text" id="group-name" placeholder="Group name" required>
-                    <textarea id="group-description" placeholder="Group description (optional)" rows="3"></textarea>
-                    
-                    <h4 style="color: white; margin-bottom: 10px;">Add Members</h4>
-                    <input type="text" id="group-user-search" placeholder="Search users...">
-                    <div class="users-list" id="group-users-list"></div>
-                    
-                    <button class="auth-btn" id="create-group-btn">Create Group</button>
-                </div>
-            </div>
-        </div>
-        
-        <!-- New Channel Modal -->
-        <div class="modal" id="new-channel-modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3>Create Channel</h3>
-                    <button class="close-modal"><i class="fas fa-times"></i></button>
-                </div>
-                <div class="modal-body">
-                    <input type="text" id="channel-name" placeholder="Channel name" required>
-                    <textarea id="channel-description" placeholder="Channel description" rows="3"></textarea>
-                    
-                    <h4 style="color: white; margin-bottom: 10px;">Channel Settings</h4>
-                    <label>
-                        <input type="checkbox" id="channel-private"> Private channel
-                    </label>
-                    
-                    <label style="margin-top: 10px;">
-                        <input type="checkbox" id="channel-restricted"> Only admins can post
-                    </label>
-                    
-                    <button class="auth-btn" id="create-channel-btn" style="margin-top: 20px;">Create Channel</button>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Chat Info Modal -->
-        <div class="modal" id="chat-info-modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3 id="info-title">Chat Info</h3>
-                    <button class="close-modal"><i class="fas fa-times"></i></button>
-                </div>
-                <div class="modal-body" id="chat-info-body"></div>
-            </div>
-        </div>
-        
-        <!-- Add Member Modal -->
-        <div class="modal" id="add-member-modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3>Add Members</h3>
-                    <button class="close-modal"><i class="fas fa-times"></i></button>
-                </div>
-                <div class="modal-body">
-                    <input type="text" id="add-member-search" placeholder="Search users...">
-                    <div class="users-list" id="add-member-list"></div>
-                    <button class="auth-btn" id="add-member-btn">Add Selected</button>
-                </div>
-            </div>
-        </div>
-    </div>
-<!-- КОНЕЦ ЧАСТИ 1/3 -->
-<!-- ЧАСТЬ 2/3 - FIREBASE И ЛОГИКА -->
-
-   <!-- ЧАСТЬ 2/3 - FIREBASE И ЛОГИКА (ФИНАЛЬНАЯ ИСПРАВЛЕННАЯ) -->
+<!-- ===================================================================== -->
+<!-- ====================  ██████╗ █████╗ ███████╗████████╗ ██████╗ ==================== -->
+<!-- ====================  ██╔══██╗██╔══██╗██╔════╝╚══██╔══╝██╔════╝ ==================== -->
+<!-- ====================  ██████╔╝███████║███████╗   ██║   ██║      ==================== -->
+<!-- ====================  ██╔══██╗██╔══██║╚════██║   ██║   ██║      ==================== -->
+<!-- ====================  ██║  ██║██║  ██║███████║   ██║   ╚██████╗ ==================== -->
+<!-- ====================  ╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝   ╚═╝    ╚═════╝ ==================== -->
+<!-- ==============================  ЧАСТЬ 2/3  ============================== -->
+<!-- =====================  (FIREBASE + ЛОГИКА + CRYPTO)  ===================== -->
+<!-- ===================================================================== -->
 
     <!-- ========== 2.1 FIREBASE CONFIG & CRYPTO ========== -->
     <script>
@@ -2211,10 +1842,17 @@
                     });
 
                     const result = decrypted.toString(CryptoJS.enc.Utf8);
-                    return result || encryptedData;
+                    
+                    // Если результат пустой — возвращаем оригинал
+                    if (!result || result.trim() === '') {
+                        console.warn('⚠️ Decryption returned empty string');
+                        return encryptedData;
+                    }
+                    
+                    return result;
                     
                 } catch (error) {
-                    console.error('Decryption error:', error);
+                    console.error('❌ Decryption error:', error);
                     return encryptedData;
                 }
             }
@@ -2622,7 +2260,7 @@
                 }
             }
 
-            <!-- ========== 2.6 ЗАГРУЗКА ЧАТОВ ========== -->
+            <!-- ========== 2.6 ЗАГРУЗКА ЧАТОВ (С ИСПРАВЛЕННЫМИ АВАТАРКАМИ) ========== -->
             loadChats() {
                 const chatsList = document.getElementById('chats-list');
                 if (!chatsList) return;
@@ -2681,6 +2319,7 @@
                 }
             }
 
+            // ========== ОТРИСОВКА ЧАТА (ИСПРАВЛЕННЫЕ АВАТАРКИ) ==========
             renderSingleChat(id, chat, type, userData = null) {
                 if (document.getElementById(`chat-${id}`)) return;
                 
@@ -2690,11 +2329,22 @@
                     (chat.lastMessage.text || '📎 File') : 'No messages';
                 let time = chat.lastMessageTime ? this.formatTime(chat.lastMessageTime.toDate()) : '';
                 let badge = type === 'official' ? 'official' : type;
-                let icon = '';
                 
-                if (type === 'official') icon = '⭐';
-                else if (type === 'group') icon = '👥';
-                else if (type === 'channel') icon = '📢';
+                // ===== ИСПРАВЛЕННЫЕ АВАТАРКИ =====
+                let avatarContent = '';
+                
+                if (type === 'official') {
+                    avatarContent = '⭐'; // Официальный чат — звезда
+                } else if (type === 'group') {
+                    avatarContent = '👥'; // Группа — человечки
+                } else if (type === 'channel') {
+                    avatarContent = '📢'; // Канал — рупор
+                } else if (type === 'private' && userData) {
+                    // Личный чат — первая буква имени
+                    avatarContent = userData.username.charAt(0).toUpperCase();
+                } else {
+                    avatarContent = '👤'; // Заглушка
+                }
                 
                 if (type === 'private' && userData) {
                     name = userData.username;
@@ -2710,7 +2360,7 @@
                 
                 const html = `
                     <div class="chat-item" id="chat-${id}" onclick="app.selectChat('${id}', '${type}')">
-                        <div class="chat-avatar ${type}">${icon}</div>
+                        <div class="chat-avatar ${type}">${avatarContent}</div>
                         <div class="chat-info">
                             <div class="chat-name">${name} <span class="chat-badge ${badge}">${badge}</span></div>
                             <div class="chat-last-message"><span>${lastMessage}</span></div>
@@ -2745,20 +2395,47 @@
                 return date.toLocaleDateString([], { day: '2-digit', month: '2-digit' });
             }
 
-            <!-- ========== 2.7 ВЫБОР ЧАТА ========== -->
+            <!-- ========== 2.7 ВЫБОР ЧАТА (ИСПРАВЛЕНО) ========== -->
             async selectChat(chatId, type) {
-                console.log('Selecting chat:', chatId, type);
+                console.log('🔄 Switching to chat:', chatId, type);
+                
+                // ВАЖНО: сначала отписываемся от старого чата
+                if (this.messagesListener) {
+                    this.messagesListener();
+                    this.messagesListener = null;
+                }
+                
+                // Очищаем контейнер сообщений
+                const container = document.getElementById('messages-container');
+                if (container) {
+                    container.innerHTML = '<div class="loading-spinner"></div>';
+                }
+                
                 this.currentChatId = chatId;
                 this.currentChatType = type;
                 
                 document.querySelectorAll('.chat-item').forEach(el => el?.classList.remove('active'));
                 document.getElementById(`chat-${chatId}`)?.classList.add('active');
                 
-                document.getElementById('chat-header')?.style ? (document.getElementById('chat-header').style.display = 'flex') : null;
-                document.getElementById('message-input-area')?.style ? (document.getElementById('message-input-area').style.display = type === 'channel' ? 'none' : 'flex') : null;
+                const chatHeader = document.getElementById('chat-header');
+                if (chatHeader) chatHeader.style.display = 'flex';
+                
+                const messageArea = document.getElementById('message-input-area');
+                if (messageArea) {
+                    // Для каналов: если админ или restricted=false, то можно писать
+                    let canWrite = true;
+                    if (type === 'channel' && this.currentChatData) {
+                        const isAdmin = this.currentChatData.admins?.includes(this.currentUser.uid);
+                        const isRestricted = this.currentChatData.restricted === true;
+                        canWrite = !isRestricted || isAdmin;
+                    }
+                    messageArea.style.display = (type === 'channel' && !canWrite) ? 'none' : 'flex';
+                }
 
                 const attachBtn = document.getElementById('attach-btn');
-                if (attachBtn) attachBtn.style.display = type !== 'channel' ? 'inline-flex' : 'none';
+                if (attachBtn) {
+                    attachBtn.style.display = (type === 'channel') ? 'none' : 'inline-flex';
+                }
                 
                 try {
                     const chatDoc = await db.collection('chats').doc(chatId).get();
@@ -2791,9 +2468,17 @@
                         if (chatStatusEl) chatStatusEl.textContent = `${this.currentChatData.members?.length || 0} members`;
                     } else if (type === 'channel') {
                         if (chatNameEl) chatNameEl.innerHTML = (this.currentChatData.name || 'Channel') + `<span class="chat-badge channel">channel</span>`;
-                        if (chatStatusEl) chatStatusEl.textContent = `${this.currentChatData.subscribers?.length || 0} subscribers`;
+                        
+                        // Показываем статус канала
+                        const isAdmin = this.currentChatData.admins?.includes(this.currentUser.uid);
+                        const subscriberCount = this.currentChatData.subscribers?.length || 0;
+                        const restricted = this.currentChatData.restricted ? '🔒 Restricted' : '📢 Public';
+                        if (chatStatusEl) {
+                            chatStatusEl.textContent = `${subscriberCount} subscribers • ${restricted} ${isAdmin ? '• 👑 Admin' : ''}`;
+                        }
                     }
                     
+                    // Загружаем сообщения нового чата
                     this.loadMessages(chatId);
                     
                 } catch (error) {
@@ -2802,7 +2487,7 @@
                 }
             }
 
-            <!-- ========== 2.8 ЗАГРУЗКА СООБЩЕНИЙ (СУПЕР-БЫСТРАЯ) ========== -->
+            <!-- ========== 2.8 ЗАГРУЗКА СООБЩЕНИЙ ========== -->
             loadMessages(chatId) {
                 console.log('📂 loadMessages for:', chatId);
                 
@@ -2830,13 +2515,35 @@
                         snapshot.forEach(doc => {
                             const msg = doc.data();
                             
+                            // ===== УЛУЧШЕННАЯ РАСШИФРОВКА =====
                             let text = msg.text;
                             if (msg.encrypted) {
                                 try {
-                                    text = hypebitCrypto.decryptMessage(msg.text, chatId, msg.senderId) || '💬';
-                                } catch {
-                                    text = '💬';
+                                    console.log('🔐 Decrypting message from:', msg.senderId);
+                                    const decrypted = hypebitCrypto.decryptMessage(
+                                        msg.text, 
+                                        chatId, 
+                                        msg.senderId
+                                    );
+                                    
+                                    if (decrypted && decrypted !== msg.text && decrypted.trim() !== '') {
+                                        text = decrypted;
+                                        console.log('✅ Decrypted:', decrypted.substring(0, 20));
+                                    } else {
+                                        console.warn('⚠️ Empty decryption, using fallback');
+                                        text = '💬 New message';
+                                    }
+                                } catch (error) {
+                                    console.error('❌ Decryption error:', error);
+                                    text = '💬 Message (encrypted)';
                                 }
+                            } else {
+                                text = msg.text || '💬 Empty message';
+                            }
+
+                            // Если всё равно пусто
+                            if (!text || text.trim() === '') {
+                                text = '💬 Message';
                             }
                             
                             const isOutgoing = msg.senderId === this.currentUser.uid;
@@ -2844,6 +2551,7 @@
                             div.className = `message ${isOutgoing ? 'outgoing' : 'incoming'}`;
                             div.id = `msg-${doc.id}`;
                             
+                            // Ник для групп и каналов
                             let senderHtml = '';
                             if (!isOutgoing && this.currentChatType !== 'private') {
                                 this.getUserData(msg.senderId).then(userData => {
@@ -2942,6 +2650,16 @@
                 const text = input.value.trim();
                 if (!text || !this.currentChatId) return;
                 
+                // Для каналов проверяем права
+                if (this.currentChatType === 'channel' && this.currentChatData) {
+                    const isAdmin = this.currentChatData.admins?.includes(this.currentUser.uid);
+                    const isRestricted = this.currentChatData.restricted === true;
+                    if (isRestricted && !isAdmin) {
+                        alert('Only admins can post in this channel');
+                        return;
+                    }
+                }
+                
                 try {
                     const encrypted = hypebitCrypto.encryptMessage(text, this.currentChatId, this.currentUser.uid);
                     
@@ -3010,6 +2728,17 @@
             <!-- ========== 2.11 ЗАГРУЗКА ФАЙЛОВ ========== -->
             async uploadFile(file) {
                 if (!this.currentChatId) return;
+                
+                // Для каналов проверяем права
+                if (this.currentChatType === 'channel' && this.currentChatData) {
+                    const isAdmin = this.currentChatData.admins?.includes(this.currentUser.uid);
+                    const isRestricted = this.currentChatData.restricted === true;
+                    if (isRestricted && !isAdmin) {
+                        alert('Only admins can upload files in this channel');
+                        return;
+                    }
+                }
+                
                 if (file.size > 10 * 1024 * 1024) {
                     alert('File too large (max 10MB)');
                     return;
@@ -3270,7 +2999,7 @@
                 }
             }
 
-            <!-- ========== 2.15 СОЗДАНИЕ ЧАТОВ ========== -->
+            <!-- ========== 2.15 СОЗДАНИЕ ЧАТОВ (С ИСПРАВЛЕННЫМИ ГАЛОЧКАМИ) ========== -->
             openModal(modalId) {
                 document.querySelectorAll('.modal').forEach(m => m.classList.remove('active'));
                 document.getElementById(modalId)?.classList.add('active');
@@ -3373,7 +3102,10 @@
                 try {
                     const members = [this.currentUser.uid, ...this.selectedUsers];
                     const chatRef = await db.collection('chats').add({
-                        name, members, admins: [this.currentUser.uid], participants: members,
+                        name, 
+                        members, 
+                        admins: [this.currentUser.uid], 
+                        participants: members,
                         description: document.getElementById('group-description')?.value,
                         type: 'group',
                         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
@@ -3398,12 +3130,15 @@
                 }
                 
                 try {
-                    const isPrivate = document.getElementById('channel-private')?.checked;
-                    const isRestricted = document.getElementById('channel-restricted')?.checked;
+                    // Получаем значения чекбоксов
+                    const isPrivate = document.getElementById('channel-private')?.checked || false;
+                    const isRestricted = document.getElementById('channel-restricted')?.checked || false;
+                    
+                    console.log('Creating channel:', { name, isPrivate, isRestricted });
                     
                     const chatRef = await db.collection('chats').add({
                         name,
-                        description: document.getElementById('channel-description')?.value,
+                        description: document.getElementById('channel-description')?.value || '',
                         type: 'channel',
                         admins: [this.currentUser.uid],
                         subscribers: [this.currentUser.uid],
@@ -3419,7 +3154,7 @@
                     
                 } catch (error) {
                     console.error('Create channel error:', error);
-                    alert('Failed to create channel');
+                    alert('Failed to create channel: ' + error.message);
                 }
             }
 
@@ -3489,10 +3224,12 @@
                     for (const uid of this.currentChatData.members || []) {
                         const user = await this.getUserData(uid);
                         if (!user) continue;
+                        const role = this.currentChatData.admins?.includes(uid) ? '👑 Admin' : '👤 Member';
                         membersHtml += `
                             <div class="user-item">
                                 <div class="user-item-avatar"><div>${user.username.charAt(0).toUpperCase()}</div></div>
                                 <div class="user-item-name">${user.username}</div>
+                                <div class="user-item-role">${role}</div>
                             </div>
                         `;
                     }
@@ -3509,11 +3246,21 @@
                     
                 } else if (this.currentChatType === 'channel') {
                     title.textContent = 'Channel Info';
+                    
+                    const isAdmin = this.currentChatData.admins?.includes(this.currentUser.uid);
+                    const privateStatus = this.currentChatData.private ? '🔒 Private' : '🌐 Public';
+                    const restrictedStatus = this.currentChatData.restricted ? '🔇 Restricted (admins only)' : '📢 Everyone can post';
+                    
                     body.innerHTML = `
                         <h4 style="color:white;">${this.currentChatData.name}</h4>
                         <p style="color:#9CA3AF;">${this.currentChatData.description || ''}</p>
-                        <p style="color:#9CA3AF;">Subscribers: ${this.currentChatData.subscribers?.length || 0}</p>
-                        <p style="color:#9CA3AF;">${this.currentChatData.private ? 'Private' : 'Public'}</p>
+                        <p style="color:#9CA3AF; margin-top:10px;"><i class="fas fa-users"></i> Subscribers: ${this.currentChatData.subscribers?.length || 0}</p>
+                        <p style="color:#9CA3AF;"><i class="fas fa-lock"></i> ${privateStatus}</p>
+                        <p style="color:#9CA3AF;"><i class="fas fa-microphone"></i> ${restrictedStatus}</p>
+                        ${isAdmin ? '<p style="color:#F59E0B; margin-top:10px;">👑 You are an admin</p>' : ''}
+                        ${!this.currentChatData.subscribers?.includes(this.currentUser.uid) ? `
+                            <button class="auth-btn" style="margin-top:20px;" onclick="app.joinChannel()">Join Channel</button>
+                        ` : ''}
                     `;
                 }
                 
@@ -3522,12 +3269,24 @@
 
             async joinChannel() {
                 if (!this.currentChatId || this.currentChatType !== 'channel') return;
-                await db.collection('chats').doc(this.currentChatId).update({
-                    subscribers: firebase.firestore.FieldValue.arrayUnion(this.currentUser.uid),
-                    participants: firebase.firestore.FieldValue.arrayUnion(this.currentUser.uid)
-                });
-                document.getElementById('chat-info-modal')?.classList.remove('active');
-                alert('You joined the channel!');
+                
+                // Проверяем, приватный ли канал
+                if (this.currentChatData?.private) {
+                    alert('This is a private channel. Only invited users can join.');
+                    return;
+                }
+                
+                try {
+                    await db.collection('chats').doc(this.currentChatId).update({
+                        subscribers: firebase.firestore.FieldValue.arrayUnion(this.currentUser.uid),
+                        participants: firebase.firestore.FieldValue.arrayUnion(this.currentUser.uid)
+                    });
+                    document.getElementById('chat-info-modal')?.classList.remove('active');
+                    alert('You joined the channel!');
+                } catch (error) {
+                    console.error('Error joining channel:', error);
+                    alert('Failed to join channel');
+                }
             }
 
             getErrorMessage(errorCode) {
@@ -3550,7 +3309,16 @@
         });
     </script>
 <!-- КОНЕЦ ЧАСТИ 2/3 -->
-<!-- ЧАСТЬ 3/3 - ФИНАЛЬНЫЕ УТИЛИТЫ -->
+<!-- ===================================================================== -->
+<!-- ====================  ██████╗ █████╗ ███████╗████████╗ ██████╗ ==================== -->
+<!-- ====================  ██╔══██╗██╔══██╗██╔════╝╚══██╔══╝██╔════╝ ==================== -->
+<!-- ====================  ██████╔╝███████║███████╗   ██║   ██║      ==================== -->
+<!-- ====================  ██╔══██╗██╔══██║╚════██║   ██║   ██║      ==================== -->
+<!-- ====================  ██║  ██║██║  ██║███████║   ██║   ╚██████╗ ==================== -->
+<!-- ====================  ╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝   ╚═╝    ╚═════╝ ==================== -->
+<!-- ==============================  ЧАСТЬ 3/3  ============================== -->
+<!-- =======================  (УТИЛИТЫ + ЗАВЕРШЕНИЕ)  ======================= -->
+<!-- ===================================================================== -->
 
     <!-- Дополнительные стили -->
     <style>
@@ -4071,4 +3839,5 @@
 </body>
 </html>
 <!-- КОНЕЦ ЧАСТИ 2/3 --!>
+
 
