@@ -645,10 +645,10 @@
         .messages-container {
             flex: 1;
             overflow-y: auto;
-            padding: 15px;
+            padding: 20px;
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 8px;
             -webkit-overflow-scrolling: touch;
         }
 
@@ -684,10 +684,12 @@
             margin-bottom: 8px;
         }
 
+        /* ========== КРАСИВЫЕ СООБЩЕНИЯ ========== */
         .message {
             display: flex;
-            margin-bottom: 4px;
-            max-width: 75%;
+            margin-bottom: 8px;
+            max-width: 70%;
+            animation: fadeIn 0.2s ease;
         }
 
         .message.outgoing {
@@ -699,49 +701,148 @@
         }
 
         .message-content {
-            padding: 10px 14px;
+            padding: 10px 16px;
             border-radius: 18px;
             position: relative;
             word-wrap: break-word;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
         }
 
+        /* Исходящие сообщения (синие) */
         .message.outgoing .message-content {
             background: #3B82F6;
             color: white;
             border-bottom-right-radius: 4px;
         }
 
+        /* Входящие сообщения (тёмные) */
         .message.incoming .message-content {
-            background: rgba(30, 42, 71, 0.8);
+            background: rgba(30, 42, 71, 0.9);
             color: white;
             border-bottom-left-radius: 4px;
             backdrop-filter: blur(5px);
+            border: 1px solid rgba(59, 130, 246, 0.3);
         }
 
+        /* Ник отправителя */
         .message-sender {
             font-size: 11px;
             font-weight: 600;
-            margin-bottom: 3px;
-            color: #3B82F6;
+            margin-bottom: 4px;
+            color: #8B5CF6;
             display: block;
-            cursor: pointer;
+            letter-spacing: 0.3px;
         }
 
-        .message-sender:hover {
-            opacity: 0.8;
-        }
-
+        /* Текст сообщения */
         .message-text {
             font-size: 14px;
-            line-height: 1.4;
+            line-height: 1.5;
             word-break: break-word;
+            white-space: pre-wrap;
         }
 
+        /* Время сообщения */
         .message-time {
             font-size: 9px;
             color: rgba(255, 255, 255, 0.5);
-            margin-top: 3px;
+            margin-top: 4px;
             text-align: right;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 4px;
+        }
+
+        /* Статусы прочитано */
+        .message-status {
+            display: inline-flex;
+            align-items: center;
+            font-size: 9px;
+        }
+
+        .message-status.sent { color: rgba(255, 255, 255, 0.3); }
+        .message-status.delivered { color: rgba(255, 255, 255, 0.5); }
+        .message-status.read { color: #3B82F6; }
+
+        /* Реакции */
+        .message-reactions {
+            display: flex;
+            gap: 4px;
+            margin-top: 6px;
+            flex-wrap: wrap;
+        }
+
+        .reaction {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 2px 8px;
+            font-size: 11px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .reaction:hover {
+            background: rgba(59, 130, 246, 0.3);
+            transform: scale(1.05);
+        }
+
+        .reaction.premium {
+            background: linear-gradient(135deg, #F59E0B, #EC4899);
+            border: none;
+        }
+
+        /* Анимация появления */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Файловые сообщения */
+        .file-message {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 8px 12px;
+            border-radius: 10px;
+            margin: 5px 0;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .file-message:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: scale(1.02);
+        }
+
+        .file-message i {
+            font-size: 24px;
+            color: #3B82F6;
+        }
+
+        .file-info {
+            flex: 1;
+        }
+
+        .file-name {
+            color: white;
+            font-size: 13px;
+            margin-bottom: 2px;
+            word-break: break-word;
+        }
+
+        .file-size {
+            color: #9CA3AF;
+            font-size: 11px;
         }
 
         .message-input-area {
@@ -1023,6 +1124,28 @@
             font-weight: 500;
             font-size: 14px;
             flex: 1;
+        }
+
+        .user-item-role {
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+
+        .user-item-role.creator {
+            background: rgba(245, 158, 11, 0.2);
+            color: #F59E0B;
+        }
+
+        .user-item-role.admin {
+            background: rgba(59, 130, 246, 0.2);
+            color: #3B82F6;
+        }
+
+        .user-check {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
         }
 
         /* Profile */
@@ -1378,7 +1501,7 @@
             }
             
             .message-content {
-                padding: 10px 12px;
+                padding: 8px 14px;
                 font-size: 14px;
             }
             
@@ -1387,11 +1510,11 @@
             }
             
             .message-time {
-                font-size: 9px;
+                font-size: 8px;
             }
             
             .message-input-area {
-                padding: 12px;
+                padding: 10px 12px;
                 gap: 8px;
             }
             
@@ -1450,7 +1573,7 @@
             }
             
             .chat-item {
-                padding: 10px;
+                padding: 8px;
             }
             
             .chat-avatar {
@@ -1468,7 +1591,7 @@
             }
             
             .chat-time {
-                font-size: 10px;
+                font-size: 9px;
             }
             
             .messages-container {
@@ -2011,7 +2134,7 @@
 <!-- КОНЕЦ ЧАСТИ 1/3 -->
 <!-- ЧАСТЬ 2/3 - FIREBASE И ЛОГИКА -->
 
-   <!-- ЧАСТЬ 2/3 - FIREBASE И ЛОГИКА (БЕЗ ЗВОНКОВ) -->
+   <!-- ЧАСТЬ 2/3 - FIREBASE И ЛОГИКА (ФИНАЛЬНАЯ ИСПРАВЛЕННАЯ) -->
 
     <!-- ========== 2.1 FIREBASE CONFIG & CRYPTO ========== -->
     <script>
@@ -2123,26 +2246,21 @@
 
             <!-- ========== 2.3 ИНИЦИАЛИЗАЦИЯ ========== -->
             init() {
-                this.updateLoadingProgress(10, 'Connecting...');
+                console.log('🔥 HYPEBIT initializing...');
                 
                 auth.onAuthStateChanged(async (user) => {
                     if (user) {
-                        this.updateLoadingProgress(30, 'Loading user...');
+                        console.log('✅ User logged in:', user.uid);
                         this.currentUser = user;
                         
-                        this.updateLoadingProgress(50, 'Loading chats...');
                         await this.loadUserData(user);
-                        
-                        this.updateLoadingProgress(70, 'Loading messages...');
                         this.loadChats();
+                        this.updateUserStatus('online');
+                        this.ensureOfficialChat();
                         
-                        this.updateLoadingProgress(90, 'Setting up...');
-                        await this.updateUserStatus('online');
-                        await this.ensureOfficialChat();
-                        
-                        this.updateLoadingProgress(100, 'Welcome!');
-                        setTimeout(() => this.showApp(), 500);
+                        this.showApp();
                     } else {
+                        console.log('🟡 No user, showing login form');
                         this.showAuth();
                         this.cleanupListeners();
                     }
@@ -2312,13 +2430,6 @@
                 });
             }
 
-            updateLoadingProgress(percent, status) {
-                const progressEl = document.getElementById('loading-progress');
-                const statusEl = document.getElementById('loading-status');
-                if (progressEl) progressEl.textContent = percent + '%';
-                if (statusEl) statusEl.textContent = status;
-            }
-
             toggleAuthForms(form) {
                 const loginForm = document.getElementById('login-form');
                 const registerForm = document.getElementById('register-form');
@@ -2416,15 +2527,17 @@
             }
 
             showApp() {
-                document.getElementById('auth-container').classList.remove('active');
-                document.getElementById('app-container').classList.add('active');
-                document.getElementById('loading-screen').classList.add('hidden');
+                document.getElementById('auth-container')?.classList.remove('active');
+                document.getElementById('app-container')?.classList.add('active');
+                document.getElementById('loading-screen')?.classList.add('hidden');
+                console.log('✅ Showing app');
             }
 
             showAuth() {
-                document.getElementById('auth-container').classList.add('active');
-                document.getElementById('app-container').classList.remove('active');
-                document.getElementById('loading-screen').classList.add('hidden');
+                document.getElementById('auth-container')?.classList.add('active');
+                document.getElementById('app-container')?.classList.remove('active');
+                document.getElementById('loading-screen')?.classList.add('hidden');
+                console.log('🟡 Showing auth');
             }
 
             <!-- ========== 2.5 ЗАГРУЗКА ДАННЫХ ========== -->
@@ -2689,7 +2802,7 @@
                 }
             }
 
-            <!-- ========== 2.8 ЗАГРУЗКА СООБЩЕНИЙ (ОПТИМИЗИРОВАННАЯ) ========== -->
+            <!-- ========== 2.8 ЗАГРУЗКА СООБЩЕНИЙ (СУПЕР-БЫСТРАЯ) ========== -->
             loadMessages(chatId) {
                 console.log('📂 loadMessages for:', chatId);
                 
@@ -2701,9 +2814,7 @@
                 const container = document.getElementById('messages-container');
                 if (!container) return;
                 
-                if (container.children.length === 0 || (container.children.length === 1 && container.children[0].className === 'loading-spinner')) {
-                    container.innerHTML = '<div class="loading-spinner"></div>';
-                }
+                container.innerHTML = '<div class="loading-spinner"></div>';
                 
                 this.messagesListener = db.collection('chats').doc(chatId)
                     .collection('messages')
@@ -2714,60 +2825,51 @@
                             return;
                         }
 
-                        if (container.children.length === 1 && container.children[0].className === 'loading-spinner') {
-                            container.innerHTML = '';
-                        }
+                        container.innerHTML = '';
 
-                        snapshot.docChanges().forEach(change => {
-                            if (change.type === 'added') {
-                                if (document.getElementById(`msg-${change.doc.id}`)) return;
-                                
-                                const msg = change.doc.data();
-                                
-                                let text = msg.text;
-                                if (msg.encrypted) {
-                                    try {
-                                        text = hypebitCrypto.decryptMessage(msg.text, chatId, msg.senderId) || '💬';
-                                    } catch {
-                                        text = '💬';
-                                    }
+                        snapshot.forEach(doc => {
+                            const msg = doc.data();
+                            
+                            let text = msg.text;
+                            if (msg.encrypted) {
+                                try {
+                                    text = hypebitCrypto.decryptMessage(msg.text, chatId, msg.senderId) || '💬';
+                                } catch {
+                                    text = '💬';
                                 }
-                                
-                                const isOutgoing = msg.senderId === this.currentUser.uid;
-                                const div = document.createElement('div');
-                                div.className = `message ${isOutgoing ? 'outgoing' : 'incoming'}`;
-                                div.id = `msg-${change.doc.id}`;
-                                
-                                let senderHtml = '';
-                                if (!isOutgoing && this.currentChatType !== 'private') {
-                                    this.getUserData(msg.senderId).then(userData => {
-                                        const senderSpan = document.getElementById(`sender-${change.doc.id}`);
-                                        if (senderSpan && userData) {
-                                            senderSpan.textContent = userData.username;
-                                            if (userData.usernameColor) {
-                                                senderSpan.style.color = this.getColorCode(userData.usernameColor);
-                                            }
-                                        }
-                                    });
-                                    senderHtml = `<span class="message-sender" id="sender-${change.doc.id}">...</span>`;
-                                }
-                                
-                                div.innerHTML = `
-                                    ${senderHtml}
-                                    <div class="message-text">${text}</div>
-                                    <div class="message-time">
-                                        ${msg.timestamp ? this.formatTime(msg.timestamp.toDate()) : ''}
-                                    </div>
-                                `;
-                                
-                                container.appendChild(div);
                             }
+                            
+                            const isOutgoing = msg.senderId === this.currentUser.uid;
+                            const div = document.createElement('div');
+                            div.className = `message ${isOutgoing ? 'outgoing' : 'incoming'}`;
+                            div.id = `msg-${doc.id}`;
+                            
+                            let senderHtml = '';
+                            if (!isOutgoing && this.currentChatType !== 'private') {
+                                this.getUserData(msg.senderId).then(userData => {
+                                    const senderSpan = document.getElementById(`sender-${doc.id}`);
+                                    if (senderSpan && userData) {
+                                        senderSpan.textContent = userData.username;
+                                        if (userData.usernameColor) {
+                                            senderSpan.style.color = this.getColorCode(userData.usernameColor);
+                                        }
+                                    }
+                                });
+                                senderHtml = `<span class="message-sender" id="sender-${doc.id}">...</span>`;
+                            }
+                            
+                            div.innerHTML = `
+                                ${senderHtml}
+                                <div class="message-text">${text}</div>
+                                <div class="message-time">
+                                    ${msg.timestamp ? this.formatTime(msg.timestamp.toDate()) : ''}
+                                </div>
+                            `;
+                            
+                            container.appendChild(div);
                         });
                         
-                        container.scrollTo({
-                            top: container.scrollHeight,
-                            behavior: 'smooth'
-                        });
+                        container.scrollTop = container.scrollHeight;
                     });
             }
 
@@ -3969,3 +4071,4 @@
 </body>
 </html>
 <!-- КОНЕЦ ЧАСТИ 2/3 --!>
+
