@@ -1769,6 +1769,22 @@
 
     <!-- ========== 2.1 FIREBASE CONFIG & CRYPTO ========== -->
     <script>
+        // ========== АВАРИЙНАЯ ЗАГРУЗКА ==========
+console.log('🔥 HYPEBIT starting...');
+
+// Принудительно показываем форму входа через 1 секунду, если ничего не работает
+setTimeout(() => {
+    const authContainer = document.getElementById('auth-container');
+    const appContainer = document.getElementById('app-container');
+    const loadingScreen = document.getElementById('loading-screen');
+    
+    if (authContainer && !authContainer.classList.contains('active')) {
+        console.log('⚠️ Emergency: showing auth form');
+        authContainer.classList.add('active');
+        if (appContainer) appContainer.classList.remove('active');
+        if (loadingScreen) loadingScreen.classList.add('hidden');
+    }
+}, 1000);
         // Firebase конфигурация
         const firebaseConfig = {
             apiKey: "AIzaSyDcQseK1-uglhTEgJMlxcaMsTJnFZ0RSm8",
@@ -3829,6 +3845,7 @@ async loadUserData(user) {
 </body>
 </html>
 <!-- КОНЕЦ ЧАСТИ 2/3 --!>
+
 
 
 
